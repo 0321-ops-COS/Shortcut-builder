@@ -56,39 +56,50 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 #hp textarea{width:100%;height:150px;box-sizing:border-box;font:12px/1.35 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:6px}
 #hp .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
 #hp .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+.hd .rw.dn{display:none}
 #ip{background:var(--card);border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13.5px}
 #ip textarea{width:100%;min-height:180px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
-#ip .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
-#ip .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+#ip .bt,.cpbox .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+#ip .bt button,.cpbox .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
 .cpbox{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin:16px 0 4px}
 .cpbox .cpt{font-size:15px;font-weight:600;margin:0 0 4px}
 .cpbox .cpnote{font-size:13px;color:var(--tx2);margin:0 0 8px}
 .cpbox textarea{width:100%;min-height:170px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
-.cpbox .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
-.cpbox .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-
-
-.hd .rw.dn{display:none}
+.swt{display:flex;gap:6px;margin:0 4px 6px}
+.swt button{flex:1;font:inherit;font-size:14.5px;font-weight:700;padding:9px 6px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+.swt button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
 .bmbar{display:flex;flex-wrap:wrap;gap:6px}
 .note{font-size:13px;color:var(--tx2);margin:0 4px 8px}
 </style>
 </head>
 <body>
 <main>
+<div id="hA">
 <h1>DoorDash Offer Analyzer v2: what's left</h1>
-<p class="sub">Checked action by action against your uploaded shortcut (148 actions). Finished work is removed. Pill names are the real ones in your shortcut. Progress, checkmarks and bookmarks save automatically; the status line below says where.</p>
+<p class="sub">Checked action by action against your uploaded shortcut (157 actions). Pill names are the real ones in your shortcut. Progress, checkmarks and bookmarks save automatically; the status line below says where.</p>
 <div class="box">
-<p><b>Already done and confirmed:</b> screenshot and text read first, gas section with Save File overwrite on and no Delete File, the four-line model prompt and Payout, Miles, Items, DeliverBy, the Shop for items fix, CarCost, Net, PerMile, Minutes, Hourly, ItemsNum, the TAKE IT test, the under-80 test, the Additional SKIP test, the Use Model summary, note, notification, wait, and the log append. The 12 tunables exist too, but nothing reads them yet.</p>
-<p><b>Checked outside the phone:</b> the seeded file has 100 rows and 89 accepts. The ramp table is correct. The eight test verdicts match at a gas price of about $5.75. The Part C patterns match the right rows in Python, but (?m) still needs one test on your phone.</p>
+<p><b>Done since the last check:</b> BigMile, RampLow and Emergency are renamed. The unused items Match Text and Get Group are gone. DeliverBy now reads Item At Index 4. Part C is started: offers.txt is read, Match Text, RowCount and StartIdx exist. Those steps are ticked below.</p>
+<p><b>Found this check:</b> the Match Text pattern starts with a space, so it matches nothing. An old Last Item pair after the Shop for items If puts DeliverBy back to the last line. BigItem still needs renaming to BigItems. Nothing reads the 12 tunables yet.</p>
+<p><b>Checked outside the phone:</b> the seeded file has 100 rows and 89 accepts. The ramp table is correct. The eight test verdicts match at a gas price of about $5.75.</p>
+</div>
+</div>
+<div id="hS" style="display:none">
+<h1>Shift Logging: fixes and setup</h1>
+<p class="sub">Checked against your Shift_Logging shortcut (23 actions). It logs your odometer, Start or End, and zone to shifts.txt.</p>
+<div class="box">
+<p><b>Working:</b> it asks the odometer, Start or End, reads the last reading from shifts.txt, works out the miles since the last entry, asks the zone and appends it all. Those steps are ticked below.</p>
+<p><b>Needs doing:</b> delete the leftover Show Result popup, set the odometer to a number, and seed shifts.txt with a starting reading before the first run. The last section is optional and makes one row per entry for the analytics page and tax miles.</p>
+</div>
 </div>
 <div class="lg"><span><i style="background:var(--addbar)"></i>Add</span><span><i style="background:var(--chgbar)"></i>Change</span><span><i style="background:var(--rmbar)"></i>Remove</span><span><i style="background:var(--card);border:1px solid var(--ln)"></i>Unchanged</span></div>
 <div class="note" id="sync">Saved on this device</div>
-<div class="stick"><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="pt"></div>
+<div class="stick"><div class="swt"><button id="mA" class="on">DoorDash Analyzer</button><button id="mS">Shift Log</button></div><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="pt"></div>
 <div class="bmbar"><button id="bmb">★ Bookmarks (0)</button><button id="iob">✎ AI instructions</button><button id="hob">⇄ Handoff file</button><button id="hdb">Hide done</button></div></div>
 <div id="bmp" style="display:none"></div><div id="ip" style="display:none"></div><div id="hp" style="display:none"></div>
-<div class="nav" id="nav"></div>
+<div id="gA"><div class="nav" id="nav"></div>
 <div id="out"></div>
-<p class="foot">Not yet confirmed on a phone: the (?m) flag in Match Text, and the exact name Count gives its output.</p>
+<p class="foot">Not yet confirmed on a phone: the (?m) flag in Match Text, and the exact name Count gives its output.</p></div>
+<div id="gS" style="display:none"></div>
 </main>
 <script>
 var S=[];
@@ -98,15 +109,15 @@ sec('1 · Fix the tunable names','The Number and Set Variable pairs right under 
 [1,'c','Set Variable (4th pair, value 2)','Rename {BigItem} to BigMile. As built, BigMile is never created and BigItems gets overwritten with 2.'],
 [1,'c','Set Variable (value 85)','Rename {Ramplow} to RampLow'],
 [1,'c','Set Variable (value 80)','Rename {Emergancy} to Emergency']]);
-sec('2 · Part B: only two things left','Between Set Variable Items and the Shop for items If, then at DeliverBy.',[
+sec('2 · Part B: one thing left','Between Set Variable Items and the Shop for items If, then at DeliverBy.',[
 [1,'r','Match Text','Pattern \\((\\d+) items? on {Items}. Its output is never used.'],
 [1,'r','Get Group from Matched Text','Never used.'],
-[1,'c','Get Item from List above Set Variable DeliverBy','Change Last Item to Item At Index 4, so a blank last line from the model can\'t empty it.'],
+[1,'r','Get Item from List (Last Item) after the Shop for items End If','DeliverBy is now set by Item At Index 4 earlier, but this old pair runs after it and puts the last line back. Delete this Get Item from List and the Set Variable DeliverBy under it.'],
 [1,'c','Skip the whitespace cleanup','Not needed. 7.9Miles comes from the missing space in the summary Text, which Part F fixes.']]);
 sec('3 · Part C: rolling acceptance rate','Under Set Variable DeliverBy, above Calculate Expression for CarCost.',[
 [1,'a','Get File','Dasher info / offers.txt · Error If Not Found off'],
 [1,'a','Get Text from Input','{File} · rename output OffersText'],
-[1,'a','Match Text','(?m)^\\|\\s*\\d{4}-.*$ in {OffersText} · rename output DataRows'],
+[1,'c','Match Text (fix the pattern)','Delete the space before (?m). As built the pattern starts with a space, so it matches nothing. It should read (?m)^\\|\\s*\\d{4}-.*$ and the output stays DataRows.'],
 [1,'a','Count, then Set Variable','Items of {DataRows}  →  {RowCount}'],
 [1,'a','Number, then Set Variable','1  →  {StartIdx}'],
 [1,'a','If','{RowCount} is greater than 100'],
@@ -174,10 +185,10 @@ sec('6 · Part F: output, choice and log','The summary Text, the menu and the lo
 [1,'r','Set Variable Choice from {Menu Result}','It would log Accepted, which the Part C Accept pattern does not count.'],
 [1,'c','Text (log row)','| {Formatted Date}| {Payout} | {Miles} | {Items} |{PerMileFmt} | {NetFmt}| {HourlyFmt} | {Verdict} | {AcceptanceRate}  |  {Choice} | {Slack} |\nAdds the Slack column at the end.']]);
 var WHOLE=[[0, "", "Take Screenshot", ""], [0, "", "Extract Text from Image", "{Screenshot} · output OCRText"], [0, "", "Number", "1.5"], [0, "", "Set Variable", "{Number}  →  {BaseMile}"], [0, "", "Number", "18"], [0, "", "Set Variable", "{Number}  →  {BaseHour}"], [0, "", "Number", "3"], [0, "c", "Set Variable", "{Number}  →  {BigItems}   (was BigItem)"], [0, "", "Number", "2"], [0, "c", "Set Variable", "{Number}  →  {BigMile}   (was BigItem)"], [0, "", "Number", "20"], [0, "", "Set Variable", "{Number}  →  {BigHour}"], [0, "", "Number", "90"], [0, "", "Set Variable", "{Number}  →  {RampTop}"], [0, "", "Number", "85"], [0, "c", "Set Variable", "{Number}  →  {RampLow}   (was Ramplow)"], [0, "", "Number", "0.75"], [0, "", "Set Variable", "{Number}  →  {MileFloor}"], [0, "", "Number", "10"], [0, "", "Set Variable", "{Number}  →  {HourFloor}"], [0, "", "Number", "80"], [0, "c", "Set Variable", "{Number}  →  {Emergency}   (was Emergancy)"], [0, "", "Number", "17.5"], [0, "", "Set Variable", "{Number}  →  {MPG}"], [0, "", "Number", "0.12"], [0, "", "Set Variable", "{Number}  →  {Wear}"], [0, "r", "Number", "89\nRemove after Part C runs and shows 89."], [0, "r", "Set Variable", "{Number}  →  {AcceptanceRate}\nRemove after Part C runs and shows 89."], [0, "", "Date", "Current Date · output Today’s Date"], [0, "", "Format Date", "{Today’s Date} · Custom · yyyy-MM-dd"], [0, "", "Text", "Date: {Formatted Date}"], [0, "", "Set Variable", "{Text}  →  {GasDate}"], [0, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [0, "", "Get Text from Input", "{File}"], [0, "", "If", "{Text} does not contain {GasDate}"], [1, "", "Choose from Menu", "Prompt: Gas price today? · items New, Same as Yesterday"], [2, "", "New", "menu item"], [3, "", "Ask for Input", "Number · What is Today’s Gas Price"], [3, "", "Set Variable", "{Provided Input}  →  {GasPrice}"], [2, "", "Same as Yesterday", "menu item"], [3, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [3, "", "Get Text from Input", "{File}"], [3, "", "Split Text", "{Text} · New Lines"], [3, "", "Get Item from List", "{Split Text} · Last Item"], [3, "", "Set Variable", "{Item from List}  →  {GasPrice}"], [1, "", "End Menu", ""], [1, "", "Text", "{GasDate}\n{GasPrice}"], [1, "", "Save File", "Input {Text} · Dasher info / gasinfo.txt · Overwrite If File Exists ON"], [0, "", "Otherwise", ""], [1, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [1, "", "Get Text from Input", "{File}"], [1, "", "Split Text", "{Text} · New Lines"], [1, "", "Get Item from List", "{Split Text} · Last Item"], [1, "", "Set Variable", "{Item from List}  →  {GasPrice}"], [0, "", "End If", ""], [0, "", "Use Model", "ChatGPT · From the DoorDash offer text below, reply with exactly four lines and nothing else. Line 1… · output AILogicAndResults"], [0, "", "Text", "{AILogicAndResults}"], [0, "", "Split Text", "{Text} · New Lines"], [0, "", "Get Item from List", "{Split Text} · First Item"], [0, "", "Set Variable", "{Item from List}  →  {Payout}"], [0, "", "Get Item from List", "{Split Text} · Item At Index 2"], [0, "", "Set Variable", "{Item from List}  →  {Miles}"], [0, "", "Get Item from List", "{Split Text} · Item At Index 3"], [0, "", "Set Variable", "{Item from List}  →  {Items}"], [0, "r", "Match Text", "\\((\\d+) items? in {Items}"], [0, "r", "Get Group from Matched Text", "{Matches}"], [0, "", "If", "{OCRText} does not contain Shop for items"], [1, "", "Calculate", "{Items} × 0"], [1, "", "Set Variable", "{Calculation Result}  →  {Items}"], [0, "", "End If", ""], [0, "c", "Get Item from List", "{Split Text} · Item At Index 4   (was Last Item)"], [0, "", "Set Variable", "{Item from List}  →  {DeliverBy}"], [0, "m", "Part C goes here", "under Set Variable DeliverBy, above Calculate Expression CarCost"], [0, "a", "Get File", "Dasher info / offers.txt · Error If Not Found off"], [0, "a", "Get Text from Input", "{File} · rename output OffersText"], [0, "a", "Match Text", "(?m)^\\|\\s*\\d{4}-.*$ in {OffersText} · rename output DataRows"], [0, "a", "Count, then Set Variable", "Items of {DataRows}  →  {RowCount}"], [0, "a", "Number, then Set Variable", "1  →  {StartIdx}"], [0, "a", "If", "{RowCount} is greater than 100"], [1, "a", "Calculate Expression, then Set Variable", "{RowCount}-99  →  {StartIdx}"], [0, "a", "End If", ""], [0, "a", "Get Item from List", "{DataRows} · Items in Range · {StartIdx} to {RowCount} · rename output Window"], [0, "a", "Combine Text", "{Window} · New Lines · rename output WindowText"], [0, "a", "Match Text", "(?m)\\|\\s*Accept\\s*\\| in {WindowText}"], [0, "a", "Count, then Set Variable", "Items  →  {Accepts}"], [0, "a", "Count, then Set Variable", "Items of {Window}  →  {WindowSize}"], [0, "a", "If", "{WindowSize} is greater than 0"], [1, "a", "Calculate Expression, then Set Variable", "{Accepts}/{WindowSize}*100  →  {AcceptanceRate}"], [0, "a", "Otherwise", ""], [1, "a", "Number, then Set Variable", "89  →  {AcceptanceRate}"], [0, "a", "End If", ""], [0, "c", "Calculate Expression", "{Miles}*({GasPrice}/{MPG}+{Wear})"], [0, "", "Set Variable", "{Calculation Result}  →  {CarCost}"], [0, "", "Calculate Expression", "{Payout}-{CarCost}"], [0, "c", "Format Number", "{Calculation Result} · rename output NetFmt"], [0, "", "Set Variable", "{Calculation Result}  →  {Net}"], [0, "", "Calculate Expression", "{Payout}/{Miles}"], [0, "c", "Format Number", "{Calculation Result} · 2 decimal places · rename output PerMileFmt"], [0, "", "Set Variable", "{Calculation Result}  →  {PerMile}"], [0, "", "Calculate Expression", "10+{Miles}*2.5+{Items}*2"], [0, "", "Set Variable", "{Calculation Result}  →  {Minutes}"], [0, "", "If", "{OCRText} contains Additional"], [1, "", "Calculate Expression", "{Miles}*2.5+{Items}*2+4"], [1, "", "Set Variable", "{Calculation Result}  →  {Minutes}"], [0, "", "End If", ""], [0, "", "Calculate Expression", "{Net}/{Minutes}*60"], [0, "c", "Format Number", "{Calculation Result} · 2 decimal places · rename output HourlyFmt"], [0, "", "Set Variable", "{Calculation Result}  →  {Hourly}"], [0, "", "Text", "SKIP"], [0, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "c", "Number", "1.5 becomes the {BaseMile} pill"], [0, "c", "Set Variable", "{BaseMile}  →  {MileBase}   (was ReqMile)"], [0, "c", "Number", "18 becomes the {BaseHour} pill"], [0, "c", "Set Variable", "{BaseHour}  →  {HourBase}   (was ReqHour)"], [0, "", "Calculate Expression", "{Items}+0"], [0, "", "Set Variable", "{Calculation Result}  →  {ItemsNum}"], [0, "c", "If", "{ItemsNum} is greater than {BigItems}   (was 3)"], [1, "c", "Number", "2 becomes the {BigMile} pill"], [1, "c", "Set Variable", "{BigMile}  →  {MileBase}   (was ReqMile)"], [1, "c", "Number", "20 becomes the {BigHour} pill"], [1, "c", "Set Variable", "{BigHour}  →  {HourBase}   (was ReqHour)"], [0, "", "End If", ""], [0, "r", "If", "{AcceptanceRate} is less than 90"], [1, "r", "Calculate Expression", "{ReqMile}-0.25"], [1, "r", "Set Variable", "{Calculation Result}  →  {ReqMile}"], [1, "r", "Calculate Expression", "{ReqHour}-3"], [1, "r", "Set Variable", "{Calculation Result}  →  {ReqHour}"], [0, "r", "End If", ""], [0, "m", "Ramp goes here", "replaces the If AcceptanceRate is less than 90 block"], [0, "a", "Calculate Expression, then Set Variable", "({RampTop}-{AcceptanceRate})/({RampTop}-{RampLow})  →  {T}"], [0, "a", "If", "{T} is less than 0"], [1, "a", "Number, then Set Variable", "0  →  {T}"], [0, "a", "End If", ""], [0, "a", "If", "{T} is greater than 1"], [1, "a", "Number, then Set Variable", "1  →  {T}"], [0, "a", "End If", ""], [0, "a", "Calculate Expression, then Set Variable", "{MileBase}-{T}*({MileBase}-{MileFloor})  →  {ReqMile}"], [0, "a", "Calculate Expression, then Set Variable", "{HourBase}-{T}*({HourBase}-{HourFloor})  →  {ReqHour}"], [0, "m", "Cushion goes here", "above If (All) PerMile / ReqMile"], [0, "a", "If", "{DeliverBy} is not 0"], [1, "a", "Split Text", "{DeliverBy} · Custom : "], [1, "a", "Get Item from List", "First Item  →  Set Variable {DH}"], [1, "a", "Get Item from List", "Item At Index 2  →  Set Variable {DM}"], [1, "a", "Format Date", "{Today’s Date} · Custom HH  →  Set Variable {NowH}"], [1, "a", "Format Date", "{Today’s Date} · Custom mm  →  Set Variable {NowM}"], [1, "a", "Calculate Expression, then Set Variable", "({DH}*60+{DM})-({NowH}*60+{NowM})  →  {MinsLeft}"], [1, "a", "If", "{MinsLeft} is less than 0"], [2, "a", "Calculate Expression, then Set Variable", "{MinsLeft}+1440  →  {MinsLeft}"], [1, "a", "End If", ""], [1, "a", "Calculate Expression, then Set Variable", "{MinsLeft}-{Minutes}  →  {Slack}"], [0, "a", "Otherwise", ""], [1, "a", "Text, then Set Variable", "-  →  {Slack}"], [0, "a", "End If", ""], [0, "a", "Text, then Set Variable", "(empty)  →  {Tight}"], [0, "a", "If", "{DeliverBy} is not 0"], [1, "a", "If", "{Slack} is less than 0"], [2, "a", "Text, then Set Variable", "LATE RISK  →  {Tight}"], [1, "a", "End If", ""], [0, "a", "End If", ""], [0, "", "If", "All · {PerMile} is greater than {ReqMile} · {Hourly} is greater than {ReqHour}"], [1, "", "Text", "TAKE IT"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "r", "If", "All · {AcceptanceRate} is less than 85 · {Net} is greater than 0 · {Hourly} is greater than or equal to 10"], [1, "r", "Text", "TAKE IT"], [1, "r", "Set Variable", "{Text}  →  {Verdict}"], [0, "r", "End If", ""], [0, "c", "If", "All · {AcceptanceRate} is less than {Emergency} · {Net} is greater than 0   (was 80)"], [1, "", "Text", "TAKE"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "", "Calculate Expression", "{Payout}+0"], [0, "", "Set Variable", "{Calculation Result}  →  {PayoutNum}"], [0, "", "If", "All · {OCRText} contains Additional · {PayoutNum} is less than or equal to 5"], [1, "", "Text", "SKIP"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "c", "Text", "_____________\n{Verdict} {Tight}\n• $ {NetFmt} Net\n• $ {PerMileFmt}/mi\n• {Miles} Miles\n• $ {HourlyFmt}/hr\n• {AcceptanceRate}% rate\n• {Slack} min cushion\n\n--{ReqHour} RH\n--{ReqMile} RM\n_____________"], [0, "", "Set Variable", "{Text}  →  {FinVerdict}"], [0, "", "Use Model", "Apple Intelligence on Device · In one short sentence, tell a delivery driver why this offer is TAKE IT (Hype) or SKIP (th…"], [0, "", "Append to Note", "DoorDash Offer Review · {FinVerdict}"], [0, "", "Show Notification", "Title VERDICT · Body {Response} · Sound off"], [0, "", "Wait", "10 seconds"], [0, "c", "Choose from Menu", "Prompt: Accepted or Rejected · items Accepted, Rejected, Expired"], [1, "", "Accepted", "menu item"], [2, "", "Text", "Accept"], [2, "c", "Set Variable", "{Text}  →  {Choice}   (was Accept)"], [1, "", "Rejected", "menu item"], [2, "", "Text", "Reject"], [2, "c", "Set Variable", "{Text}  →  {Choice}   (was Reject)"], [1, "a", "Expired", "menu item"], [2, "a", "Text", "Expire"], [2, "a", "Set Variable", "{Text}  →  {Choice}"], [0, "", "End Menu", ""], [0, "r", "If", "{Menu Result} is (empty)"], [1, "r", "Text", "Expired"], [0, "r", "End If", ""], [0, "r", "Set Variable", "{Menu Result}  →  {Choice}"], [0, "", "Format Date", "{Today’s Date} · Custom · yyyy-MM-dd HH:mm"], [0, "c", "Text", "| {Formatted Date}| {Payout} | {Miles} | {Items} |{PerMileFmt} | {NetFmt}| {HourlyFmt} | {Verdict} | {AcceptanceRate}  |  {Choice} | {Slack} |"], [0, "", "Append to File", "Dasher info / offers.txt · text {Text}"]];
-var VER='r2 · 2026-10-24',KEY='ddv2-state',IKEY='ddv2-ai-instructions',st={bm:[],done:{},t:0},dbDoc=null,saveTimer=null,aiInstructions='';
-try{aiInstructions=localStorage.getItem(IKEY)||'';}catch(e){}
-function norm(o){return {bm:(o&&o.bm)||[],done:(o&&o.done)||{},t:(o&&o.t)||0};}
+var VER='r4 · 2026-10-24',KEY='ddv2-state',st={bm:[],done:{},t:0,seed:0,ai:''},dbDoc=null,saveTimer=null;
+function norm(o){return {bm:(o&&o.bm)||[],done:(o&&o.done)||{},t:(o&&o.t)||0,seed:(o&&o.seed)||0,ai:(o&&o.ai)||''};}
 try{var rw0=localStorage.getItem(KEY);if(rw0)st=norm(JSON.parse(rw0));}catch(e){}
+try{var ol=localStorage.getItem('ddv2-ai-instructions');if(ol&&!st.ai)st.ai=ol;}catch(e){}
 function setSync(t){document.getElementById('sync').textContent=t;}
 function save(){st.t=Date.now();try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
  if(dbDoc){clearTimeout(saveTimer);saveTimer=setTimeout(function(){dbDoc.set({state:JSON.stringify(st)}).catch(function(){setSync('Cloud save failed; kept on this device');});},600);}}
@@ -189,21 +200,24 @@ function row(id,tab,ind,s,name,det,x){
  x=x||{};
  if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
- return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+'</div><button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button></div>';
+ return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
 }
-function describePrompt(title,items){
+var PP=[];
+function buildPrompt(pp){
  var lines=[];
- items.forEach(function(r){
-  if(!r||!['a','c','r'].includes(r[1])||r[2]==='End If'||r[2]==='Otherwise')return;
+ pp.items.forEach(function(r,j){
+  if(!r||['a','c','r'].indexOf(r[1])<0||r[2]==='End If'||r[2]==='Otherwise'||r[4]==='nop')return;
+  if(pp.done&&pp.done(r,j))return;
   lines.push('- '+(TG[r[1]]||'Change')+': '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));
  });
- if(!lines.length)lines.push('- Review the current page and make only the changes explicitly described here.');
- return 'Update my existing iOS Shortcut, DoorDash_Offer_Analyzer (v2), according to the following change instructions for "'+title+'".\n\n'+lines.join('\n')+'\n\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
+ if(!lines.length)return 'Every step listed for "'+pp.title+'" is marked done. There is nothing to change.';
+ return 'Update my existing iOS Shortcut, '+pp.sc+', according to the following change instructions for "'+pp.title+'".\n\n'+lines.join('\n')+'\n\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
 }
-function promptPanel(title,items,key){
- var p=describePrompt(title,items);
- return '<div class="cpbox"><div class="cpt">Describe Change prompt</div><div class="cpnote">Generated for this page. Copy it into Shortcuts’ “Describe Change” field, then review the proposed edits before applying them.</div><textarea readonly id="cp-'+key+'" aria-label="Generated Describe Change prompt">'+esc(p)+'</textarea><div class="bt"><button type="button" data-copy-prompt="cp-'+key+'">Copy prompt</button></div><div class="cpnote" id="cpmsg-'+key+'" aria-live="polite"></div></div>';
+function promptPanel(title,items,key,sc,done){
+ var pp={key:key,title:title,items:items,sc:sc||'DoorDash_Offer_Analyzer (v2)',done:done};PP.push(pp);
+ return '<div class="cpbox"><div class="cpt">Describe Change prompt</div><div class="cpnote">Generated for this page and updated as you tick steps. Copy it into Shortcuts’ “Describe Change” field, then review the proposed edits before applying them.</div><textarea readonly id="cp-'+key+'" aria-label="Generated Describe Change prompt">'+esc(buildPrompt(pp))+'</textarea><div class="bt"><button type="button" data-copy-prompt="cp-'+key+'">Copy prompt</button></div><div class="cpnote" id="cpmsg-'+key+'" aria-live="polite"></div></div>';
 }
+function refreshPrompts(){PP.forEach(function(pp){var ta=document.getElementById('cp-'+pp.key);if(ta)ta.value=buildPrompt(pp);});}
 function addTab(label,html){
  var i=TL.length;TL.push(label);
  var d=document.createElement('div');d.innerHTML=html;out.appendChild(d);tabEls.push(d);
@@ -212,12 +226,53 @@ function addTab(label,html){
 S.forEach(function(p,i){
  var h='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
  p.rows.forEach(function(r,j){h+=row('s'+i+'-'+j,i,r[0]-1,r[1],r[2],r[3],(r[2]==='End If'||r[2]==='Otherwise')?{}:{cb:1,dk:'p'+i+'-'+j});});
- h+=promptPanel(p.t,p.rows,'section-'+i);
+ h+=promptPanel(p.t,p.rows,'section-'+i,'DoorDash_Offer_Analyzer (v2)',function(r,j){return !!st.done['p'+i+'-'+j];});
  addTab(p.t.charAt(0),h);
 });
-var wh='<div class="ph">Whole shortcut with every edit</div><div class="pm">Every action in order, 148 now plus the additions. Uncolored rows are unchanged.</div>';
+
+var SS=[];
+function ssec(t,w,rows){SS.push({t:t,w:w,rows:rows});}
+ssec('Already working','Checked against the 23 actions in Shift_Logging. Nothing to change here.',[
+[1,'','Date, then Format Date','Custom yyyy-MM-dd HH:mm.'],
+[1,'','Ask for Input, then Set Variable','What’s the current mileage?  →  {Mileage}. Its input type is fixed in the next section.'],
+[1,'','Choose from Menu: Start or End','Sets {Start} or {End}. The menu result also goes to {St/Ed}.'],
+[1,'','Get File, then Get Text from Input','Dasher info / shifts.txt, Error If Not Found off.'],
+[1,'','Split Text, then Get Item from List','New Lines, Last Item. The last line of the file is the previous odometer reading.'],
+[1,'','Calculate','{Mileage} minus the last reading  →  {Shift Milage}.'],
+[1,'','Ask for Input, then Set Variable','What zone is it?  →  {Zone}.'],
+[1,'','Append to File','shifts.txt, Append on New Line on. The odometer is the last line of each entry, which the next run reads.']]);
+ssec('Fix before the next shift','Three edits and one file step.',[
+[1,'r','Show Result','The popup right after Get Item from List. It is a leftover test and stops the shortcut until you tap Done. Delete it.'],
+[1,'c','Ask for Input: What’s the current mileage?','Set the input type to Number so a comma or stray text can’t break the math. Type 123456, not 123,456.'],
+[1,'a','Seed shifts.txt (a file, not an action)','In Dasher info, put one line in shifts.txt with only your current odometer, like 123456. No labels, no comma, no blank line after it. With no seed the first run subtracts from an empty line and errors.','nop'],
+[1,'c','Text (the log entry)','Rename the label Shift Mileage to Miles since last entry. On a Start entry the number is the miles since your last End (driving off shift). On an End entry it is the miles you drove that shift. For tax miles, add up the End entries only.']]);
+ssec('Tidy up (optional)','Not needed for it to work.',[
+[1,'c','Text (the log entry): Shift line','Replace {Start}{End} with the {St/Ed} pill. It is already set from the menu result but never used.'],
+[1,'r','Text and Set Variable pairs inside the menu','After that swap, delete the Text Start and Text End actions and the Set Variable Start and End under them.'],
+[1,'c','Set Variable Shift Milage','Rename to ShiftMiles (it is spelled Milage). Update the pill in the log Text afterwards.']]);
+ssec('Optional: one row per entry','Do this after the fixes. It makes each entry one table line like offers.txt, so the analytics page can import it for tax miles.',[
+[1,'c','Seed row','Replace the plain odometer line in shifts.txt with one row: | 2026-10-24 00:00 | Seed | 123456 | 0 | - |  using your real reading in the third column.','nop'],
+[1,'c','Text (the log entry)','One line: | {Formatted Date} | {St/Ed} | {Mileage} | {Shift Milage} | {Zone} |  and nothing else.'],
+[1,'a','Split Text after Get Item from List (Last Item)','Custom separator |  then Get Item from List: Item At Index 4  →  that is the last odometer. Use it in the Calculate instead of the Last Item.'],
+[1,'a','Replace Text on that odometer','Find \\s+, replace with nothing, Regular Expression on, so spaces around the number can’t break the math.']]);
+ssec('First-run checks','Do these once after the fixes.',[
+[1,'','Run Start','The log gets a new entry and the miles equal your reading minus the seed.'],
+[1,'','Run End after driving a bit','The miles equal what you drove since Start.'],
+[1,'','Open shifts.txt','The last line is the odometer (or the last row). No blank line after it.']]);
+var sids=[],mode='a',sh='';
+try{mode=localStorage.getItem('ddv2-mode')==='s'?'s':'a';}catch(e){}
+SS.forEach(function(p,i){
+ sh+='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
+ p.rows.forEach(function(r,j){var id='q'+i+'-'+j;sids.push(id);sh+=row('t'+i+'-'+j,0,0,r[1],r[2],r[3],{cb:1,dk:id,nobk:1});});
+});
+var shiftRows=[];
+SS.forEach(function(p,i){p.rows.forEach(function(r,j){shiftRows.push([r[0],r[1],r[2],r[3],r[4],'q'+i+'-'+j]);});});
+sh+=promptPanel('Shift Logging fixes',shiftRows,'shift','Shift_Logging',function(r){return !!st.done[r[5]];});
+document.getElementById('gS').innerHTML=sh;
+var SEEDV=3,SEED_A=['p0-1','p0-2','p0-3','p1-0','p1-1','p1-3','p2-0','p2-1','p2-3','p2-4'],SEED_S=['q0-0','q0-1','q0-2','q0-3','q0-4','q0-5','q0-6','q0-7'];
+var wh='<div class="ph">Whole shortcut with every edit</div><div class="pm">Every action in order, 157 now plus the additions. Uncolored rows are unchanged.</div>';
 WHOLE.forEach(function(r,k){wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3]);});
-wh+=promptPanel('Whole shortcut',WHOLE,'whole');
+wh+=promptPanel('Whole shortcut',WHOLE,'whole','DoorDash_Offer_Analyzer (v2)');
 addTab('Whole',wh);
 var ph='<div class="ph">Action plan</div><div class="pm">Do these in order, top to bottom. Tap a box when a step is done. Adding an If also adds its Otherwise and End If for you, so those are not listed.</div><div class="note" id="prog"></div>',n=0,ids=[];
 S.forEach(function(p,i){
@@ -229,15 +284,17 @@ S.forEach(function(p,i){
  });
 });
 var planRows=[];
-S.forEach(function(p){p.rows.forEach(function(r){if(['a','c','r'].includes(r[1])&&r[2]!=='End If'&&r[2]!=='Otherwise')planRows.push([r[0],r[1],r[2],(r[3]?'['+p.t+'] '+r[3]:'['+p.t+']')]);});});
-ph+=promptPanel('Action plan',planRows,'plan');
+S.forEach(function(p,i){p.rows.forEach(function(r,j){if(['a','c','r'].indexOf(r[1])>-1&&r[2]!=='End If'&&r[2]!=='Otherwise')planRows.push([r[0],r[1],r[2],(r[3]?'['+p.t+'] '+r[3]:'['+p.t+']'),'','p'+i+'-'+j]);});});
+ph+=promptPanel('Action plan',planRows,'plan','DoorDash_Offer_Analyzer (v2)',function(r){return !!st.done[r[5]];});
 addTab('Plan',ph);
-function prog(){var c=0;ids.forEach(function(k){if(st.done[k])c++;});var p=ids.length?Math.round(c/ids.length*100):0;
- document.getElementById('prog').textContent=c+' of '+ids.length+' steps done';
+function prog(){
+ var c=0,sc=0;ids.forEach(function(k){if(st.done[k])c++;});sids.forEach(function(k){if(st.done[k])sc++;});
+ var an=mode!=='s',tc=an?c:sc,tt=an?ids.length:sids.length,p=tt?Math.round(tc/tt*100):0;
+ var pe=document.getElementById('prog');if(pe)pe.textContent=c+' of '+ids.length+' steps done';
  document.getElementById('pf').style.width=p+'%';
  var bs=nav.querySelectorAll('button');
  S.forEach(function(sp,si){var t=0,d=0;ids.forEach(function(k){if(k.indexOf('p'+si+'-')===0){t++;if(st.done[k])d++;}});if(bs[si])bs[si].textContent=sp.t.charAt(0)+(t&&d===t?' ✓':(d?' '+d+'/'+t:''));});
- document.getElementById('pt').textContent=c+' of '+ids.length+' steps done · '+p+'%';}
+ document.getElementById('pt').textContent=(an?'Analyzer: ':'Shift Log: ')+tc+' of '+tt+' steps done · '+p+'%';}
 prog();
 function bmCount(){document.getElementById('bmb').textContent='★ Bookmarks ('+st.bm.length+')';}
 function show(n){
@@ -269,19 +326,10 @@ document.getElementById('bmp').onclick=function(e){
  var g=e.target.getAttribute&&e.target.getAttribute('data-go');
  if(g){go(g);return;}
  if(e.target.id==='clr'){
-  st={bm:[],done:{},t:0};save();applyAll();
+  st={bm:[],done:{},t:0,seed:SEEDV,ai:st.ai||''};save();applyAll();
  }
 };
-out.addEventListener('click',async function(e){
- var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;
- if(cp){
-  var id=cp.getAttribute('data-copy-prompt'),ta=document.getElementById(id),msg=document.getElementById('cpmsg-'+id.slice(3));
-  if(!ta)return;
-  ta.focus();ta.select();
-  try{await navigator.clipboard.writeText(ta.value);if(msg)msg.textContent='Prompt copied. Paste it into Describe Change.';}
-  catch(x){try{document.execCommand('copy');if(msg)msg.textContent='Prompt copied. Paste it into Describe Change.';}catch(y){if(msg)msg.textContent='Copy blocked. Long-press the text, Select All, Copy.';}}
-  return;
- }
+out.addEventListener('click',function(e){
  var b=e.target.closest?e.target.closest('.bk'):null;if(!b)return;
  var id=b.getAttribute('data-id'),i=st.bm.indexOf(id);
  if(i>-1){st.bm.splice(i,1);b.textContent='☆';}else{st.bm.push(id);b.textContent='★';}
@@ -297,7 +345,7 @@ out.addEventListener('change',function(e){
 function applyAll(){
  document.querySelectorAll('.bk').forEach(function(b){b.textContent=st.bm.indexOf(b.getAttribute('data-id'))>-1?'★':'☆';});
  document.querySelectorAll('.cb').forEach(function(c){var on=!!st.done[c.getAttribute('data-id')];c.checked=on;c.parentNode.classList.toggle('dn',on);});
- bmCount();prog();if(document.getElementById('bmp').style.display!=='none')panel();
+ bmCount();prog();refreshPrompts();if(document.getElementById('bmp').style.display!=='none')panel();
 }
 function handoff(){
  var L=[],done=0,total=0,open=[],fin=[];
@@ -307,12 +355,14 @@ function handoff(){
   if(st.done[id]){done++;fin.push('- [x] '+line);}else open.push('- [ ] '+line);
  });});
  var bms=st.bm.map(function(id){var el=document.getElementById(id);return el?'- '+el.querySelector('.nt').textContent+'  ('+id+')':null;}).filter(Boolean);
- L.push('# DoorDash Offer Analyzer v2: handoff file','Guide version '+VER+' · exported '+new Date().toISOString().slice(0,16).replace('T',' ')+' UTC · '+done+' of '+total+' steps done','');
- L.push('## For the AI reading this','The user is editing an iOS Shortcut (DoorDash_Offer_Analyzer, v2) on their phone, one action at a time. This file has the remaining edits, which are done, their bookmarks, and the guide data. Help with the open steps. Pill names in {braces} are real variable names. Tags: Add, Change, Remove. Do not invent actions, and say what you could not verify on the phone. Still unverified on a phone: the (?m) flag in Match Text, and the name Count gives its output.','When you change anything, reply with (1) the corrected rows in plain text and (2) the updated State JSON below in the same format. If you change the guide data, keep the row order so step ids (p<section>-<row>) still match, or say which ids moved.','');
-  L.push('## User-maintained AI instructions / update notes',aiInstructions.trim()||'(No extra instructions saved yet.)','','');
+ L.push('# Shortcut Builder: handoff file (DoorDash Offer Analyzer v2 and Shift Logging)','Guide version '+VER+' · exported '+new Date().toISOString().slice(0,16).replace('T',' ')+' UTC · '+done+' of '+total+' steps done','');
+ L.push('## For the AI reading this','The user is editing two iOS Shortcuts on their phone, one action at a time: DoorDash_Offer_Analyzer (v2) and Shift_Logging. This file has the remaining edits, which are done, their bookmarks, and the guide data. Help with the open steps. Pill names in {braces} are real variable names. Tags: Add, Change, Remove. Do not invent actions, and say what you could not verify on the phone. Still unverified on a phone: the (?m) flag in Match Text, and the name Count gives its output.','When you change anything, reply with (1) the corrected rows in plain text and (2) the updated State JSON below in the same format. If you change the guide data, keep the row order so step ids (p<section>-<row>) still match, or say which ids moved.','');
+ L.push('## User-maintained AI instructions / update notes',(st.ai||'').trim()||'(No extra instructions saved yet.)','','');
  L.push('## Open steps ('+open.length+')',open.join('\n')||'None','','## Done ('+done+')',fin.join('\n')||'None','','## Bookmarks',bms.join('\n')||'None','');
+ var so=[],sd=[];SS.forEach(function(p,i){p.rows.forEach(function(r,j){var id='q'+i+'-'+j,ln='['+(TG[r[1]]||'Keep')+'] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):'')+'  (section: '+p.t+')';if(st.done[id])sd.push('- [x] '+ln);else so.push('- [ ] '+ln);});});
+ L.push('## Shift Logging shortcut: open steps ('+so.length+')',so.join('\n')||'None','','## Shift Logging shortcut: done ('+sd.length+')',sd.join('\n')||'None','');
  L.push('## State (import this)','```json',JSON.stringify({v:VER,state:st}),'```','');
- L.push('## Guide data: S = sections [indent, tag a/c/r, action, detail], WHOLE = every action in order','```json',JSON.stringify({S:S,WHOLE:WHOLE}),'```');
+ L.push('## Guide data: S = sections [indent, tag a/c/r, action, detail], WHOLE = every action in order','```json',JSON.stringify({S:S,WHOLE:WHOLE,SHIFT:SS}),'```');
  return L.join('\n');
 }
 var hp=document.getElementById('hp');
@@ -322,20 +372,6 @@ function openHandoff(){
  hp.style.display='block';
 }
 function msg(t){document.getElementById('hms').textContent=t;}
-function openInstructions(){
- var p=document.getElementById('ip');
- p.innerHTML='<div style="font-weight:600;margin:0 0 4px">Instructions for ChatGPT / next update</div><div class="note">Keep project-specific instructions, corrections, priorities, or the next changes here. Saved on this device and included in the Handoff file.</div><textarea id="ita" aria-label="AI instructions and update notes" placeholder="Add instructions for the next ChatGPT update…"></textarea><div class="bt"><button id="isv">Save instructions</button><button id="icp">Copy instructions</button></div><div class="note" id="ims" style="margin:6px 0 0"></div>';
- document.getElementById('ita').value=aiInstructions;
- p.style.display='block';
-}
-function instructionMsg(t){var e=document.getElementById('ims');if(e)e.textContent=t;}
-document.getElementById('iob').onclick=function(){var p=document.getElementById('ip');if(p.style.display==='none')openInstructions();else p.style.display='none';};
-document.getElementById('ip').onclick=async function(e){
- var id=e.target.id,ta=document.getElementById('ita');if(!ta)return;
- if(id==='isv'){aiInstructions=ta.value;try{localStorage.setItem(IKEY,aiInstructions);instructionMsg('Saved on this device. It will be included in the Handoff file.');}catch(x){instructionMsg('Updated in this page, but device storage is unavailable. Copy it or include it in Handoff.');}}
- if(id==='icp'){ta.select();try{await navigator.clipboard.writeText(ta.value);instructionMsg('Instructions copied.');}catch(x){try{document.execCommand('copy');instructionMsg('Instructions copied.');}catch(y){instructionMsg('Copy blocked. Long-press the text, Select All, Copy.');}}}
-};
-
 document.getElementById('hob').onclick=function(){if(hp.style.display==='none')openHandoff();else hp.style.display='none';};
 hp.onclick=async function(e){
  var id=e.target.id,ta=document.getElementById('hta');
@@ -353,8 +389,7 @@ hp.onclick=async function(e){
   if(!found||(!found.done&&!found.bm)){msg('No State JSON found in that text.');return;}
   st=norm(found);save();applyAll();
   var im=t.match(/## User-maintained AI instructions \/ update notes\s*([\s\S]*?)(?=\n## |$)/);
-  if(im&&im[1].trim()!=='(No extra instructions saved yet.)'){aiInstructions=im[1].trim();try{localStorage.setItem(IKEY,aiInstructions);}catch(x){}}
-  msg('Applied: '+Object.keys(st.done).length+' steps done, '+st.bm.length+' bookmarks.');
+  if(im&&im[1].trim()&&im[1].trim()!=='(No extra instructions saved yet.)'){st.ai=im[1].trim();save();}msg('Applied: '+Object.keys(st.done).length+' steps done, '+st.bm.length+' bookmarks.');
  }
 };
 function lsOK(){try{localStorage.setItem('ddv2-t','1');return localStorage.getItem('ddv2-t')==='1';}catch(e){return false;}}
@@ -372,13 +407,57 @@ setSync(lsOK()?'Account save not active. Saving on this device only.':'NOT savin
    if(r.t>st.t){st=r;try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}applyAll();}
    else if(st.t>r.t){dbDoc.set({state:JSON.stringify(st)});}
   }else if(st.t){dbDoc.set({state:JSON.stringify(st)});}
-  setSync('Saved to your Claude account and this device');
+  seedOnce();setSync('Saved to your Claude account and this device');
  }catch(e){setSync(lsOK()?'Account save failed. Saving on this device only.':'NOT saving here. Use the Handoff file.');}
 })();
 
+document.getElementById('gS').addEventListener('change',function(e){
+ var c=e.target;if(!c.classList||!c.classList.contains('cb'))return;
+ var id=c.getAttribute('data-id');
+ if(c.checked)st.done[id]=1;else delete st.done[id];
+ save();applyAll();
+});
+document.addEventListener('click',async function(e){
+ var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;if(!cp)return;
+ var id=cp.getAttribute('data-copy-prompt'),ta=document.getElementById(id),mg=document.getElementById('cpmsg-'+id.slice(3));
+ if(!ta)return;ta.focus();ta.select();
+ try{await navigator.clipboard.writeText(ta.value);if(mg)mg.textContent='Prompt copied. Paste it into Describe Change.';}
+ catch(x){try{document.execCommand('copy');if(mg)mg.textContent='Prompt copied. Paste it into Describe Change.';}catch(y){if(mg)mg.textContent='Copy blocked. Long-press the text, Select All, Copy.';}}
+});
+function imsg(t){var e=document.getElementById('ims');if(e)e.textContent=t;}
+function openInstructions(){
+ var q=document.getElementById('ip');
+ q.innerHTML='<div style="font-weight:600;margin:0 0 4px">Instructions for the next AI update</div><div class="note">Keep corrections, priorities, or the next changes here. They save with your progress and go into the Handoff file.</div><textarea id="ita" aria-label="AI instructions and update notes" placeholder="Add instructions for the next update…"></textarea><div class="bt"><button id="isv">Save instructions</button><button id="icp">Copy instructions</button></div><div class="note" id="ims" style="margin:6px 0 0"></div>';
+ document.getElementById('ita').value=st.ai||'';
+ q.style.display='block';
+}
+document.getElementById('iob').onclick=function(){var q=document.getElementById('ip');if(q.style.display==='none')openInstructions();else q.style.display='none';};
+document.getElementById('ip').onclick=async function(e){
+ var id=e.target.id,ta=document.getElementById('ita');if(!ta)return;
+ if(id==='isv'){st.ai=ta.value;save();imsg('Saved. It will be included in the Handoff file.');}
+ if(id==='icp'){ta.select();try{await navigator.clipboard.writeText(ta.value);imsg('Instructions copied.');}catch(x){try{document.execCommand('copy');imsg('Instructions copied.');}catch(y){imsg('Copy blocked. Long-press the text, Select All, Copy.');}}}
+};
+function setMode(m){
+ mode=m;try{localStorage.setItem('ddv2-mode',m);}catch(e){}
+ var an=m!=='s';
+ document.getElementById('hA').style.display=an?'block':'none';
+ document.getElementById('gA').style.display=an?'block':'none';
+ document.getElementById('hS').style.display=an?'none':'block';
+ document.getElementById('gS').style.display=an?'none':'block';
+ document.getElementById('bmb').style.display=an?'':'none';
+ if(!an)document.getElementById('bmp').style.display='none';
+ document.getElementById('mA').className=an?'on':'';
+ document.getElementById('mS').className=an?'':'on';
+ prog();window.scrollTo(0,0);
+}
+document.getElementById('mA').onclick=function(){setMode('a');};
+document.getElementById('mS').onclick=function(){setMode('s');};
+function seedOnce(){if((st.seed||0)>=SEEDV)return;SEED_A.concat(SEED_S).forEach(function(k){st.done[k]=1;});st.seed=SEEDV;save();applyAll();}
 document.getElementById('hdb').onclick=function(){var on=document.body.classList.toggle('hd');this.textContent=on?'Show done':'Hide done';};
 bmCount();
 show(0);
+setMode(mode);
+seedOnce();
 </script>
 </body>
 </html>
