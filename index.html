@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7">
+<title>Shortcut Workshop</title>
+<style>
+:root{color-scheme:light dark;--bg:#f2f2f7;--card:#fff;--tx:#1c1c1e;--muted:#6b6b70;--line:#e3e3e8;--bluebg:#dbeafe;--blue:#1d4ed8;--addbg:#e3f6e8;--add:#2e9e55;--chg-bg:#fff0d9;--chg:#e08a00;--rm-bg:#fde8e8;--rm:#d23b3b;--ok:#eef6ef}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--muted:#a1a1a6;--line:#38383a;--bluebg:#1e3a8a;--blue:#bfdbfe;--addbg:#12301c;--chg-bg:#3a2800;--rm-bg:#3a1616;--ok:#14221a}}
+:root[data-theme=dark]{--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--muted:#a1a1a6;--line:#38383a;--bluebg:#1e3a8a;--blue:#bfdbfe;--addbg:#12301c;--chg-bg:#3a2800;--rm-bg:#3a1616;--ok:#14221a}
+*{box-sizing:border-box}html{scroll-padding-top:100px}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.42 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}main{max-width:600px;margin:auto;padding:12px 12px calc(36px + env(safe-area-inset-bottom))}.hero{padding:15px 15px 17px;border-radius:18px;background:#19191c;color:#fff;margin-bottom:12px}.brand{display:flex;align-items:center;gap:11px}.mark{width:42px;height:42px;border-radius:13px;background:#343439;display:grid;place-items:center;font-size:22px}.hero h1{font-size:21px;font-weight:650;margin:0}.eyebrow{font-size:11px;letter-spacing:.09em;color:#bcbcc4;margin-top:3px}.hero p{font-size:13px;color:#d0d0d6;margin:12px 0 0}.topline{display:flex;align-items:center;justify-content:space-between;margin:10px 3px}.topline h2{font-size:20px;margin:0;font-weight:650}.sub{font-size:13px;color:var(--muted);margin:3px 3px 12px}.nav{display:flex;gap:6px;overflow:auto;position:sticky;top:0;z-index:5;background:var(--bg);padding:7px 0 10px;margin-bottom:7px;scrollbar-width:none}.nav button,.chip,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:999px;padding:8px 12px;white-space:nowrap}.nav button{font-size:13px}.nav button.active{background:var(--tx);color:var(--bg);border-color:var(--tx)}button{cursor:pointer}.box{background:var(--ok);border-radius:13px;padding:11px 13px;margin:0 0 12px;font-size:13px;line-height:1.5}.box p{margin:0 0 5px}.box p:last-child{margin:0}.section-title{font-size:15px;font-weight:650;margin:15px 4px 7px}.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin:8px 4px 12px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}.filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.chip{font-size:12px;padding:6px 11px}.chip.active{background:var(--bluebg);color:var(--blue);border-color:transparent}.task{display:flex;align-items:flex-start;gap:9px;padding:10px 11px;border-radius:12px;background:var(--card);border-left:4px solid var(--line);margin-bottom:7px}.task.add{background:var(--addbg);border-left-color:var(--add)}.task.change{background:var(--chg-bg);border-left-color:var(--chg)}.task.remove{background:var(--rm-bg);border-left-color:var(--rm)}.task.done{opacity:.58}.task input[type=checkbox]{width:19px;height:19px;flex:none;margin:2px 0 0;accent-color:var(--add)}.taskbody{flex:1;min-width:0}.taskname{font-size:14px;font-weight:650;line-height:1.35}.detail{font-size:13px;color:var(--muted);margin-top:4px;white-space:pre-line;overflow-wrap:anywhere}.tag{font-size:10px;font-weight:700;color:#fff;padding:2px 6px;border-radius:5px;margin-left:6px;vertical-align:2px}.add .tag{background:var(--add)}.change .tag{background:var(--chg)}.remove .tag{background:var(--rm)}.bookmark{border:0;background:transparent;color:var(--muted);font-size:21px;line-height:1;padding:0 1px}.pill{display:inline-block;background:var(--bluebg);color:var(--blue);border-radius:6px;padding:1px 5px;font-size:12px}.progress{height:5px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:9px}.progress span{height:100%;display:block;background:var(--add);width:0;transition:width .15s}.summary{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:13px}.summary .grow{flex:1}.summary strong{font-size:14px}.summary small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.summary b{font-size:19px;font-variant-numeric:tabular-nums}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}.card h3{font-size:15px;margin:0 0 5px}.card p{font-size:13px;color:var(--muted);margin:0}.row{display:flex;align-items:center;gap:9px}.row .grow{flex:1}.muted{color:var(--muted)}.btn{font-size:13px}.primary{background:var(--tx);color:var(--bg);border-color:var(--tx)}.field{display:block;margin:12px 0 0}.field label{display:block;font-size:13px;font-weight:600;margin:0 0 5px}.field input,.field textarea,.field select{width:100%;font:inherit;font-size:14px;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px 11px}.field textarea{min-height:105px;resize:vertical}.field input:focus,.field textarea:focus{outline:2px solid var(--blue);outline-offset:1px}.wide{width:100%;margin-top:12px}.small{font-size:12px;color:var(--muted)}.empty{text-align:center;padding:22px 14px}.empty .symbol{font-size:28px;margin-bottom:6px}.hidden{display:none!important}.foot{font-size:12px;color:var(--muted);margin:18px 4px 0;line-height:1.5}.starlist .task{background:var(--card);border:1px solid var(--line)}.notice{border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px;margin-top:10px}
+</style>
+</head>
+<body><main>
+<header class="hero"><div class="brand"><div class="mark">⌘</div><div><h1>Shortcut Workshop</h1><div class="eyebrow">WORK GUIDES · SHORTCUT BUILDER</div></div></div><p>Your shortcuts, organized into clear, actionable steps.</p></header>
+<div class="nav" id="nav" role="navigation" aria-label="Guide pages"><button data-page="analyzer" class="active">Offer Analyzer</button><button data-page="shift">Shift Logger</button><button data-page="add">＋ Add Guide</button><button data-page="bookmarks">★ Bookmarks</button></div>
+<section id="analyzer" class="page">
+<div class="topline"><h2>DoorDash Offer Analyzer v2</h2><button class="btn" id="themeBtn" aria-label="Toggle appearance">◐</button></div>
+<p class="sub">148-action shortcut · Change guide</p>
+<div class="box"><p><b>Guide status:</b> work through the changes below in order and check them off as you complete them.</p><p><b>Phone verification:</b> the Match Text (?m) behavior and exact Count output name still need confirmation in Shortcuts.</p></div>
+<div class="summary"><div class="grow"><strong>Implementation checklist</strong><small id="progressText">0 of 5 preview steps complete</small><div class="progress"><span id="progressBar"></span></div></div><b id="progressPct">0%</b></div>
+<div class="legend"><span><i style="background:var(--add)"></i>Add</span><span><i style="background:var(--chg)"></i>Change</span><span><i style="background:var(--rm)"></i>Remove</span><span><i style="background:var(--card);border:1px solid var(--line)"></i>Unchanged</span></div>
+<div class="filters" id="filters"><button class="chip active" data-filter="All">All</button><button class="chip" data-filter="Add">Add</button><button class="chip" data-filter="Change">Change</button><button class="chip" data-filter="Remove">Remove</button></div>
+<div id="tasks"></div>
+<div class="section-title">Before you call it finished</div>
+<div class="card"><h3>Verify on the iPhone</h3><p>Run the regex and Count checks in Shortcuts, then test the offer verdict and log output with known sample offers. Do not treat untested behavior as confirmed.</p></div>
+</section>
+<section id="shift" class="page hidden">
+<div class="topline"><h2>Shift Logger</h2></div><p class="sub">Separate guide · Independent progress and bookmarks</p>
+<div class="card empty"><div class="symbol">☑</div><h3>No changes requested</h3><p>Keep the current Shift Logger instructions unchanged until verified updates are available.</p></div>
+<div class="section-title">Guide structure</div>
+<div class="card"><div class="row"><span>📖</span><div class="grow"><h3>Instructions and action references</h3><p>Step-by-step notes for the existing shortcut.</p></div></div></div>
+<div class="card"><div class="row"><span>☑</span><div class="grow"><h3>Independent checklist</h3><p>Progress here does not affect Offer Analyzer.</p></div></div></div>
+<div class="card"><div class="row"><span>☆</span><div class="grow"><h3>Independent bookmarks</h3><p>Save important instructions for quick access.</p></div></div></div>
+<div class="notice">The original Shift Logger guide content has not been supplied in this page, so this section intentionally avoids inventing its action-by-action instructions.</div>
+</section>
+<section id="add" class="page hidden">
+<div class="topline"><h2>Add a Shortcut Guide</h2></div><p class="sub">Prepare a guide draft before publishing anything.</p>
+<div class="card"><h3>New guide details</h3><p>Give the guide a name and describe the goal. You can paste existing instructions or list the changes you want.</p>
+<form id="guideForm">
+<div class="field"><label for="guideName">Shortcut name</label><input id="guideName" name="guideName" placeholder="e.g. Mileage Tracker" required></div>
+<div class="field"><label for="guidePurpose">What should it do?</label><input id="guidePurpose" name="guidePurpose" placeholder="Brief purpose of the shortcut"></div>
+<div class="field"><label for="guideInstructions">Instructions or requested changes</label><textarea id="guideInstructions" name="guideInstructions" placeholder="Paste existing instructions, list changes, or describe what needs to be built…"></textarea></div>
+<button class="btn primary wide" type="submit">Prepare guide request</button>
+</form><p class="small" style="margin-top:10px">This stores a local draft request in this browser only. It does not create or modify an iOS Shortcut.</p></div>
+<div id="draftResult" class="card hidden"><h3>Draft request prepared</h3><p id="draftText"></p><button class="btn wide" id="copyDraft">Copy request</button></div>
+</section>
+<section id="bookmarks" class="page hidden"><div class="topline"><h2>Bookmarks</h2></div><p class="sub">Saved steps from each guide, kept separate.</p><div id="bookmarkList" class="starlist"></div><button id="clearProgress" class="btn wide">Clear checklist progress</button><p class="small">Bookmarks and checklist progress save on this device.</p></section>
+<p class="foot">Shortcut Workshop · Review instructions before making changes to your live shortcut. This guide page does not run or install iOS Shortcuts.</p>
+</main>
+<script>
+(function(){
+const KEY='shortcut-workshop-v1';
+const tasks=[
+{id:'rename',type:'Change',name:'Fix tunable variable names',detail:'Correct the names BigItems, BigMile, RampLow and Emergency so later expressions use the intended values.'},
+{id:'rate',type:'Add',name:'Build rolling acceptance rate',detail:'Read Dasher info / offers.txt, match recent data rows, count accepts and calculate the rolling rate.'},
+{id:'tunables',type:'Change',name:'Use the tunable values',detail:'Replace hard-coded MPG, wear, item threshold and emergency-rate values with their named variables.'},
+{id:'cushion',type:'Add',name:'Add delivery-time cushion',detail:'Calculate the minutes left until DeliverBy, subtract estimated trip time and flag LATE RISK when Slack is negative.'},
+{id:'override',type:'Remove',name:'Remove obsolete acceptance override',detail:'Remove the old acceptance-rate override only after the replacement ramp has been tested.'}
+];
+let state={analyzer:{done:[],bookmarks:[]},shift:{done:[],bookmarks:[]},drafts:[]};
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved)state={...state,...saved};}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+let filter='All';
+function renderTasks(){
+const root=document.getElementById('tasks');root.innerHTML='';
+tasks.filter(t=>filter==='All'||t.type===filter).forEach(t=>{
+const done=state.analyzer.done.includes(t.id),bookmarked=state.analyzer.bookmarks.includes(t.id);
+const el=document.createElement('article');el.className='task '+t.type.toLowerCase()+(done?' done':'');
+el.innerHTML='<input type="checkbox" aria-label="Mark complete" '+(done?'checked':'')+'><div class="taskbody"><div class="taskname">'+esc(t.name)+' <span class="tag">'+esc(t.type)+'</span></div><div class="detail">'+esc(t.detail)+'</div></div><button class="bookmark" aria-label="Toggle bookmark">'+(bookmarked?'★':'☆')+'</button>';
+el.querySelector('input').addEventListener('change',e=>{state.analyzer.done= e.target.checked?[...new Set([...state.analyzer.done,t.id])]:state.analyzer.done.filter(x=>x!==t.id);save();renderTasks();renderProgress();});
+el.querySelector('.bookmark').addEventListener('click',()=>{state.analyzer.bookmarks=bookmarked?state.analyzer.bookmarks.filter(x=>x!==t.id):[...state.analyzer.bookmarks,t.id];save();renderTasks();renderBookmarks();});
+root.appendChild(el);
+});
+renderProgress();
+}
+function renderProgress(){const n=state.analyzer.done.length,p=Math.round(n/tasks.length*100);document.getElementById('progressText').textContent=n+' of '+tasks.length+' preview steps complete';document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressPct').textContent=p+'%';}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==id));document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='bookmarks')renderBookmarks();window.scrollTo({top:0,behavior:'smooth'});}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b)showPage(b.dataset.page);});
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('button[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('active',x===b));renderTasks();});
+function renderBookmarks(){const root=document.getElementById('bookmarkList');root.innerHTML='';const rows=tasks.filter(t=>state.analyzer.bookmarks.includes(t.id));if(!rows.length){root.innerHTML='<div class="card empty"><div class="symbol">☆</div><h3>No bookmarks yet</h3><p>Tap a star on an Offer Analyzer step to save it here.</p></div>';return;}rows.forEach(t=>{const el=document.createElement('div');el.className='task '+t.type.toLowerCase();el.innerHTML='<div class="taskbody"><div class="taskname">'+esc(t.name)+'</div><div class="detail">'+esc(t.detail)+'</div></div><button class="btn">Open</button>';el.querySelector('button').onclick=()=>{showPage('analyzer');filter='All';document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('active',x.dataset.filter==='All'));renderTasks();const box=[...document.querySelectorAll('#tasks .task')].find(x=>x.querySelector('.taskname').textContent.includes(t.name));if(box)box.scrollIntoView({behavior:'smooth',block:'center'});};root.appendChild(el);});}
+document.getElementById('guideForm').addEventListener('submit',e=>{e.preventDefault();const draft={name:document.getElementById('guideName').value.trim(),purpose:document.getElementById('guidePurpose').value.trim(),instructions:document.getElementById('guideInstructions').value.trim(),created:new Date().toISOString()};state.drafts=[draft,...state.drafts].slice(0,20);save();const text='Shortcut guide request: '+draft.name+'\nPurpose: '+(draft.purpose||'(not specified)')+'\nInstructions / requested changes:\n'+(draft.instructions||'(not provided yet)')+'\n\nPlease draft a guide in the Shortcut Workshop style for review. Do not change the live shortcut or publish without approval.';document.getElementById('draftText').textContent=text;document.getElementById('draftResult').classList.remove('hidden');});
+document.getElementById('copyDraft').addEventListener('click',async()=>{const text=document.getElementById('draftText').textContent;try{await navigator.clipboard.writeText(text);document.getElementById('copyDraft').textContent='Copied';}catch(e){const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();document.getElementById('copyDraft').textContent='Copied';}});
+document.getElementById('clearProgress').addEventListener('click',()=>{if(confirm('Clear Offer Analyzer checklist progress? Bookmarks will stay.')){state.analyzer.done=[];save();renderTasks();}});
+document.getElementById('themeBtn').addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';});
+renderTasks();
+})();
+</script></body></html>
