@@ -195,10 +195,10 @@ function describePrompt(title,items){
  var lines=[];
  items.forEach(function(r){
   if(!r||!['a','c','r'].includes(r[1])||r[2]==='End If'||r[2]==='Otherwise')return;
-  lines.push('- '+(TG[r[1]]||'Change')+': '+r[2]+(r[3]?' — '+r[3].replace(/\\n/g,' / '):''));
+  lines.push('- '+(TG[r[1]]||'Change')+': '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));
  });
  if(!lines.length)lines.push('- Review the current page and make only the changes explicitly described here.');
- return 'Update my existing iOS Shortcut, DoorDash_Offer_Analyzer (v2), according to the following change instructions for "'+title+'".\\n\\n'+lines.join('\\n')+'\\n\\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
+ return 'Update my existing iOS Shortcut, DoorDash_Offer_Analyzer (v2), according to the following change instructions for "'+title+'".\n\n'+lines.join('\n')+'\n\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
 }
 function promptPanel(title,items,key){
  var p=describePrompt(title,items);
