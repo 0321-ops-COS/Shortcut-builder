@@ -1,0 +1,18 @@
+{
+  "name": "Shortcut Builder",
+  "short_name": "Shortcut Builder",
+  "description": "Action-by-action checklist for DoorDash Offer Analyzer and Shift Logging shortcuts.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f2f7",
+  "theme_color": "#1d4ed8",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
