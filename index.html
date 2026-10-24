@@ -318,7 +318,7 @@ hp.onclick=async function(e){
   if(!found){try{var o2=JSON.parse(t);found=o2.state||o2;}catch(x){}}
   if(!found||(!found.done&&!found.bm)){msg('No State JSON found in that text.');return;}
   st=norm(found);save();applyAll();
-  var im=t.match(/## User-maintained AI instructions \/ update notes\\s*([\\s\\S]*?)(?=\\n## |$)/);
+  var im=t.match(/## User-maintained AI instructions \/ update notes\s*([\s\S]*?)(?=\n## |$)/);
   if(im&&im[1].trim()!=='(No extra instructions saved yet.)'){aiInstructions=im[1].trim();try{localStorage.setItem(IKEY,aiInstructions);}catch(x){}}
   msg('Applied: '+Object.keys(st.done).length+' steps done, '+st.bm.length+' bookmarks.');
  }
