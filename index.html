@@ -60,6 +60,13 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 #ip textarea{width:100%;min-height:180px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
 #ip .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
 #ip .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+.cpbox{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin:16px 0 4px}
+.cpbox .cpt{font-size:15px;font-weight:600;margin:0 0 4px}
+.cpbox .cpnote{font-size:13px;color:var(--tx2);margin:0 0 8px}
+.cpbox textarea{width:100%;min-height:170px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
+.cpbox .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.cpbox .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+
 
 .hd .rw.dn{display:none}
 .bmbar{display:flex;flex-wrap:wrap;gap:6px}
@@ -184,6 +191,19 @@ function row(id,tab,ind,s,name,det,x){
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
  return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+'</div><button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button></div>';
 }
+function describePrompt(title,items){
+ var lines=[];
+ items.forEach(function(r){
+  if(!r||!['a','c','r'].includes(r[1])||r[2]==='End If'||r[2]==='Otherwise')return;
+  lines.push('- '+(TG[r[1]]||'Change')+': '+r[2]+(r[3]?' — '+r[3].replace(/\\n/g,' / '):''));
+ });
+ if(!lines.length)lines.push('- Review the current page and make only the changes explicitly described here.');
+ return 'Update my existing iOS Shortcut, DoorDash_Offer_Analyzer (v2), according to the following change instructions for "'+title+'".\\n\\n'+lines.join('\\n')+'\\n\\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
+}
+function promptPanel(title,items,key){
+ var p=describePrompt(title,items);
+ return '<div class="cpbox"><div class="cpt">Describe Change prompt</div><div class="cpnote">Generated for this page. Copy it into Shortcuts’ “Describe Change” field, then review the proposed edits before applying them.</div><textarea readonly id="cp-'+key+'" aria-label="Generated Describe Change prompt">'+esc(p)+'</textarea><div class="bt"><button type="button" data-copy-prompt="cp-'+key+'">Copy prompt</button></div><div class="cpnote" id="cpmsg-'+key+'" aria-live="polite"></div></div>';
+}
 function addTab(label,html){
  var i=TL.length;TL.push(label);
  var d=document.createElement('div');d.innerHTML=html;out.appendChild(d);tabEls.push(d);
@@ -192,10 +212,12 @@ function addTab(label,html){
 S.forEach(function(p,i){
  var h='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
  p.rows.forEach(function(r,j){h+=row('s'+i+'-'+j,i,r[0]-1,r[1],r[2],r[3],(r[2]==='End If'||r[2]==='Otherwise')?{}:{cb:1,dk:'p'+i+'-'+j});});
+ h+=promptPanel(p.t,p.rows,'section-'+i);
  addTab(p.t.charAt(0),h);
 });
 var wh='<div class="ph">Whole shortcut with every edit</div><div class="pm">Every action in order, 148 now plus the additions. Uncolored rows are unchanged.</div>';
 WHOLE.forEach(function(r,k){wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3]);});
+wh+=promptPanel('Whole shortcut',WHOLE,'whole');
 addTab('Whole',wh);
 var ph='<div class="ph">Action plan</div><div class="pm">Do these in order, top to bottom. Tap a box when a step is done. Adding an If also adds its Otherwise and End If for you, so those are not listed.</div><div class="note" id="prog"></div>',n=0,ids=[];
 S.forEach(function(p,i){
@@ -206,6 +228,9 @@ S.forEach(function(p,i){
   ph+=row(id,S.length+1,0,r[1],r[2],r[3],{cb:1,num:n});
  });
 });
+var planRows=[];
+S.forEach(function(p){p.rows.forEach(function(r){if(['a','c','r'].includes(r[1])&&r[2]!=='End If'&&r[2]!=='Otherwise')planRows.push([r[0],r[1],r[2],(r[3]?'['+p.t+'] '+r[3]:'['+p.t+']')]);});});
+ph+=promptPanel('Action plan',planRows,'plan');
 addTab('Plan',ph);
 function prog(){var c=0;ids.forEach(function(k){if(st.done[k])c++;});var p=ids.length?Math.round(c/ids.length*100):0;
  document.getElementById('prog').textContent=c+' of '+ids.length+' steps done';
@@ -247,7 +272,16 @@ document.getElementById('bmp').onclick=function(e){
   st={bm:[],done:{},t:0};save();applyAll();
  }
 };
-out.addEventListener('click',function(e){
+out.addEventListener('click',async function(e){
+ var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;
+ if(cp){
+  var id=cp.getAttribute('data-copy-prompt'),ta=document.getElementById(id),msg=document.getElementById('cpmsg-'+id.slice(3));
+  if(!ta)return;
+  ta.focus();ta.select();
+  try{await navigator.clipboard.writeText(ta.value);if(msg)msg.textContent='Prompt copied. Paste it into Describe Change.';}
+  catch(x){try{document.execCommand('copy');if(msg)msg.textContent='Prompt copied. Paste it into Describe Change.';}catch(y){if(msg)msg.textContent='Copy blocked. Long-press the text, Select All, Copy.';}}
+  return;
+ }
  var b=e.target.closest?e.target.closest('.bk'):null;if(!b)return;
  var id=b.getAttribute('data-id'),i=st.bm.indexOf(id);
  if(i>-1){st.bm.splice(i,1);b.textContent='☆';}else{st.bm.push(id);b.textContent='★';}
