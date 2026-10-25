@@ -209,7 +209,8 @@ sec('6 · Part F: output, choice and log','The summary Text, the menu and the lo
 [1,'c','Choose from Menu','Add a third item: Expired.'],
 [2,'c','Accepted: Set Variable Accept','Rename the variable to Choice. The Text above it stays Accept.'],
 [2,'c','Rejected: Set Variable Reject','Rename the variable to Choice. The Text above it stays Reject.'],
-[2,'a','Expired','Text Expire, then Set Variable {Choice}'],
+[2,'a','Text','Expire'],
+[2,'a','Set Variable','Input = Text result pill; variable name = Choice.'],
 [1,'r','If {Menu Result} is empty','The block with Text Expired. It can never run.'],
 [1,'r','Set Variable Choice from {Menu Result}','It would log Accepted, which the Part C Accept pattern does not count.'],
 [1,'c','Text (log row)','| {Formatted Date}| {Payout} | {Miles} | {Items} |{PerMileFmt} | {NetFmt}| {HourlyFmt} | {Verdict} | {AcceptanceRate}  |  {Choice} | {Slack} |\nAdds the Slack column at the end.']]);
@@ -333,12 +334,14 @@ var SS=[];
 function ssec(t,w,rows){SS.push({t:t,w:w,rows:rows});}
 ssec('Already working','Checked against the 23 actions in Shift_Logging. Nothing to change here.',[
 [1,'','Date, then Format Date','Custom yyyy-MM-dd HH:mm.'],
-[1,'','Ask for Input, then Set Variable','What’s the current mileage?  →  {Mileage}. Its input type is fixed in the next section.'],
+[1,'','Ask for Input','Prompt: What’s the current mileage? Use the input type specified in the next section.'],
+[1,'','Set Variable','Input = {Provided Input} pill; variable name = Mileage.'],
 [1,'','Choose from Menu: Start or End','Sets {Start} or {End}. The menu result also goes to {St/Ed}.'],
 [1,'','Get File, then Get Text from Input','Dasher info / shifts.txt, Error If Not Found off.'],
 [1,'','Split Text, then Get Item from List','New Lines, Last Item. The last line of the file is the previous odometer reading.'],
 [1,'','Calculate','{Mileage} minus the last reading  →  {Shift Milage}.'],
-[1,'','Ask for Input, then Set Variable','What zone is it?  →  {Zone}.'],
+[1,'','Ask for Input','Prompt: What zone is it?'],
+[1,'','Set Variable','Input = {Provided Input} pill; variable name = Zone.'],
 [1,'','Append to File','shifts.txt, Append on New Line on. The odometer is the last line of each entry, which the next run reads.']]);
 ssec('Fix before the next shift','Three edits and one file step.',[
 [1,'r','Show Result','The popup right after Get Item from List. It is a leftover test and stops the shortcut until you tap Done. Delete it.'],
