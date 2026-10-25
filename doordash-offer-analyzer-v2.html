@@ -36,7 +36,7 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 .all .pm,.all .ph{display:none}
 .foot{font-size:12.5px;color:var(--tx2);margin:14px 4px 0}
 
-.rw.if-child:before,.rw.if-otherwise:before,.rw.if-end:before{content:'';position:absolute;left:4px;top:-7px;height:17px;border-left:2px solid var(--pillx);opacity:.5;pointer-events:none}.rw.if-child:before{left:-10px}.rw.if-end:after{content:'';position:absolute;left:4px;top:10px;width:9px;border-top:2px solid var(--pillx);opacity:.5}.rw.if-start .nt:before{content:'IF ';font-size:10px;letter-spacing:.04em;color:var(--pillx);font-weight:700}.rw.if-otherwise .nt:before{content:'OTHERWISE ';font-size:10px;color:var(--pillx);font-weight:700}.rw.if-end .nt:before{content:'END IF ';font-size:10px;color:var(--pillx);font-weight:700}
+.rw.if-child:before,.rw.if-otherwise:before,.rw.if-end:before{content:'';position:absolute;left:4px;top:-7px;height:17px;border-left:2px solid var(--pillx);opacity:.5;pointer-events:none}.rw.if-child:before{left:-10px;height:calc(100% + 13px)}.rw.if-end:after{content:'';position:absolute;left:4px;top:10px;width:9px;border-top:2px solid var(--pillx);opacity:.5}.rw.if-start .nt:before{content:'IF ';font-size:10px;letter-spacing:.04em;color:var(--pillx);font-weight:700}.rw.if-otherwise .nt:before{content:'OTHERWISE ';font-size:10px;color:var(--pillx);font-weight:700}.rw.if-end .nt:before{content:'END IF ';font-size:10px;color:var(--pillx);font-weight:700}
 .rw{position:relative;display:flex;align-items:flex-start;gap:8px}
 .rb{flex:1;min-width:0}
 .bk{font:inherit;font-size:19px;line-height:1;border:none;background:none;color:var(--tx2);padding:2px 4px;margin:-2px -4px 0 0}
@@ -237,7 +237,7 @@ p.rows.forEach(function(r,j){var flow=ifFlow(p.rows,j);h+=row('s'+i+'-'+j,i,r[0]
  addTab(p.t.charAt(0),h);
 });
 var wh='<div class="ph">Whole shortcut with every edit</div><div class="pm">Every action in order, 148 now plus the additions. Uncolored rows are unchanged.</div>';
-WHOLE.forEach(function(r,k){wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3]);});
+WHOLE.forEach(function(r,k){var flow=ifFlow(WHOLE,k);wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3],{flow:flow});});
 addTab('Whole',wh);
 var ph='<div class="ph">Action plan</div><div class="pm">Do these in order, top to bottom. Tap a box when a step is done. Adding an If also adds its Otherwise and End If for you, so those are not listed.</div><div class="note" id="prog"></div>',n=0,ids=[];
 S.forEach(function(p,i){
