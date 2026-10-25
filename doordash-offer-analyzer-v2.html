@@ -204,9 +204,6 @@ function addTab(label,html){
  var d=document.createElement('div');d.innerHTML=html;out.appendChild(d);tabEls.push(d);
  var b=document.createElement('button');b.textContent=label;b.onclick=function(){show(i);};nav.appendChild(b);
 }
-S.forEach(function(p,i){
- var h='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
- 
 function ifFlow(rows,j){
  var stack=[], classes=[], r;
  for(var k=0;k<=j;k++){
@@ -233,6 +230,9 @@ function ifFlow(rows,j){
  }
  return classes.join(' ');
 }
+S.forEach(function(p,i){
+ var h='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
+ 
 p.rows.forEach(function(r,j){var flow=ifFlow(p.rows,j);h+=row('s'+i+'-'+j,i,r[0]-1,r[1],r[2],r[3],(r[2]==='End If'||r[2]==='Otherwise')?{flow:flow}:{cb:1,dk:'p'+i+'-'+j,flow:flow});});
  addTab(p.t.charAt(0),h);
 });
