@@ -223,25 +223,35 @@ function stepPresentation(name,det){
  else if((m=n.match(/^(Count|Calculate Expression|Number|Text), then Set Variable$/)))n=m[1];
  return {name:n,detail:d};
 }
-function needsCopy(det){
- if(!det)return false;
- return /\\n|\\\\|\{[^}]+\}|(?:pattern|replace|type|enter|write|paste|seed|one line|text \(|log row|summary|regular expression|custom separator|custom hh|custom mm|describe change|prompt:|becomes the|change the typed|value becomes|should read|find |reply with exactly)/i.test(String(det));
-}
-function copyPayload(det,name){
- var s=String(det||'');
- var nm=String(name||'');
- var nv=s.match(/^Enter ([-+]?\d+(?:\.\d+)?)\. Then Set Variable /i);
- if(nm==='Number'&&nv)return nv[1].trim();
- var m=s.match(/It should read ([\s\S]+?) and the output stays\b/i);
- if(m)return m[1].trim();
- return s;
+function copyInfo(s,name,det){
+ // Returns {label,text} only when there is something to paste into Shortcuts: an equation,
+ // a regex pattern, or literal text. Steps that only adjust or rename return null (no button).
+ var d=String(det||''),m,t;
+ if(s==='r'||s==='m')return null;
+ if(name==='Calculate Expression'){
+  if(s==='c')return null;
+  t=d.replace(/^Output variable: \S+\.\s*/,'').split('\n')[0].replace(/\s+→.*$/,'').trim();
+  return /[-+*\/]/.test(t)&&!/\s{2,}|[a-z]{4,}\s[a-z]{3,}/i.test(t)?{label:'Copy equation',text:t}:null;
+ }
+ if(name==='Match Text'){
+  if((m=d.match(/It should read ([\s\S]+?) and the output stays\b/i)))return {label:'Copy pattern',text:m[1].trim()};
+  if(s==='a'&&(m=d.match(/^(.+?) in \{[^}]+\}(?: ·.*)?$/)))return {label:'Copy pattern',text:m[1].trim()};
+  return null;
+ }
+ if(name==='Text'){
+  t=d.replace(/^(?:Summary|Log-row) text to enter: /,'').replace(/\s+→\s+\{[^}]+\}$/,'');
+  if(!t||t==='-'||t==='(empty)'||/^\{[^}]+\}$/.test(t))return null;
+  return {label:'Copy text',text:t};
+ }
+ return null;
 }
 function row(id,tab,ind,s,name,det,x){
  x=x||{};
  if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
   var p=stepPresentation(name,det),shownName=p.name,shownDet=p.detail;
- var copy=shownName!=='If'&&needsCopy(shownDet)?'<button type="button" class="stepcopy" data-copy-step="'+id+'">Copy text</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(copyPayload(shownDet,shownName))+'</textarea>':'';
+ var ci=copyInfo(s,shownName,shownDet);
+ var copy=ci?'<button type="button" class="stepcopy" data-copy-step="'+id+'" data-label="'+ci.label+'">'+ci.label+'</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(ci.text)+'</textarea>':'';
  return '<div class="rw '+s+(x.flow?' '+x.flow:'')+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(shownName)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(shownDet?'<div class="dt">'+pills(shownDet)+'</div>':'')+copy+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
 }
 var PP=[];
@@ -512,7 +522,7 @@ document.addEventListener('click',async function(e){
   var value=source.value;
   try{await navigator.clipboard.writeText(value);step.textContent='Copied';}
   catch(x){source.focus();source.select();try{var ok=document.execCommand('copy');step.textContent=ok?'Copied':'Select and copy';}catch(y){step.textContent='Select and copy';}}
-  setTimeout(function(){step.textContent='Copy text';},1800);
+  setTimeout(function(){step.textContent=step.getAttribute('data-label')||'Copy text';},1800);
   return;
  }
  var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;if(!cp)return;
