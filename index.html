@@ -203,12 +203,32 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function pills(s){return esc(s).replace(/\{([A-Za-z][A-Za-z’ ]*)\}/g,'<span class="pl">$1</span>');}
 var TG={a:'Add',c:'Change',r:'Remove'};
 var out=document.getElementById('out'),nav=document.getElementById('nav'),TL=[],tabEls=[];
+function stepPresentation(name,det){
+ var n=String(name||''),d=String(det||''),m;
+ if(n==='Match Text (fix the pattern)')n='Match Text';
+ else if(n==='Calculate Expression (CarCost)'){n='Calculate Expression';d='Output variable: CarCost. '+d;}
+ else if(n==='Text (summary)'){n='Text';d='Summary text to enter: '+d;}
+ else if(n==='Text (log row)'){n='Text';d='Log-row text to enter: '+d;}
+ else if(n==='Format Number (Net, PerMile, Hourly)'){n='Format Number';d='Applies to Net, PerMile, and Hourly. '+d;}
+ else if((m=n.match(/^Set Variable \((.+)\)$/))){n='Set Variable';d=m[1]+'. '+d;}
+ else if((m=n.match(/^If \(All\):\s*(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
+ else if((m=n.match(/^If\s+(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
+ else if((m=n.match(/^Number ([^,]+), Set Variable (.+)$/))){n='Number';d='Enter '+m[1]+'. Then Set Variable '+m[2]+'. '+d;}
+ else if((m=n.match(/^(Accepted|Rejected): Set Variable(?: (.+))?$/))){n='Set Variable';d='In the '+m[1]+' menu branch'+(m[2]?' (current variable: '+m[2]+')':'')+'. '+d;}
+ else if((m=n.match(/^(Get Item from List) \((.+?)\)(.*)$/))){n=m[1];d='List setting: '+m[2]+m[3]+'. '+d;}
+ else if((m=n.match(/^(Get Item from List) (above|after) (.+)$/))){n=m[1];d='Position: '+m[2]+' '+m[3]+'. '+d;}
+ else if((m=n.match(/^(Count|Calculate Expression|Number|Text), then Set Variable$/)))n=m[1];
+ return {name:n,detail:d};
+}
 function needsCopy(det){
  if(!det)return false;
  return /\\n|\\\\|\{[^}]+\}|(?:pattern|replace|type|enter|write|paste|seed|one line|text \(|log row|summary|regular expression|custom separator|custom hh|custom mm|describe change|prompt:|becomes the|change the typed|value becomes|should read|find |reply with exactly)/i.test(String(det));
 }
-function copyPayload(det){
+function copyPayload(det,name){
  var s=String(det||'');
+ var nm=String(name||'');
+ var nv=s.match(/^Enter ([^.]+)\. Then Set Variable /i);
+ if(nm==='Number'&&nv)return nv[1].trim();
  var m=s.match(/It should read ([\s\S]+?) and the output stays\b/i);
  if(m)return m[1].trim();
  return s;
@@ -217,8 +237,9 @@ function row(id,tab,ind,s,name,det,x){
  x=x||{};
  if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
- var copy=needsCopy(det)?'<button type="button" class="stepcopy" data-copy-step="'+id+'">Copy text</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(copyPayload(det))+'</textarea>':'';
- return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+copy+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
+  var p=stepPresentation(name,det),shownName=p.name,shownDet=p.detail;
+ var copy=shownName!=='If'&&needsCopy(shownDet)?'<button type="button" class="stepcopy" data-copy-step="'+id+'">Copy text</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(copyPayload(shownDet,shownName))+'</textarea>':'';
+ return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(shownName)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(shownDet?'<div class="dt">'+pills(shownDet)+'</div>':'')+copy+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
 }
 var PP=[];
 function buildPrompt(pp){
@@ -226,7 +247,8 @@ function buildPrompt(pp){
  pp.items.forEach(function(r,j){
   if(!r||['a','c','r'].indexOf(r[1])<0||r[2]==='End If'||r[2]==='Otherwise'||r[4]==='nop')return;
   if(pp.done&&pp.done(r,j))return;
-  lines.push('- '+(TG[r[1]]||'Change')+': '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));
+  var p=stepPresentation(r[2],r[3]);
+   lines.push('- '+(TG[r[1]]||'Change')+': '+p.name+(p.detail?' — '+p.detail.replace(/\n/g,' / '):''));
  });
  if(!lines.length)return 'Every step listed for "'+pp.title+'" is marked done. There is nothing to change.';
  return 'Update my existing iOS Shortcut, '+pp.sc+', according to the following change instructions for "'+pp.title+'".\n\n'+lines.join('\n')+'\n\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
