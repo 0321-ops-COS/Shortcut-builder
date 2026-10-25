@@ -172,11 +172,29 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function pills(s){return esc(s).replace(/\{([A-Za-z][A-Za-z’ ]*)\}/g,'<span class="pl">$1</span>');}
 var TG={a:'Add',c:'Change',r:'Remove'};
 var out=document.getElementById('out'),nav=document.getElementById('nav'),TL=[],tabEls=[];
+function stepPresentation(name,det){
+ var n=String(name||''),d=String(det||''),m;
+ if(n==='Match Text (fix the pattern)')n='Match Text';
+ else if(n==='Calculate Expression (CarCost)'){n='Calculate Expression';d='Output variable: CarCost. '+d;}
+ else if(n==='Text (summary)'){n='Text';d='Summary text to enter: '+d;}
+ else if(n==='Text (log row)'){n='Text';d='Log-row text to enter: '+d;}
+ else if(n==='Format Number (Net, PerMile, Hourly)'){n='Format Number';d='Applies to Net, PerMile, and Hourly. '+d;}
+ else if((m=n.match(/^Set Variable \((.+)\)$/))){n='Set Variable';d=m[1]+'. '+d;}
+ else if((m=n.match(/^If \(All\):\s*(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
+ else if((m=n.match(/^If\s+(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
+ else if((m=n.match(/^Number ([^,]+), Set Variable (.+)$/))){n='Number';d='Enter '+m[1]+'. Then Set Variable '+m[2]+'. '+d;}
+ else if((m=n.match(/^(Accepted|Rejected): Set Variable(?: (.+))?$/))){n='Set Variable';d='In the '+m[1]+' menu branch'+(m[2]?' (current variable: '+m[2]+')':'')+'. '+d;}
+ else if((m=n.match(/^(Get Item from List) \((.+?)\)(.*)$/))){n=m[1];d='List setting: '+m[2]+m[3]+'. '+d;}
+ else if((m=n.match(/^(Get Item from List) (above|after) (.+)$/))){n=m[1];d='Position: '+m[2]+' '+m[3]+'. '+d;}
+ else if((m=n.match(/^(Count|Calculate Expression|Number|Text), then Set Variable$/)))n=m[1];
+ return {name:n,detail:d};
+}
 function row(id,tab,ind,s,name,det,x){
  x=x||{};
  if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
- return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+'</div><button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button></div>';
+ var p=stepPresentation(name,det);
+ return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(p.name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(p.detail?'<div class="dt">'+pills(p.detail)+'</div>':'')+'</div><button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button></div>';
 }
 function addTab(label,html){
  var i=TL.length;TL.push(label);
