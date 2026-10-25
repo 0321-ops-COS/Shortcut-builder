@@ -9,7 +9,7 @@
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>DoorDash Offer Analyzer v2: what's left</title>
+<title>Shortcut Builder — Original Build</title>
 <style>
 :root{--bg:#f2f2f7;--card:#fff;--tx:#1c1c1e;--tx2:#6b6b70;--ln:#e3e3e8;--pill:#dbeafe;--pillx:#1d4ed8;--addbg:#e3f6e8;--addbar:#2e9e55;--chgbg:#fff0d9;--chgbar:#e08a00;--rmbg:#fde8e8;--rmbar:#d23b3b;--okbg:#eef6ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--tx2:#a1a1a6;--ln:#38383a;--pill:#1e3a8a;--pillx:#bfdbfe;--addbg:#12301c;--chgbg:#3a2800;--rmbg:#3a1616;--okbg:#14221a}}
@@ -78,18 +78,20 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 .swt button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
 .bmbar{display:flex;flex-wrap:wrap;gap:6px}
 .note{font-size:13px;color:var(--tx2);margin:0 4px 8px}
+.analyzer-notice{margin-top:10px}
+.analyzer-notice a{color:inherit;font-weight:600}
+#bmb,#iob,#hob,#hdb{display:none}
 </style>
 </head>
 <body>
 <main>
 <div id="hA">
-<h1>DoorDash Offer Analyzer v2: what's left</h1>
-<p class="sub">Updated for Think Version 2 using the Oct 25 uploaded export (209 actions). Pill names below distinguish source inputs from destination variable names. Progress, checkmarks and bookmarks save automatically; the status line below says where.</p>
+<h1>Shortcut Builder — Original Build</h1>
+<p class="sub">The original steps have been cleaned up so completed actions are no longer presented as work to do.</p>
 <div class="box">
-<p><b>Think Version 2 · last known build:</b> checked against the uploaded Apple-signed shortcut export with 209 actions. This page is a checklist; it does not edit or run the shortcut automatically.</p>
-<p><b>Critical fixes:</b> initialize MileBase/HourBase from BaseMile/BaseHour on every offer; clamp T and write each clamp result back to T; point TAKE IT and RH/RM summary lines at ReqMile/ReqHour; remove the duplicate DataRows overwrite; and correct DeliverBy, MinsLeft, LATE RISK, and menu logging.</p>
-<p><b>Variable rule:</b> a Set Variable action has an input value/pill and a destination variable name. Example: input = {BaseMile}; destination name = MileBase. Those names are intentionally different.</p>
-<p><b>Not phone-verified:</b> test (?m) in Match Text, Count output naming, and the verdict comparisons on your iPhone.</p>
+<p><b>Completed actions have been removed from the old checklist.</b> The remaining fixes now live on a separate page.</p>
+<p><b>Open the new edits page:</b> <a href="edits.html">DoorDash Offer Analyzer v2 — Remaining Edits</a>.</p>
+<p>The new page includes only known outstanding work from the Oct 25 uploaded export (209 actions), plus the phone checks that have not yet been verified.</p>
 </div>
 <div id="hS" style="display:none">
 <h1>Shift Logging: fixes and setup</h1>
@@ -104,9 +106,13 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 <div class="stick"><div class="swt"><button id="mA" class="on">DoorDash Analyzer</button><button id="mS">Shift Log</button></div><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="pt"></div>
 <div class="bmbar"><button id="bmb">★ Bookmarks (0)</button><button id="iob">✎ AI instructions</button><button id="hob">⇄ Handoff file</button><button id="hdb">Hide done</button></div></div>
 <div id="bmp" style="display:none"></div><div id="ip" style="display:none"></div><div id="hp" style="display:none"></div>
-<div id="gA"><div class="nav" id="nav"></div>
-<div id="out"></div>
-<p class="foot">Not yet confirmed on a phone: (?m) in Match Text, Count output naming, and the verdict comparisons.</p></div>
+<div id="gA">
+<div class="box analyzer-notice">
+<p><b>Remaining edits moved.</b> Do not use the old action checklist here; it included tasks already completed in the original shortcut.</p>
+<p><a href="edits.html"><b>Open the remaining edits page →</b></a></p>
+</div>
+<div class="nav" id="nav" style="display:none"></div><div id="out" style="display:none"></div>
+</div>
 <div id="gS" style="display:none"></div>
 </main>
 <script>
