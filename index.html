@@ -146,11 +146,11 @@ sec('3 · Part C: rolling acceptance rate','Under Set Variable DeliverBy, above 
 [1,'r','Duplicate DataRows group','Right after the first Set Variable DataRows there is a second group: Get Text from Input of {OfferText}, a Match Text whose pattern starts with a space, and another Set Variable DataRows. Delete all three. They overwrite the good DataRows with nothing, so {RowCount} is 0 and the rate always shows 89.']]);
 sec('4 · Part D: use the tunables, add the ramp','From Calculate Expression CarCost down to the If (All) TAKE IT test.',[
 [1,'c','Calculate Expression (CarCost)','{Miles}*({GasPrice}/{MPG}+{Wear})\nReplace the typed 17.5 with {MPG} and 0.12 with {Wear}.'],
-[1,'c','Set Variable ReqMile → MileBase','Set Variable {BaseMile} → {MileBase} (was {ReqMile}). This creates {MileBase} before the ramp expression. Keep the expression using {MileBase}, not {BaseMile}.'],
-[1,'c','Set Variable ReqHour → HourBase','Set Variable {BaseHour} → {HourBase} (was {ReqHour}). This creates {HourBase} before the ramp expression. Keep the expression using {HourBase}, not {BaseHour}.'],
+[1,'c','CREATE/RENAME: Set Variable → MileBase','Before the ramp, ensure a Set Variable action has input {BaseMile} and variable name MileBase. If the existing action takes Number 1.5 directly, change its input to the {BaseMile} variable. If no action exists, add Set Variable with input {BaseMile} and name it MileBase.'],
+[1,'c','CREATE/RENAME: Set Variable → HourBase','Before the ramp, ensure a Set Variable action has input {BaseHour} and variable name HourBase. If the existing action takes Number 18 directly, change its input to the {BaseHour} variable. If no action exists, add Set Variable with input {BaseHour} and name it HourBase.'],
 [1,'c','If {ItemsNum} is greater than 3','Change the 3 to {BigItems}.'],
-[2,'c','Number 2, Set Variable ReqMile','Rename to MileBase. Value becomes {BigMile}.'],
-[2,'c','Number 20, Set Variable ReqHour','Rename to HourBase. Value becomes {BigHour}.'],
+[2,'c','Set Variable → MileBase (large order)','Inside If {ItemsNum} is greater than {BigItems}, set input = {BigMile} and variable name = MileBase. This overwrites the base for large orders.'],
+[2,'c','Set Variable → HourBase (large order)','Inside the same If, set input = {BigHour} and variable name = HourBase. This overwrites the base for large orders.'],
 [1,'','End If',''],
 [1,'r','If {AcceptanceRate} is less than 90','The whole block, including ReqMile-0.25 and ReqHour-3. Replace it with the ramp below.'],
 [1,'a','Calculate Expression, then Set Variable','({RampTop}-{AcceptanceRate})/({RampTop}-{RampLow})  →  {T}'],
@@ -160,8 +160,8 @@ sec('4 · Part D: use the tunables, add the ramp','From Calculate Expression Car
 [1,'a','If','{T} is greater than 1'],
 [2,'a','Number, then Set Variable','1  →  {T}'],
 [1,'a','End If',''],
-[1,'a','Calculate Expression, then Set Variable','{MileBase}-{T}*({MileBase}-{MileFloor})  →  {ReqMile}'],
-[1,'a','Calculate Expression, then Set Variable','{HourBase}-{T}*({HourBase}-{HourFloor})  →  {ReqHour}']]);
+[1,'a','Calculate Expression, then Set Variable','Calculate Expression: {MileBase}-{T}*({MileBase}-{MileFloor}). Then add Set Variable: input {Calculation Result}, variable name ReqMile. The arrow means the result is stored in ReqMile; it is not part of the formula.'],
+[1,'a','Calculate Expression, then Set Variable','Calculate Expression: {HourBase}-{T}*({HourBase}-{HourFloor}). Then add Set Variable: input {Calculation Result}, variable name ReqHour. The arrow means the result is stored in ReqHour; it is not part of the formula.']]);
 sec('5 · Part E: cushion and verdict edits','Cushion goes under the new Set Variable ReqHour, above If (All) PerMile / ReqMile.',[
 [1,'a','If','{DeliverBy} is not 0'],
 [2,'a','Split Text','{DeliverBy} · Custom : '],
