@@ -279,7 +279,7 @@ var SEEDV=3,SEED_A=['p0-1','p0-2','p0-3','p1-0','p1-1','p1-3','p2-0','p2-1','p2-
 function wholeStepKey(k,r){
  if(!r||['a','c','r'].indexOf(r[1])<0)return null;
  var normText=function(s){return String(s||'').toLowerCase().replace(/\{([^}]+)\}/g,' $1 ').replace(/[^a-z0-9]+/g,' ').trim();};
- var base=function(s){return normText(s).replace(/\s*\([^)]*\)/g,'').trim();};
+ var base=function(s){return normText(String(s||'').replace(/\([^)]*\)/g,'')).trim();};
  var stop={the:1,and:1,then:1,from:1,with:1,into:1,after:1,before:1,was:1,now:1,that:1,this:1,for:1,its:1,output:1,rename:1,variable:1,action:1,number:1,item:1,items:1};
  var tokens=function(s){return normText(s).split(/\s+/).filter(function(w){return w.length>2&&!stop[w];});};
  var wa=base(r[2]),wd=tokens(r[2]+' '+r[3]),best=null,bestScore=-1;
