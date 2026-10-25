@@ -1,594 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#04070d">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Shortcut Builder">
-<link rel="icon" href="icon-192.png" type="image/png">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Shortcut Builder — Original Build</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101b31"><title>Shortcut Blueprint Builder</title>
 <style>
-:root{--bg:#f2f2f7;--card:#fff;--tx:#1c1c1e;--tx2:#6b6b70;--ln:#e3e3e8;--pill:#dbeafe;--pillx:#1d4ed8;--addbg:#e3f6e8;--addbar:#2e9e55;--chgbg:#fff0d9;--chgbar:#e08a00;--rmbg:#fde8e8;--rmbar:#d23b3b;--okbg:#eef6ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--tx2:#a1a1a6;--ln:#38383a;--pill:#1e3a8a;--pillx:#bfdbfe;--addbg:#12301c;--chgbg:#3a2800;--rmbg:#3a1616;--okbg:#14221a}}
-:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--tx2:#a1a1a6;--ln:#38383a;--pill:#1e3a8a;--pillx:#bfdbfe;--addbg:#12301c;--chgbg:#3a2800;--rmbg:#3a1616;--okbg:#14221a}
-html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,"Helvetica Neue",Arial,sans-serif}
-main{max-width:520px;margin:0 auto;padding:12px 12px 40px}
-h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
-.sub{font-size:13px;color:var(--tx2);margin:0 4px 12px}
-.box{background:var(--okbg);border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:13.5px;line-height:1.5}
-.box b{font-weight:600}
-.box p{margin:0 0 4px}
-.lg{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--tx2);margin:0 4px 10px}
-.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:6px 0}
-.nav button{font:inherit;font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-.nav button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
-.ph{font-size:15px;font-weight:600;margin:6px 4px 6px}
-.pm{background:var(--pill);color:var(--pillx);border-radius:10px;padding:8px 12px;font-size:13.5px;line-height:1.45;margin:0 0 8px}
-.rw{background:var(--card);border-radius:12px;padding:9px 12px;margin:0 0 6px;border-left:4px solid var(--ln)}
-.rw.a{background:var(--addbg);border-left-color:var(--addbar)}
-.rw.c{background:var(--chgbg);border-left-color:var(--chgbar)}
-.rw.r{background:var(--rmbg);border-left-color:var(--rmbar)}
-.nm{font-size:15px;font-weight:600;line-height:1.3}
-.r .nm{text-decoration:line-through}
-.tg{font-size:11.5px;font-weight:600;border-radius:5px;padding:1px 6px;margin-left:8px;color:#fff;vertical-align:1px}
-.a .tg{background:var(--addbar)}.c .tg{background:var(--chgbar)}.r .tg{background:var(--rmbar)}
-.dt{font-size:13.5px;color:var(--tx2);line-height:1.55;white-space:pre-line;word-break:break-word}
-.pl{display:inline-block;background:var(--pill);color:var(--pillx);border-radius:6px;padding:0 6px;font-size:13px;margin:1px 1px}
-.jn{text-align:center;font-size:12px;font-weight:600;color:var(--tx2);border-top:1px dashed var(--ln);padding:4px 6px;margin:10px 0}
-.all .pm,.all .ph{display:none}
-.foot{font-size:12.5px;color:var(--tx2);margin:14px 4px 0}
-
-.rw.if-child:before,.rw.if-otherwise:before,.rw.if-end:before{content:'';position:absolute;left:4px;top:-7px;height:17px;border-left:2px solid var(--pillx);opacity:.5;pointer-events:none}.rw.if-child:before{left:-10px;height:calc(100% + 13px)}.rw.if-end:after{content:'';position:absolute;left:4px;top:10px;width:9px;border-top:2px solid var(--pillx);opacity:.5}.rw.if-start .nt:before{content:'IF ';font-size:10px;letter-spacing:.04em;color:var(--pillx);font-weight:700}.rw.if-otherwise .nt:before{content:'OTHERWISE ';font-size:10px;color:var(--pillx);font-weight:700}.rw.if-end .nt:before{content:'END IF ';font-size:10px;color:var(--pillx);font-weight:700}
-.rw{position:relative;display:flex;align-items:flex-start;gap:8px}
-.rb{flex:1;min-width:0}
-.bk{font:inherit;font-size:19px;line-height:1;border:none;background:none;color:var(--tx2);padding:2px 4px;margin:-2px -4px 0 0}
-.cb{width:22px;height:22px;flex:none;margin:1px 0 0}
-.rw.dn{opacity:.5}
-.stepcopy{font:inherit;font-size:12px;padding:4px 8px;border:1px solid var(--ln);border-radius:7px;background:var(--card);color:var(--tx2);margin-top:6px}
-.fl{outline:2px solid var(--pillx);outline-offset:2px}
-.bmbar{margin:0 0 10px}
-.bmbar button,#bmp button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-#bmp{background:var(--card);border-radius:12px;padding:8px 12px;margin:0 0 10px;font-size:14px}
-#bmp .it{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)}
-#bmp .it span{flex:1;min-width:0}
-#bmp small{color:var(--tx2);display:block;font-size:12.5px}
-.stick{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-top:4px}
-.pb{height:10px;background:var(--ln);border-radius:999px;overflow:hidden;margin:2px 4px 4px}
-.pf{height:100%;width:0;background:var(--addbar);border-radius:999px;transition:width .35s ease}
-.pt{font-size:12.5px;color:var(--tx2);margin:0 4px 4px;font-weight:600}
-#hp{background:var(--card);border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13.5px}
-#hp textarea{width:100%;height:150px;box-sizing:border-box;font:12px/1.35 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:6px}
-#hp .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
-#hp .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-.hd .rw.dn{display:none}
-#ip{background:var(--card);border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13.5px}
-#ip textarea{width:100%;min-height:180px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
-#ip .bt,.cpbox .bt{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
-#ip .bt button,.cpbox .bt button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-.cpbox{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin:16px 0 4px}
-.cpbox .cpt{font-size:15px;font-weight:600;margin:0 0 4px}
-.cpbox .cpnote{font-size:13px;color:var(--tx2);margin:0 0 8px}
-.cpbox textarea{width:100%;min-height:170px;box-sizing:border-box;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px}
-.swt{display:flex;gap:6px;margin:0 4px 6px}
-.swt button{flex:1;font:inherit;font-size:14.5px;font-weight:700;padding:9px 6px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
-.swt button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
-.bmbar{display:flex;flex-wrap:wrap;gap:6px}
-.note{font-size:13px;color:var(--tx2);margin:0 4px 8px}
-.analyzer-notice{margin-top:10px}
-.analyzer-notice a{color:inherit;font-weight:600}
-#bmb,#iob,#hob,#hdb{display:none}
+:root{--site-primary:#263f70;--site-on-primary:#ffffff;--site-secondary:#dce7fa;--site-on-secondary:#172947;--site-background:#f2f5fa;--site-on-background:#172033;--site-font-body:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--site-font-heading:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--site-heading-scale:1;--site-spacing-scale:1;--site-radius-scale:1;--site-decoration-opacity:1;--bg:light-dark(#f2f5fa,#0c111b);--surface:light-dark(#fff,#151d2b);--surface2:light-dark(#f7f9fc,#1b2638);--ink:light-dark(#172033,#edf2fc);--muted:light-dark(#64718a,#9eacc2);--line:light-dark(#dce3ee,#2c394e);--blue:light-dark(#eaf1ff,#1d3155);--blueInk:light-dark(#234b90,#c4d9ff);--green:light-dark(#e5f7ed,#163a2a);--greenInk:light-dark(#187346,#8ee0b2);--amber:light-dark(#fff2d9,#3b2b13);--amberInk:light-dark(#925700,#ffd18a);--red:light-dark(#ffebeb,#421f29);--redInk:light-dark(#a92736,#ffabb4)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--site-font-body);font-size:14px;line-height:1.45}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #7ca9ff;outline-offset:2px}#app{min-height:100vh;background-color:var(--site-background);color:var(--site-on-background);border-radius:0}.top{background:var(--site-primary);color:var(--site-on-primary);padding:16px clamp(14px,3vw,34px);display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}.mark{width:38px;height:38px;border-radius:12px;background:#fff;color:#263f70;display:grid;place-items:center;font-weight:900;font-size:19px}.brand h1{font-size:calc(19px * var(--site-heading-scale));margin:0;letter-spacing:-.5px}.brand p{margin:2px 0 0;opacity:.78;font-size:12px}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.top button{border:1px solid #ffffff55;background:#ffffff12;color:white}.layout{max-width:1500px;margin:auto;padding:20px clamp(12px,2vw,28px) 48px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px}.side{min-width:0}.main{min-width:0}.panel{background:var(--surface);border:1px solid var(--line);border-radius:calc(15px * var(--site-radius-scale));padding:15px;margin-bottom:14px;box-shadow:0 3px 12px #15294a08}.panel h2,.panel h3{margin:0 0 10px}.panel h2{font-size:14px}.panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.muted{color:var(--muted)}.tiny{font-size:12px}.btn{border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:9px 12px;font-weight:650}.btn:hover{filter:brightness(.97)}.btn.primary{background:var(--site-primary);color:var(--site-on-primary);border-color:transparent}.btn.ghost{background:transparent}.btn.small{font-size:12px;padding:6px 9px}.btn.danger{color:var(--redInk)}.btnrow{display:flex;gap:8px;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px;margin:9px 0}.field label{font-size:12px;font-weight:700;color:var(--muted)}input[type=text],input[type=search],select,textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:9px 10px;min-width:0}textarea{resize:vertical;min-height:68px}.drop{border:1.5px dashed light-dark(#9fb2d0,#4b6386);background:var(--blue);color:var(--blueInk);border-radius:12px;padding:16px;text-align:center;cursor:pointer}.drop.drag{outline:3px solid #7ca9ff}.drop strong{display:block;margin-bottom:4px}.drop input{display:none}.drop p{margin:0;font-size:12px}.blueprint-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin:3px 0 18px}.blueprint-title h2{font-size:calc(25px * var(--site-heading-scale));letter-spacing:-.7px;margin:0 0 4px}.title-input{font-size:22px!important;font-weight:750;max-width:420px}.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}.kpi .num{font-size:23px;font-weight:800;letter-spacing:-.6px}.kpi .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.tabs{display:flex;gap:5px;padding:4px;background:var(--surface2);border:1px solid var(--line);border-radius:11px;margin-bottom:13px;width:max-content;max-width:100%;overflow:auto}.tab{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:8px;font-weight:700;white-space:nowrap}.tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px #0001}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.toolbar-left,.toolbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar input[type=search]{width:min(250px,65vw)}.pilltext{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--blue);color:var(--blueInk);border:1px solid light-dark(#d3e1fa,#304d7d);border-radius:8px;padding:9px 10px;display:block}.pilllabel{display:flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;font-weight:750}.help{display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;font-size:11px;color:var(--muted);cursor:help;position:relative;text-transform:none;letter-spacing:0}.help[title]:hover:after,.help[title]:focus:after{content:attr(title);position:absolute;z-index:8;left:22px;top:-5px;width:220px;max-width:70vw;background:var(--ink);color:var(--surface);padding:9px 10px;border-radius:8px;font-size:12px;line-height:1.4;box-shadow:0 8px 28px #0002}.action{border:1px solid var(--line);background:var(--surface);border-radius:13px;margin-bottom:10px;overflow:hidden}.action-head{display:flex;align-items:flex-start;gap:10px;padding:12px 13px}.order{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--surface2);font-size:12px;font-weight:800;flex:none}.action-main{flex:1;min-width:0}.action-title{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.action-title strong{font-size:14px}.section-tag,.status{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 7px;border-radius:6px;background:var(--surface2);color:var(--muted)}.status.added{background:var(--green);color:var(--greenInk)}.status.changed{background:var(--amber);color:var(--amberInk)}.status.removed{background:var(--red);color:var(--redInk)}.status.same{background:var(--surface2)}.action-sub{color:var(--muted);font-size:12px;margin:3px 0 9px}.action-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.action-tools button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:12px}.action-tools button.on{background:var(--amber);color:var(--amberInk);border-color:transparent}.donecheck{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}.donecheck input{accent-color:#218957;width:16px;height:16px}.action-body{padding:0 13px 13px 53px;display:grid;gap:10px}.action.done .action-title strong{text-decoration:line-through;opacity:.6}.action.done{border-color:light-dark(#a8d8bb,#2b6345)}details{font-size:12px;color:var(--muted)}details summary{cursor:pointer;font-weight:700;color:var(--blueInk);margin-top:4px}.empty{padding:42px 18px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}.empty .big{font-size:28px;margin-bottom:8px}.empty h3{color:var(--ink);margin:0 0 6px}.diff-row{display:grid;grid-template-columns:75px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px solid var(--line)}.diff-row:first-child{border-top:0}.diff-row h4{margin:0 0 4px;font-size:13px}.diff-row p{margin:3px 0;color:var(--muted);font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.diff-group{margin-bottom:15px}.diff-group h3{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.notice{background:var(--amber);color:var(--amberInk);border-radius:9px;padding:10px 12px;font-size:12px;margin-bottom:12px}.progress-track{height:7px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 5px}.progress-fill{height:100%;background:#218957;width:0}.version-line{display:flex;gap:8px;align-items:center}.version-line select{flex:1}.hidden{display:none!important}.fileline{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}.modal-back{position:fixed;inset:0;z-index:20;background:#09132299;display:grid;place-items:center;padding:14px}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 24px 80px #0004}.modal h2{margin:0 0 4px}.modal-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:14px}.bookmark-card{padding:10px;border:1px solid var(--line);border-radius:9px;margin-top:8px}.bookmark-card button{margin-top:7px}.footer{font-size:11px;color:var(--muted);text-align:center;margin:24px 0 4px}.mobile-label{display:none}
+@media(max-width:850px){.layout{grid-template-columns:1fr;padding-top:12px}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:start}.side .panel{margin:0}.drop-panel{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.blueprint-title{margin-top:6px}.top{align-items:flex-start}.top-actions .wide{display:none}}
+@media(max-width:520px){.top{padding:12px}.brand h1{font-size:16px}.brand p{font-size:11px}.mark{width:33px;height:33px}.top-actions .btn{padding:7px 9px;font-size:12px}.side{grid-template-columns:1fr}.kpis{gap:7px}.kpi{padding:9px}.kpi .num{font-size:20px}.blueprint-title{display:block}.blueprint-title .btnrow{margin-top:10px}.action-head{gap:8px;padding:10px}.action-body{padding:0 10px 12px}.order{width:26px;height:26px}.toolbar input[type=search]{width:100%}.toolbar-left{width:100%}.toolbar-left input{flex:1}.tabs{width:100%}.tab{padding:8px 10px;flex:1}.diff-row{grid-template-columns:65px minmax(0,1fr)}}
 </style>
 </head>
 <body>
-<main>
-<div id="hA">
-<h1>Shortcut Builder — Original Build</h1>
-<p class="sub">The original steps have been cleaned up so completed actions are no longer presented as work to do.</p>
-<div class="box">
-<p><b>Completed actions have been removed from the old checklist.</b> The remaining fixes now live on a separate page.</p>
-<p><b>Open the new edits page:</b> <a href="edits.html">DoorDash Offer Analyzer v2 — Remaining Edits</a>.</p>
-<p>The new page includes only known outstanding work from the Oct 25 uploaded export (209 actions), plus the phone checks that have not yet been verified.</p>
-</div>
-<div id="hS" style="display:none">
-<h1>Shift Logging: fixes and setup</h1>
-<p class="sub">Checked against your Shift_Logging shortcut (23 actions). It logs your odometer, Start or End, and zone to shifts.txt.</p>
-<div class="box">
-<p><b>Working:</b> it asks the odometer, Start or End, reads the last reading from shifts.txt, works out the miles since the last entry, asks the zone and appends it all. Those steps are ticked below.</p>
-<p><b>Needs doing:</b> delete the leftover Show Result popup, set the odometer to a number, and seed shifts.txt with a starting reading before the first run. The last section is optional and makes one row per entry for the analytics page and tax miles.</p>
-</div>
-</div>
-<div class="lg"><span><i style="background:var(--addbar)"></i>Add</span><span><i style="background:var(--chgbar)"></i>Change</span><span><i style="background:var(--rmbar)"></i>Remove</span><span><i style="background:var(--card);border:1px solid var(--ln)"></i>Unchanged</span></div>
-<div class="note" id="sync">Saved on this device</div>
-<div class="stick"><div class="swt"><button id="mA" class="on">DoorDash Analyzer</button><button id="mS">Shift Log</button></div><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="pt"></div>
-<div class="bmbar"><button id="bmb">★ Bookmarks (0)</button><button id="iob">✎ AI instructions</button><button id="hob">⇄ Handoff file</button><button id="hdb">Hide done</button></div></div>
-<div id="bmp" style="display:none"></div><div id="ip" style="display:none"></div><div id="hp" style="display:none"></div>
-<div id="gA">
-<div class="box analyzer-notice">
-<p><b>Remaining edits moved.</b> Do not use the old action checklist here; it included tasks already completed in the original shortcut.</p>
-<p><a href="edits.html"><b>Open the remaining edits page →</b></a></p>
-</div>
-<div class="nav" id="nav" style="display:none"></div><div id="out" style="display:none"></div>
-</div>
-<div id="gS" style="display:none"></div>
+<div id="app">
+<header class="top">
+ <div class="brand"><div class="mark">⌘</div><div><h1>Shortcut Blueprint Builder</h1><p>Blueprints · version diffs · build tracking</p></div></div>
+ <div class="top-actions"><button class="btn" id="importTop">＋ Import blueprint</button><button class="btn" id="exportTop">Export JSON</button></div>
+</header>
+<div class="layout">
+<aside class="side">
+ <section class="panel drop-panel">
+  <h2>Bring in a blueprint</h2>
+  <label class="drop" id="drop"><strong>Drop file here or browse</strong><p>Blueprint JSON, CSV, TSV or text</p><input id="file" type="file" accept=".json,.csv,.tsv,.txt,.md,.blueprint,application/json,text/plain,text/csv"></label>
+  <p class="tiny muted" style="margin:9px 0 0">Use the Blueprint JSON format for version-aware imports. Text/CSV imports become a new version.</p>
+  <div id="fileline" class="fileline"></div>
+ </section>
+ <section class="panel">
+  <h2>Blueprint library</h2>
+  <div class="field"><label for="blueprintSelect">CURRENT BLUEPRINT</label><select id="blueprintSelect"></select></div>
+  <div class="btnrow"><button class="btn primary" id="newBlueprint">＋ New blueprint</button><button class="btn" id="renameBlueprint">Rename</button></div>
+  <div class="field"><label for="blueprintNotes">BLUEPRINT NOTES</label><textarea id="blueprintNotes" placeholder="What this shortcut does, prerequisites, caveats…"></textarea></div>
+  <button class="btn small" id="saveNotes">Save notes</button>
+ </section>
+ <section class="panel">
+  <h2>Versions</h2>
+  <div class="field"><label for="versionSelect">BUILDING FROM</label><select id="versionSelect"></select></div>
+  <div class="btnrow"><button class="btn primary" id="newVersion">＋ Create next version</button></div>
+  <p class="tiny muted">A new version snapshots the current action list so you can compare it against earlier builds.</p>
+  <div class="field"><label for="baseVersion">COMPARE FROM</label><select id="baseVersion"></select></div>
+  <div class="field"><label for="compareVersion">COMPARE TO</label><select id="compareVersion"></select></div>
+  <button class="btn" id="compareBtn" style="width:100%">Compare versions →</button>
+ </section>
+ <section class="panel">
+  <h2>My build progress</h2><div id="progressText" class="muted tiny">No actions yet</div><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+  <div class="btnrow"><button class="btn small" id="showBookmarks">★ Bookmarks</button><button class="btn small" id="clearDone">Reset completion</button></div>
+  <div id="bookmarkList"></div>
+ </section>
+</aside>
+<main class="main">
+ <div class="blueprint-title"><div><h2 id="workspaceTitle">Your blueprint workspace</h2><p class="muted" id="workspaceSub" style="margin:0">Import a blueprint or create your first action list.</p></div><div class="btnrow"><button class="btn" id="addAction">＋ Add action</button><button class="btn primary" id="saveVersion">Save version</button></div></div>
+ <div class="kpis"><div class="kpi"><div class="num" id="totalCount">0</div><div class="lbl">Actions in version</div></div><div class="kpi"><div class="num" id="doneCount">0</div><div class="lbl">Completed</div></div><div class="kpi"><div class="num" id="bookmarkCount">0</div><div class="lbl">Bookmarks</div></div><div class="kpi"><div class="num" id="changeCount">—</div><div class="lbl">Version changes</div></div></div>
+ <div class="tabs"><button class="tab active" data-tab="actions">Action blueprint</button><button class="tab" data-tab="diff">Version changes</button><button class="tab" data-tab="bookmarks">Bookmarks</button></div>
+ <div id="actionsView">
+  <div class="toolbar"><div class="toolbar-left"><input id="search" type="search" placeholder="Search actions, pills, notes…"><select id="filter"><option value="all">All actions</option><option value="todo">Not completed</option><option value="done">Completed</option><option value="bookmarked">Bookmarked</option></select></div><div class="toolbar-right"><button class="btn small" id="importActions">Import actions</button><button class="btn small" id="exportActions">Export this version</button></div></div>
+  <div id="actionList"></div>
+ </div>
+ <div id="diffView" class="hidden"></div>
+ <div id="bookmarksView" class="hidden"></div>
+ <p class="footer">Your working library and completion state are stored in this browser on this device. Export backups regularly to move between devices.</p>
 </main>
+</div>
+</div>
+<div id="modalRoot"></div>
 <script>
-var S=[];
-function sec(t,w,rows){S.push({t:t,w:w,rows:rows});}
-sec('1 · Fix the tunable names','The Number and Set Variable pairs right under Extract Text from Image.',[
-[1,'c','Set Variable (3rd pair, value 3)','Rename {BigItem} to BigItems'],
-[1,'c','Set Variable (4th pair, value 2)','Rename {BigItem} to BigMile. As built, BigMile is never created and BigItems gets overwritten with 2.'],
-[1,'c','Set Variable (value 85)','Rename {Ramplow} to RampLow'],
-[1,'c','Set Variable (value 80)','Rename {Emergancy} to Emergency']]);
-sec('2 · Part B: one change left','Between Set Variable Items and the Shop for items If, then at DeliverBy.',[
-[1,'r','Match Text','Pattern \\((\\d+) items? on {Items}. Its output is never used.'],
-[1,'r','Get Group from Matched Text','Never used.'],
-[1,'c','Get Item from List (Last Item) after the Shop for items End If','Change Last Item to Item At Index 4. Keep the Set Variable DeliverBy under it, because this is the only place DeliverBy is set. Last Item returns nothing if the AI adds a blank line at the end.'],
-[1,'c','Skip the whitespace cleanup','Not needed. 7.9Miles comes from the missing space in the summary Text, which Part F fixes.']]);
-sec('3 · Part C: rolling acceptance rate','Under Set Variable DeliverBy, above Calculate Expression for CarCost.',[
-[1,'a','Get File','Dasher info / offers.txt · Error If Not Found off'],
-[1,'a','Get Text from Input','{File} · rename output OffersText'],
-[1,'c','Match Text (fix the pattern)','Delete the space before (?m). As built the pattern starts with a space, so it matches nothing. It should read (?m)^\\|\\s*\\d{4}-.*$ and the output stays DataRows.'],
-[1,'a','Count','Count items in {DataRows}.'],
-[1,'a','Set Variable','Input = {Count} (the Count result pill); variable name = RowCount.'],
-[1,'a','Number','1'],
-[1,'a','Set Variable','Input = Number result pill; variable name = StartIdx.'],
-[1,'c','If','Change the condition on the If that checks {RowCount}. It says is 100, so it only fires at exactly 100 rows and the window keeps growing past the latest 100. Make it {RowCount} is greater than 100.'],
-[2,'a','Calculate Expression','{RowCount}-99'],
-[2,'a','Set Variable','Input = {Calculation Result} pill; variable name = StartIdx.'],
-[1,'a','End If',''],
-[1,'a','Get Item from List','List: {DataRows}\nGet: Items in Range\nStart Index: {StartIdx}\nEnd Index: {RowCount}\nReason: Select the latest 100 rows for the acceptance-rate calculation.'],
- [1,'a','Set Variable','{Items from List}  →  {Window}\nStores the selected range for the next Combine Text action.'],
-[1,'a','Combine Text','{Window} · New Lines · rename output WindowText'],
-[1,'a','Match Text','(?m)\\|\\s*Accept\\s*\\| in {WindowText}'],
-[1,'a','Count','Count items in Matches.'],
-[1,'a','Set Variable','Input = {Count} result pill; variable name = Accepts.'],
-[1,'a','Count','Count items in {Window}.'],
-[1,'a','Set Variable','Input = {Count} result pill; variable name = WindowSize.'],
-[1,'a','If','{WindowSize} is greater than 0'],
-[2,'a','Calculate Expression','{Accepts}/{WindowSize}*100'],
-[2,'a','Set Variable','Input = {Calculation Result} pill; variable name = AcceptanceRate.'],
-[1,'a','Otherwise',''],
-[2,'a','Number','89'],
-[2,'a','Set Variable','Input = Number result pill; variable name = AcceptanceRate.'],
-[1,'a','End If',''],
-[1,'r','Number 89 and Set Variable AcceptanceRate','The old pair near the top. Remove it only after Part C runs and shows 89.'],
-[1,'r','Duplicate DataRows group','Right after the first Set Variable DataRows there is a second group: Get Text from Input of {OfferText}, a Match Text whose pattern starts with a space, and another Set Variable DataRows. Delete all three. They overwrite the good DataRows with nothing, so {RowCount} is 0 and the rate always shows 89.']]);
-sec('4 · Part D: use the tunables, add the ramp','From Calculate Expression CarCost down to the If (All) TAKE IT test.',[
-[1,'c','Calculate Expression (CarCost)','{Miles}*({GasPrice}/{MPG}+{Wear})\nReplace the typed 17.5 with {MPG} and 0.12 with {Wear}.'],
-[1,'c','CREATE/RENAME: Set Variable → MileBase','Before the ramp, ensure a Set Variable action has input {BaseMile} and variable name MileBase. If the existing action takes Number 1.5 directly, change its input to the {BaseMile} variable. If no action exists, add Set Variable with input {BaseMile} and name it MileBase.'],
-[1,'c','CREATE/RENAME: Set Variable → HourBase','Before the ramp, ensure a Set Variable action has input {BaseHour} and variable name HourBase. If the existing action takes Number 18 directly, change its input to the {BaseHour} variable. If no action exists, add Set Variable with input {BaseHour} and name it HourBase.'],
-[1,'c','If {ItemsNum} is greater than 3','Change the 3 to {BigItems}.'],
-[2,'c','Set Variable → MileBase (large order)','Inside If {ItemsNum} is greater than {BigItems}, set input = {BigMile} and variable name = MileBase. This overwrites the base for large orders.'],
-[2,'c','Set Variable → HourBase (large order)','Inside the same If, set input = {BigHour} and variable name = HourBase. This overwrites the base for large orders.'],
-[1,'','End If',''],
-[1,'r','If {AcceptanceRate} is less than 90','The whole block, including ReqMile-0.25 and ReqHour-3. Replace it with the ramp below.'],
-[1,'a','Calculate Expression','({RampTop}-{AcceptanceRate})/({RampTop}-{RampLow})'],
-[1,'a','Set Variable','Input = {Calculation Result} pill; variable name = T.'],
-[1,'a','If','{T} is less than 0'],
-[2,'a','Number','0'],
-[2,'a','Set Variable','Input = Number result pill; variable name = T.'],
-[1,'a','End If',''],
-[1,'a','If','{T} is greater than 1'],
-[2,'a','Number','1'],
-[2,'a','Set Variable','Input = Number result pill; variable name = T.'],
-[1,'a','End If',''],
-[1,'a','Calculate Expression','{MileBase}-{T}*({MileBase}-{MileFloor})'],
-[1,'a','Set Variable','Input = {Calculation Result} pill; variable name = ReqMile. This is a separate action; do not type the arrow into the formula.'],
-[1,'a','Calculate Expression','{HourBase}-{T}*({HourBase}-{HourFloor})'],
-[1,'a','Set Variable','Input = {Calculation Result} pill; variable name = ReqHour. This is a separate action; do not type the arrow into the formula.']]);
-sec('5 · Part E: time cushion and verdict','Cushion goes under Set Variable ReqHour and before the TAKE IT test.',[
-[1,'c','DeliverBy parsing','Action 67: change Get Item from List from Last Item to Item At Index 4. Keep Set Variable DeliverBy immediately below it.'],
-[1,'a','If {DeliverBy} is not 0','Keep the time-cushion branch under this condition.'],
-[2,'a','Split Text','Input = {DeliverBy}; separator = Custom : '],
-[2,'a','Get Item from List','First Item from Split Text; set the result to DH.'],
-[2,'a','Get Item from List','Item At Index 2 from Split Text; set the result to DM.'],
-[2,'a','Format Date','Current Date, Custom format HH; set result to NowH.'],
-[2,'a','Format Date','Current Date, Custom format mm; set result to NowM.'],
-[2,'a','Calculate Expression → MinsLeft','({DH}*60+{DM})-({NowH}*60+{NowM}); Set Variable input = Calculation Result pill; destination name = MinsLeft.'],
-[2,'c','Fix Minsleft typo','Action 159 writes Minsleft but action 161 reads MinsLeft. Change the destination name to exactly MinsLeft.'],
-[2,'a','If {MinsLeft} is less than 0','If the time difference is negative, roll over midnight.'],
-[3,'a','Calculate Expression → MinsLeft','{MinsLeft}+1440; Set Variable input = Calculation Result pill; destination name = MinsLeft.'],
-[2,'a','End If',''],
-[2,'a','Calculate Expression → Slack','{MinsLeft}-{Minutes}; Set Variable input = Calculation Result pill; destination name = Slack.'],
-[1,'a','Otherwise',''],
-[2,'a','Text → Slack','Text = -; Set Variable input = Text result pill; destination name = Slack.'],
-[1,'a','End If',''],
-[1,'a','Text → Tight','Add an empty Text action and Set Variable input = Text result pill; destination name = Tight.'],
-[1,'a','If {DeliverBy} is not 0',''],
-[2,'c','If (LATE RISK)','Action 170 must test {Slack} is less than 0. Replace “does not have any value” if that is the current condition.'],
-[2,'a','If {Slack} is less than 0',''],
-[3,'a','Text → Tight','Text = LATE RISK; Set Variable input = Text result pill; destination name = Tight.'],
-[2,'a','End If',''],
-[1,'a','End If',''],
-[1,'c','TAKE IT condition (critical)','Action 175 must compare {PerMile} greater than {ReqMile} AND {Hourly} greater than {ReqHour}. Do not compare against {MileBase}/{HourBase}; the ramp outputs are ReqMile/ReqHour.'],
-[1,'r','Old <85 override','Remove the old acceptance-rate-less-than-85 TAKE IT override. The floor-based ramp replaces this block; keep the separate Emergency rule if it is still part of your intended behavior.'],
-[1,'c','Emergency condition','Use {AcceptanceRate} less than {Emergency} and {Net} greater than 0. Keep the tunable as a variable pill, not a typed 80.']]);
-sec('6 · Part F: summary, menu and log','The summary Text, decision menu and log row near the end of the shortcut.',[
-[1,'c','Format Number outputs','Keep raw numeric variables for comparisons: Net, PerMile and Hourly. Format their values for display and store the formatted outputs separately as NetFmt, PerMileFmt and HourlyFmt. Do not use formatted strings in numeric comparisons.'],
-[1,'c','Text (summary)','Enter exactly:\n_____________\n{Verdict} {Tight}\n• ${NetFmt} Net\n• ${PerMileFmt}/mi\n• {Miles} Miles\n• ${HourlyFmt}/hr\n• {AcceptanceRate}% rate\n• {Slack} min cushion\n\n--{ReqHour} RH\n--{ReqMile} RM\n_____________\nUse ReqHour/ReqMile for the RH/RM lines, not HourBase/MileBase.'],
-[1,'c','Choose from Menu','Menu items: Accepted, Rejected, Expired. In each branch set Choice to a Text result: Accept, Reject, or Expire, respectively.'],
-[1,'r','If Menu Result is empty','Delete this obsolete check. Expired is an explicit menu branch and sets Choice to Expire.'],
-[1,'r','Set Variable Choice from Menu Result','Delete this action. It overwrites the normalized Choice value (Accept/Reject/Expire) with menu labels (Accepted/Rejected/Expired), which breaks the acceptance parser.'],
-[1,'c','Text (log row)','Use formatted display variables and preserve the Slack column:\n| {Formatted Date}| {Payout} | {Miles} | {Items} | {PerMileFmt} | {NetFmt} | {HourlyFmt} | {Verdict} | {AcceptanceRate} | {Choice} | {Slack} |\nChoice should be Accept, Reject, or Expire so the acceptance-rate Match Text can count Accept.']]);
-var WHOLE=[[0, "", "Take Screenshot", ""], [0, "", "Extract Text from Image", "{Screenshot} · output OCRText"], [0, "", "Number", "1.5"], [0, "", "Set Variable", "{Number}  →  {BaseMile}"], [0, "", "Number", "18"], [0, "", "Set Variable", "{Number}  →  {BaseHour}"], [0, "", "Number", "3"], [0, "c", "Set Variable", "{Number}  →  {BigItems}   (was BigItem)"], [0, "", "Number", "2"], [0, "c", "Set Variable", "{Number}  →  {BigMile}   (was BigItem)"], [0, "", "Number", "20"], [0, "", "Set Variable", "{Number}  →  {BigHour}"], [0, "", "Number", "90"], [0, "", "Set Variable", "{Number}  →  {RampTop}"], [0, "", "Number", "85"], [0, "c", "Set Variable", "{Number}  →  {RampLow}   (was Ramplow)"], [0, "", "Number", "0.75"], [0, "", "Set Variable", "{Number}  →  {MileFloor}"], [0, "", "Number", "10"], [0, "", "Set Variable", "{Number}  →  {HourFloor}"], [0, "", "Number", "80"], [0, "c", "Set Variable", "{Number}  →  {Emergency}   (was Emergancy)"], [0, "", "Number", "17.5"], [0, "", "Set Variable", "{Number}  →  {MPG}"], [0, "", "Number", "0.12"], [0, "", "Set Variable", "{Number}  →  {Wear}"], [0, "m", "Done", "The top Number 89 and Set Variable AcceptanceRate pair is already gone"], [0, "m", "Done", "The 89 fallback now lives in the Part C Otherwise branch"], [0, "", "Date", "Current Date · output Today’s Date"], [0, "", "Format Date", "{Today’s Date} · Custom · yyyy-MM-dd"], [0, "", "Text", "Date: {Formatted Date}"], [0, "", "Set Variable", "{Text}  →  {GasDate}"], [0, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [0, "", "Get Text from Input", "{File}"], [0, "", "If", "{Text} does not contain {GasDate}"], [1, "", "Choose from Menu", "Prompt: Gas price today? · items New, Same as Yesterday"], [2, "", "New", "menu item"], [3, "", "Ask for Input", "Number · What is Today’s Gas Price"], [3, "", "Set Variable", "{Provided Input}  →  {GasPrice}"], [2, "", "Same as Yesterday", "menu item"], [3, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [3, "", "Get Text from Input", "{File}"], [3, "", "Split Text", "{Text} · New Lines"], [3, "", "Get Item from List", "{Split Text} · Last Item"], [3, "", "Set Variable", "{Item from List}  →  {GasPrice}"], [1, "", "End Menu", ""], [1, "", "Text", "{GasDate}\n{GasPrice}"], [1, "", "Save File", "Input {Text} · Dasher info / gasinfo.txt · Overwrite If File Exists ON"], [0, "", "Otherwise", ""], [1, "", "Get File", "Dasher info / gasinfo.txt · Error If Not Found off"], [1, "", "Get Text from Input", "{File}"], [1, "", "Split Text", "{Text} · New Lines"], [1, "", "Get Item from List", "{Split Text} · Last Item"], [1, "", "Set Variable", "{Item from List}  →  {GasPrice}"], [0, "", "End If", ""], [0, "", "Use Model", "ChatGPT · From the DoorDash offer text below, reply with exactly four lines and nothing else. Line 1… · output AILogicAndResults"], [0, "", "Text", "{AILogicAndResults}"], [0, "", "Split Text", "{Text} · New Lines"], [0, "", "Get Item from List", "{Split Text} · First Item"], [0, "", "Set Variable", "{Item from List}  →  {Payout}"], [0, "", "Get Item from List", "{Split Text} · Item At Index 2"], [0, "", "Set Variable", "{Item from List}  →  {Miles}"], [0, "", "Get Item from List", "{Split Text} · Item At Index 3"], [0, "", "Set Variable", "{Item from List}  →  {Items}"], [0, "r", "Match Text", "\\((\\d+) items? in {Items}"], [0, "r", "Get Group from Matched Text", "{Matches}"], [0, "", "If", "{OCRText} does not contain Shop for items"], [1, "", "Calculate", "{Items} × 0"], [1, "", "Set Variable", "{Calculation Result}  →  {Items}"], [0, "", "End If", ""], [0, "c", "Get Item from List", "{Split Text} · Item At Index 4   (was Last Item)"], [0, "", "Set Variable", "{Item from List}  →  {DeliverBy}"], [0, "m", "Part C goes here", "under Set Variable DeliverBy, above Calculate Expression CarCost"], [0, "a", "Get File", "Dasher info / offers.txt · Error If Not Found off"], [0, "a", "Get Text from Input", "{File} · rename output OffersText"], [0, "a", "Match Text", "(?m)^\\|\\s*\\d{4}-.*$ in {OffersText} · rename output DataRows"], [0, "r", "Duplicate DataRows group", "Get Text from Input of {OfferText}, a Match Text with a leading space, and a second Set Variable DataRows. Delete all three."], [0, "a", "Count, then Set Variable", "Items of {DataRows}  →  {RowCount}"], [0, "a", "Number, then Set Variable", "1  →  {StartIdx}"], [0, "c", "If", "{RowCount} is greater than 100   (was is 100)"], [1, "a", "Calculate Expression, then Set Variable", "{RowCount}-99  →  {StartIdx}"], [0, "a", "End If", ""], [0, "a", "Get Item from List", "List: {DataRows} · Get: Items in Range · Start Index: {StartIdx} · End Index: {RowCount}"], [0, "a", "Set Variable", "{Items from List}  →  {Window}"], [0, "a", "Combine Text", "{Window} · New Lines · rename output WindowText"], [0, "a", "Match Text", "(?m)\\|\\s*Accept\\s*\\| in {WindowText}"], [0, "a", "Count, then Set Variable", "Items  →  {Accepts}"], [0, "a", "Count, then Set Variable", "Items of {Window}  →  {WindowSize}"], [0, "a", "If", "{WindowSize} is greater than 0"], [1, "a", "Calculate Expression, then Set Variable", "{Accepts}/{WindowSize}*100  →  {AcceptanceRate}"], [0, "a", "Otherwise", ""], [1, "a", "Number, then Set Variable", "89  →  {AcceptanceRate}"], [0, "a", "End If", ""], [0, "c", "Calculate Expression", "{Miles}*({GasPrice}/{MPG}+{Wear})"], [0, "", "Set Variable", "{Calculation Result}  →  {CarCost}"], [0, "", "Calculate Expression", "{Payout}-{CarCost}"], [0, "", "Set Variable", "{Calculation Result}  →  {Net}  (raw numeric value for comparisons)"], [0, "c", "Format Number", "{Calculation Result}"], [0, "", "Set Variable", "{Formatted Number}  →  {NetFmt}  (display value for summary and log)"], [0, "", "Calculate Expression", "{Payout}/{Miles}"], [0, "", "Set Variable", "{Calculation Result}  →  {PerMile}  (raw numeric value for comparisons)"], [0, "c", "Format Number", "{Calculation Result} · 2 decimal places"], [0, "", "Set Variable", "{Formatted Number}  →  {PerMileFmt}  (display value for summary and log)"], [0, "", "Calculate Expression", "10+{Miles}*2.5+{Items}*2"], [0, "", "Set Variable", "{Calculation Result}  →  {Minutes}"], [0, "", "If", "{OCRText} contains Additional"], [1, "", "Calculate Expression", "{Miles}*2.5+{Items}*2+4"], [1, "", "Set Variable", "{Calculation Result}  →  {Minutes}"], [0, "", "End If", ""], [0, "", "Calculate Expression", "{Net}/{Minutes}*60"], [0, "", "Set Variable", "{Calculation Result}  →  {Hourly}  (raw numeric value for comparisons)"], [0, "c", "Format Number", "{Calculation Result} · 2 decimal places"], [0, "", "Set Variable", "{Formatted Number}  →  {HourlyFmt}  (display value for summary and log)"], [0, "", "Text", "SKIP"], [0, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "c", "Number", "1.5 becomes the {BaseMile} pill"], [0, "c", "Set Variable", "{BaseMile}  →  {MileBase}   (was ReqMile)"], [0, "c", "Number", "18 becomes the {BaseHour} pill"], [0, "c", "Set Variable", "{BaseHour}  →  {HourBase}   (was ReqHour)"], [0, "", "Calculate Expression", "{Items}+0"], [0, "", "Set Variable", "{Calculation Result}  →  {ItemsNum}"], [0, "c", "If", "{ItemsNum} is greater than {BigItems}   (was 3)"], [1, "c", "Number", "2 becomes the {BigMile} pill"], [1, "c", "Set Variable", "{BigMile}  →  {MileBase}   (was ReqMile)"], [1, "c", "Number", "20 becomes the {BigHour} pill"], [1, "c", "Set Variable", "{BigHour}  →  {HourBase}   (was ReqHour)"], [0, "", "End If", ""], [0, "r", "If", "{AcceptanceRate} is less than 90"], [1, "r", "Calculate Expression", "{ReqMile}-0.25"], [1, "r", "Set Variable", "{Calculation Result}  →  {ReqMile}"], [1, "r", "Calculate Expression", "{ReqHour}-3"], [1, "r", "Set Variable", "{Calculation Result}  →  {ReqHour}"], [0, "r", "End If", ""], [0, "m", "Ramp goes here", "replaces the If AcceptanceRate is less than 90 block"], [0, "a", "Calculate Expression, then Set Variable", "({RampTop}-{AcceptanceRate})/({RampTop}-{RampLow})  →  {T}"], [0, "a", "If", "{T} is less than 0"], [1, "a", "Number, then Set Variable", "0  →  {T}"], [0, "a", "End If", ""], [0, "a", "If", "{T} is greater than 1"], [1, "a", "Number, then Set Variable", "1  →  {T}"], [0, "a", "End If", ""], [0, "a", "Calculate Expression, then Set Variable", "{MileBase}-{T}*({MileBase}-{MileFloor})  →  {ReqMile}"], [0, "a", "Calculate Expression, then Set Variable", "{HourBase}-{T}*({HourBase}-{HourFloor})  →  {ReqHour}"], [0, "m", "Cushion goes here", "above If (All) PerMile / ReqMile"], [0, "a", "If", "{DeliverBy} is not 0"], [1, "a", "Split Text", "{DeliverBy} · Custom : "], [1, "a", "Get Item from List", "First Item  →  Set Variable {DH}"], [1, "a", "Get Item from List", "Item At Index 2  →  Set Variable {DM}"], [1, "a", "Format Date", "{Today’s Date} · Custom HH  →  Set Variable {NowH}"], [1, "a", "Format Date", "{Today’s Date} · Custom mm  →  Set Variable {NowM}"], [1, "a", "Calculate Expression, then Set Variable", "({DH}*60+{DM})-({NowH}*60+{NowM})  →  {MinsLeft}"], [1, "a", "If", "{MinsLeft} is less than 0"], [2, "a", "Calculate Expression, then Set Variable", "{MinsLeft}+1440  →  {MinsLeft}"], [1, "a", "End If", ""], [1, "a", "Calculate Expression, then Set Variable", "{MinsLeft}-{Minutes}  →  {Slack}"], [0, "a", "Otherwise", ""], [1, "a", "Text, then Set Variable", "-  →  {Slack}"], [0, "a", "End If", ""], [0, "a", "Text, then Set Variable", "(empty)  →  {Tight}"], [0, "a", "If", "{DeliverBy} is not 0"], [1, "a", "If", "{Slack} is less than 0"], [2, "a", "Text, then Set Variable", "LATE RISK  →  {Tight}"], [1, "a", "End If", ""], [0, "a", "End If", ""], [0, "", "If", "All · {PerMile} is greater than {ReqMile} · {Hourly} is greater than {ReqHour}"], [1, "", "Text", "TAKE IT"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "r", "If", "All · {AcceptanceRate} is less than 85 · {Net} is greater than 0 · {Hourly} is greater than or equal to 10"], [1, "r", "Text", "TAKE IT"], [1, "r", "Set Variable", "{Text}  →  {Verdict}"], [0, "r", "End If", ""], [0, "c", "If", "All · {AcceptanceRate} is less than {Emergency} · {Net} is greater than 0   (was 80)"], [1, "", "Text", "TAKE"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "", "Calculate Expression", "{Payout}+0"], [0, "", "Set Variable", "{Calculation Result}  →  {PayoutNum}"], [0, "", "If", "All · {OCRText} contains Additional · {PayoutNum} is less than or equal to 5"], [1, "", "Text", "SKIP"], [1, "", "Set Variable", "{Text}  →  {Verdict}"], [0, "", "End If", ""], [0, "c", "Text", "_____________\n{Verdict} {Tight}\n• $ {NetFmt} Net\n• $ {PerMileFmt}/mi\n• {Miles} Miles\n• $ {HourlyFmt}/hr\n• {AcceptanceRate}% rate\n• {Slack} min cushion\n\n--{ReqHour} RH\n--{ReqMile} RM\n_____________"], [0, "", "Set Variable", "{Text}  →  {FinVerdict}"], [0, "", "Use Model", "Apple Intelligence on Device · In one short sentence, tell a delivery driver why this offer is TAKE IT (Hype) or SKIP (th…"], [0, "", "Append to Note", "DoorDash Offer Review · {FinVerdict}"], [0, "", "Show Notification", "Title VERDICT · Body {Response} · Sound off"], [0, "", "Wait", "10 seconds"], [0, "c", "Choose from Menu", "Prompt: Accepted or Rejected · items Accepted, Rejected, Expired"], [1, "", "Accepted", "menu item"], [2, "", "Text", "Accept"], [2, "c", "Set Variable", "{Text}  →  {Choice}   (was Accept)"], [1, "", "Rejected", "menu item"], [2, "", "Text", "Reject"], [2, "c", "Set Variable", "{Text}  →  {Choice}   (was Reject)"], [1, "a", "Expired", "menu item"], [2, "a", "Text", "Expire"], [2, "a", "Set Variable", "{Text}  →  {Choice}"], [0, "", "End Menu", ""], [0, "r", "If", "{Menu Result} is (empty)"], [1, "r", "Text", "Expired"], [0, "r", "End If", ""], [0, "r", "Set Variable", "{Menu Result}  →  {Choice}"], [0, "", "Format Date", "{Today’s Date} · Custom · yyyy-MM-dd HH:mm"], [0, "c", "Text", "| {Formatted Date}| {Payout} | {Miles} | {Items} |{PerMileFmt} | {NetFmt}| {HourlyFmt} | {Verdict} | {AcceptanceRate}  |  {Choice} | {Slack} |"], [0, "", "Append to File", "Dasher info / offers.txt · text {Text}"]];
-var VER='r6 · Think Version 2 · 2026-10-25',KEY='ddv2-state',st={bm:[],done:{},t:0,seed:0,ai:''},dbDoc=null,saveTimer=null;
-function norm(o){return {bm:(o&&o.bm)||[],done:(o&&o.done)||{},t:(o&&o.t)||0,seed:(o&&o.seed)||0,ai:(o&&o.ai)||''};}
-try{var rw0=localStorage.getItem(KEY);if(rw0)st=norm(JSON.parse(rw0));}catch(e){}
-try{var ol=localStorage.getItem('ddv2-ai-instructions');if(ol&&!st.ai)st.ai=ol;}catch(e){}
-function setSync(t){document.getElementById('sync').textContent=t;}
-function save(){st.t=Date.now();try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
- if(dbDoc){clearTimeout(saveTimer);saveTimer=setTimeout(function(){dbDoc.set({state:JSON.stringify(st)}).catch(function(){setSync('Cloud save failed; kept on this device');});},600);}}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
-function pills(s){return esc(s).replace(/\{([A-Za-z][A-Za-z’ ]*)\}/g,'<span class="pl">$1</span>');}
-var TG={a:'Add',c:'Change',r:'Remove'};
-var out=document.getElementById('out'),nav=document.getElementById('nav'),TL=[],tabEls=[];
-function stepPresentation(name,det){
- var n=String(name||''),d=String(det||''),m;
- if(n==='Match Text (fix the pattern)')n='Match Text';
- else if(n==='Calculate Expression (CarCost)'){n='Calculate Expression';d='Output variable: CarCost. '+d;}
- else if(n==='Text (summary)'){n='Text';d='Summary text to enter: '+d;}
- else if(n==='Text (log row)'){n='Text';d='Log-row text to enter: '+d;}
- else if(n==='Format Number (Net, PerMile, Hourly)'){n='Format Number';d='Applies to Net, PerMile, and Hourly. '+d;}
- else if((m=n.match(/^Set Variable \((.+)\)$/))){n='Set Variable';d=m[1]+'. '+d;}
- else if((m=n.match(/^If \(All\):\s*(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
- else if((m=n.match(/^If\s+(.+)$/))){n='If';d='Condition: '+m[1]+(d?' — '+d:'');}
- else if((m=n.match(/^Number ([^,]+), Set Variable (.+)$/))){n='Number';d='Enter '+m[1]+'. Then Set Variable '+m[2]+'. '+d;}
- else if((m=n.match(/^(Accepted|Rejected): Set Variable(?: (.+))?$/))){n='Set Variable';d='In the '+m[1]+' menu branch'+(m[2]?' (current variable: '+m[2]+')':'')+'. '+d;}
- else if((m=n.match(/^(Get Item from List) \((.+?)\)(.*)$/))){n=m[1];d='List setting: '+m[2]+m[3]+'. '+d;}
- else if((m=n.match(/^(Get Item from List) (above|after) (.+)$/))){n=m[1];d='Position: '+m[2]+' '+m[3]+'. '+d;}
- else if((m=n.match(/^(Count|Calculate Expression|Number|Text), then Set Variable$/)))n=m[1];
- return {name:n,detail:d};
+(function(){
+"use strict";
+const STORE="shortcutBlueprintBuilder.v1";
+const uid=()=>Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const defaultData={activeBlueprint:null,blueprints:[]};
+let db=load(),tab="actions",searchText="",showBookmarksOnly=false;
+function load(){try{return Object.assign(clone(defaultData),JSON.parse(localStorage.getItem(STORE)||"{}"))}catch(e){return clone(defaultData)}}
+function persist(){try{localStorage.setItem(STORE,JSON.stringify(db))}catch(e){say("Could not save in this browser. Export a JSON backup.");}}
+function say(s){document.getElementById("fileline").textContent=s}
+function bp(){return db.blueprints.find(b=>b.id===db.activeBlueprint)||db.blueprints[0]||null}
+function ver(b=bp()){return b&&b.versions.find(v=>v.id===b.activeVersion)||b&&b.versions[b.versions.length-1]||null}
+function findVersion(id,b=bp()){return b&&b.versions.find(v=>v.id===id)||null}
+function makeVersion(label,actions=[]){return{id:uid(),label,createdAt:new Date().toISOString(),actions:actions.map(a=>normalizeAction(a)),progress:{},bookmarks:[]}}
+function normalizeAction(a,i=0){return{id:String(a.id||uid()),order:Number.isFinite(+a.order)?+a.order:i+1,section:String(a.section||a.group||"General"),action:String(a.action||a.name||a.title||"Shortcut action"),pill:String(a.pill||a.exactPill||a.configuration||a.value||""),description:String(a.description||a.help||a.notes||""),inputs:String(a.inputs||""),expected:String(a.expected||a.result||"")}}
+function createBlueprint(name,actions=[]){const v=makeVersion("v1.0",actions);const b={id:uid(),name:name||"Untitled Blueprint",notes:"",activeVersion:v.id,versions:[v]};db.blueprints.push(b);db.activeBlueprint=b.id;persist();renderAll();return b}
+function ensure(){if(!bp())createBlueprint("My First Blueprint",[])}
+function selectedProgress(v=ver()){return v.progress||(v.progress={})}
+function selectedBookmarks(v=ver()){return v.bookmarks||(v.bookmarks=[])}
+function isDone(a,v=ver()){return !!selectedProgress(v)[a.id]}
+function isBookmarked(a,v=ver()){return selectedBookmarks(v).includes(a.id)}
+function setDone(id,val){const v=ver();if(!v)return;selectedProgress(v)[id]=val;persist();renderAll(false)}
+function toggleBookmark(id){const v=ver();if(!v)return;let ar=selectedBookmarks(v);v.bookmarks=ar.includes(id)?ar.filter(x=>x!==id):[...ar,id];persist();renderAll(false)}
+function pct(v=ver()){return !v||!v.actions.length?0:Math.round(v.actions.filter(a=>isDone(a,v)).length/v.actions.length*100)}
+function parseCsv(text,delim){const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());if(!lines.length)return[];const parseLine=line=>{let out=[],cur="",q=false;for(let i=0;i<line.length;i++){let ch=line[i];if(ch==='"'&&q&&line[i+1]==='"'){cur+='"';i++}else if(ch==='"')q=!q;else if(ch===delim&&!q){out.push(cur);cur=""}else cur+=ch}out.push(cur);return out};const head=parseLine(lines[0]).map(x=>x.trim().toLowerCase().replace(/\s+/g,"_"));return lines.slice(1).map((line,i)=>{const cells=parseLine(line),o={};head.forEach((h,j)=>o[h]=cells[j]||"");return normalizeAction({id:o.id,order:o.order||i+1,section:o.section||o.group,action:o.action||o.name||o.title,pill:o.pill||o.exact_pill||o.configuration,description:o.description||o.help||o.notes,inputs:o.inputs,expected:o.expected},i)}).filter(a=>a.action!=="Shortcut action"||a.pill||a.description)}
+function importObject(obj,filename="Imported blueprint"){
+ if(Array.isArray(obj)){return createBlueprint(filename.replace(/\.[^.]+$/,""),obj)}
+ if(!obj||typeof obj!=="object")throw Error("File must contain a blueprint object or an action array.");
+ if(Array.isArray(obj.blueprints)){let incoming=obj.blueprints.map(b=>({id:uid(),name:b.name||"Imported Blueprint",notes:b.notes||"",versions:parseVersions(b.versions||[{version:b.version||"v1.0",actions:b.actions||[]}])}));incoming.forEach(b=>{b.activeVersion=b.versions[b.versions.length-1].id;db.blueprints.push(b)});db.activeBlueprint=incoming[0]?.id||db.activeBlueprint;persist();renderAll();return incoming[0]}
+ const name=obj.name||obj.blueprint||filename.replace(/\.[^.]+$/,"")||"Imported Blueprint";
+ let versions=Array.isArray(obj.versions)&&obj.versions.length?parseVersions(obj.versions):parseVersions([{version:obj.version||"v1.0",actions:obj.actions||obj.steps||[]}]);
+ const b={id:uid(),name,notes:obj.notes||"",versions,activeVersion:versions[versions.length-1].id};db.blueprints.push(b);db.activeBlueprint=b.id;persist();renderAll();return b
 }
-function copyInfo(s,name,det){
- // Returns {label,text} only when there is something to paste into Shortcuts: an equation,
- // a regex pattern, or literal text. Steps that only adjust or rename return null (no button).
- var d=String(det||''),m,t;
- if(s==='r'||s==='m')return null;
- if(name==='Calculate Expression'){
-  if(s==='c')return null;
-  t=d.replace(/^Output variable: \S+\.\s*/,'').split('\n')[0].replace(/\s+→.*$/,'').trim();
-  return /[-+*\/]/.test(t)&&!/\s{2,}|[a-z]{4,}\s[a-z]{3,}/i.test(t)?{label:'Copy equation',text:t}:null;
- }
- if(name==='Match Text'){
-  if((m=d.match(/It should read ([\s\S]+?) and the output stays\b/i)))return {label:'Copy pattern',text:m[1].trim()};
-  if(s==='a'&&(m=d.match(/^(.+?) in \{[^}]+\}(?: ·.*)?$/)))return {label:'Copy pattern',text:m[1].trim()};
-  return null;
- }
- if(name==='Text'){
-  t=d.replace(/^(?:Summary|Log-row) text to enter: /,'').replace(/\s+→\s+\{[^}]+\}$/,'');
-  if(!t||t==='-'||t==='(empty)'||/^\{[^}]+\}$/.test(t))return null;
-  return {label:'Copy text',text:t};
- }
- return null;
-}
-function row(id,tab,ind,s,name,det,x){
- x=x||{};
- if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
- var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
-  var p=stepPresentation(name,det),shownName=p.name,shownDet=p.detail;
- var ci=copyInfo(s,shownName,shownDet);
- var copy=ci?'<button type="button" class="stepcopy" data-copy-step="'+id+'" data-label="'+ci.label+'">'+ci.label+'</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(ci.text)+'</textarea>':'';
- return '<div class="rw '+s+(x.flow?' '+x.flow:'')+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(shownName)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(shownDet?'<div class="dt">'+pills(shownDet)+'</div>':'')+copy+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
-}
-var PP=[];
-function buildPrompt(pp){
- var lines=[];
- pp.items.forEach(function(r,j){
-  if(!r||['a','c','r'].indexOf(r[1])<0||r[2]==='End If'||r[2]==='Otherwise'||r[4]==='nop')return;
-  if(pp.done&&pp.done(r,j))return;
-  var p=stepPresentation(r[2],r[3]);
-   lines.push('- '+(TG[r[1]]||'Change')+': '+p.name+(p.detail?' — '+p.detail.replace(/\n/g,' / '):''));
- });
- if(!lines.length)return 'Every step listed for "'+pp.title+'" is marked done. There is nothing to change.';
- return 'Update my existing iOS Shortcut, '+pp.sc+', according to the following change instructions for "'+pp.title+'".\n\n'+lines.join('\n')+'\n\nApply only these changes. Preserve all unrelated actions, variable names, action order, and existing behavior. Use the exact action names and variable names provided. Do not invent missing actions or silently reinterpret ambiguous instructions; ask me before making an uncertain change. Afterward, summarize what changed and identify anything I need to verify manually in the Shortcuts app.';
-}
-function promptPanel(title,items,key,sc,done){
- var pp={key:key,title:title,items:items,sc:sc||'DoorDash_Offer_Analyzer (v2)',done:done};PP.push(pp);
- return '<div class="cpbox"><div class="cpt">Describe Change prompt</div><div class="cpnote">Generated for this page and updated as you tick steps. Copy it into Shortcuts’ “Describe Change” field, then review the proposed edits before applying them.</div><textarea readonly id="cp-'+key+'" aria-label="Generated Describe Change prompt">'+esc(buildPrompt(pp))+'</textarea><div class="bt"><button type="button" data-copy-prompt="cp-'+key+'">Copy prompt</button></div><div class="cpnote" id="cpmsg-'+key+'" aria-live="polite"></div></div>';
-}
-function refreshPrompts(){PP.forEach(function(pp){var ta=document.getElementById('cp-'+pp.key);if(ta)ta.value=buildPrompt(pp);});}
-function addTab(label,html){
- var i=TL.length;TL.push(label);
- var d=document.createElement('div');d.innerHTML=html;out.appendChild(d);tabEls.push(d);
- var b=document.createElement('button');b.textContent=label;b.onclick=function(){show(i);};nav.appendChild(b);
-}
-function ifFlow(rows,j){
- var stack=[], classes=[], r;
- for(var k=0;k<=j;k++){
-  r=rows[k];if(!r)continue;
-  var name=String(r[2]||''),depth=(+r[0]||0)-1;
-  if(name==='Otherwise'||name==='End If'){
-   var found=-1;
-   for(var z=stack.length-1;z>=0;z--){if(stack[z].depth===depth){found=z;break;}}
-   if(found>=0){
-    if(k===j){classes.push(name==='Otherwise'?'if-otherwise':'if-end');classes.push(stack[found].token);}
-    if(name==='End If')stack.splice(found);
-   }
-   continue;
-  }
-  while(stack.length&&stack[stack.length-1].depth>=depth)stack.pop();
-  if(/^If(?:$|\s|\s*\()/.test(name)){
-   var token='if-link-'+j;
-   if(k===j){classes.push('if-start');classes.push(token);}
-   stack.push({depth:depth,token:token});
-  }else if(k===j&&stack.length){
-   classes.push('if-child');
-   stack.forEach(function(q){classes.push(q.token);});
-  }
- }
- return classes.join(' ');
-}
-S.forEach(function(p,i){
- var h='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
- 
-p.rows.forEach(function(r,j){var flow=ifFlow(p.rows,j);h+=row('s'+i+'-'+j,i,r[0]-1,r[1],r[2],r[3],(r[2]==='End If'||r[2]==='Otherwise')?{flow:flow}:{cb:1,dk:'p'+i+'-'+j,flow:flow});});
- h+=promptPanel(p.t,p.rows,'section-'+i,'DoorDash_Offer_Analyzer (v2)',function(r,j){return !!st.done['p'+i+'-'+j];});
- addTab(p.t.charAt(0),h);
-});
-
-var SS=[];
-function ssec(t,w,rows){SS.push({t:t,w:w,rows:rows});}
-ssec('Already working','Checked against the 23 actions in Shift_Logging. Nothing to change here.',[
-[1,'','Date, then Format Date','Custom yyyy-MM-dd HH:mm.'],
-[1,'','Ask for Input','Prompt: What’s the current mileage? Use the input type specified in the next section.'],
-[1,'','Set Variable','Input = {Provided Input} pill; variable name = Mileage.'],
-[1,'','Choose from Menu: Start or End','Sets {Start} or {End}. The menu result also goes to {St/Ed}.'],
-[1,'','Get File, then Get Text from Input','Dasher info / shifts.txt, Error If Not Found off.'],
-[1,'','Split Text, then Get Item from List','New Lines, Last Item. The last line of the file is the previous odometer reading.'],
-[1,'','Calculate','{Mileage} minus the last reading  →  {Shift Milage}.'],
-[1,'','Ask for Input','Prompt: What zone is it?'],
-[1,'','Set Variable','Input = {Provided Input} pill; variable name = Zone.'],
-[1,'','Append to File','shifts.txt, Append on New Line on. The odometer is the last line of each entry, which the next run reads.']]);
-ssec('Fix before the next shift','Three edits and one file step.',[
-[1,'r','Show Result','The popup right after Get Item from List. It is a leftover test and stops the shortcut until you tap Done. Delete it.'],
-[1,'c','Ask for Input: What’s the current mileage?','Set the input type to Number so a comma or stray text can’t break the math. Type 123456, not 123,456.'],
-[1,'a','Seed shifts.txt (a file, not an action)','In Dasher info, put one line in shifts.txt with only your current odometer, like 123456. No labels, no comma, no blank line after it. With no seed the first run subtracts from an empty line and errors.','nop'],
-[1,'c','Text (the log entry)','Rename the label Shift Mileage to Miles since last entry. On a Start entry the number is the miles since your last End (driving off shift). On an End entry it is the miles you drove that shift. For tax miles, add up the End entries only.']]);
-ssec('Tidy up (optional)','Not needed for it to work.',[
-[1,'c','Text (the log entry): Shift line','Replace {Start}{End} with the {St/Ed} pill. It is already set from the menu result but never used.'],
-[1,'r','Text and Set Variable pairs inside the menu','After that swap, delete the Text Start and Text End actions and the Set Variable Start and End under them.'],
-[1,'c','Set Variable Shift Milage','Rename to ShiftMiles (it is spelled Milage). Update the pill in the log Text afterwards.']]);
-ssec('Optional: one row per entry','Do this after the fixes. It makes each entry one table line like offers.txt, so the analytics page can import it for tax miles.',[
-[1,'c','Seed row','Replace the plain odometer line in shifts.txt with one row: | 2026-10-24 00:00 | Seed | 123456 | 0 | - |  using your real reading in the third column.','nop'],
-[1,'c','Text (the log entry)','One line: | {Formatted Date} | {St/Ed} | {Mileage} | {Shift Milage} | {Zone} |  and nothing else.'],
-[1,'a','Split Text after Get Item from List (Last Item)','Custom separator |  then Get Item from List: Item At Index 4  →  that is the last odometer. Use it in the Calculate instead of the Last Item.'],
-[1,'a','Replace Text on that odometer','Find \\s+, replace with nothing, Regular Expression on, so spaces around the number can’t break the math.']]);
-ssec('First-run checks','Do these once after the fixes.',[
-[1,'','Run Start','The log gets a new entry and the miles equal your reading minus the seed.'],
-[1,'','Run End after driving a bit','The miles equal what you drove since Start.'],
-[1,'','Open shifts.txt','The last line is the odometer (or the last row). No blank line after it.']]);
-var sids=[],mode='a',sh='';
-try{mode=localStorage.getItem('ddv2-mode')==='s'?'s':'a';}catch(e){}
-SS.forEach(function(p,i){
- sh+='<div class="ph">'+esc(p.t)+'</div><div class="pm">'+esc(p.w)+'</div>';
- p.rows.forEach(function(r,j){var id='q'+i+'-'+j;sids.push(id);sh+=row('t'+i+'-'+j,0,0,r[1],r[2],r[3],{cb:1,dk:id,nobk:1});});
-});
-var shiftRows=[];
-SS.forEach(function(p,i){p.rows.forEach(function(r,j){shiftRows.push([r[0],r[1],r[2],r[3],r[4],'q'+i+'-'+j]);});});
-sh+=promptPanel('Shift Logging fixes',shiftRows,'shift','Shift_Logging',function(r){return !!st.done[r[5]];});
-document.getElementById('gS').innerHTML=sh;
-var SEEDV=4,SEED_A=['p0-0','p0-1','p0-2','p0-3','p1-0','p1-1','p1-3','p2-0','p2-1','p2-2','p2-3','p2-4','p2-6','p2-8','p2-9','p2-10','p2-11','p2-12','p2-13','p2-14','p2-15','p2-17','p2-19','p3-0'],SEED_S=['q0-0','q0-1','q0-2','q0-3','q0-4','q0-5','q0-6','q0-7'];
-function wholeStepKey(k,r){
- if(!r||['a','c','r'].indexOf(r[1])<0)return null;
- var normText=function(s){return String(s||'').toLowerCase().replace(/\{([^}]+)\}/g,' $1 ').replace(/[^a-z0-9]+/g,' ').trim();};
- var base=function(s){return normText(String(s||'').replace(/\([^)]*\)/g,'').replace(/\s+(after|under|above|before|right after)\b.*$/i,'').replace(/:.*$/,'')).trim();};
- var stop={the:1,and:1,then:1,from:1,with:1,into:1,after:1,before:1,was:1,now:1,that:1,this:1,for:1,its:1,output:1,rename:1,variable:1,action:1,number:1,item:1,items:1};
- var tokens=function(s){return normText(s).split(/\s+/).filter(function(w){return w.length>2&&!stop[w];});};
- var wa=base(r[2]),wd=tokens(r[2]+' '+r[3]),best=null,bestScore=-1;
- S.forEach(function(sec,si){sec.rows.forEach(function(q,qi){
-  if(!q||['a','c','r'].indexOf(q[1])<0||q[2]==='End If'||q[2]==='Otherwise')return;
-  var qa=base(q[2]),qt=tokens(q[2]+' '+q[3]),overlap=0;
-  wd.forEach(function(w){if(qt.indexOf(w)>-1)overlap++;});
-  var score=(wa===qa?100:0)+(overlap*8)+(Math.min(wd.length,qt.length)?overlap/Math.min(wd.length,qt.length)*10:0);
-  if(score>bestScore){bestScore=score;best='p'+si+'-'+qi;}
- });});
- return bestScore>=100?best:'w'+k;
-}
-var wh='<div class="ph">Whole shortcut — items to address</div><div class="pm">Only actions marked Add, Change, or Remove need a checkbox. Their checks are shared with the matching individual steps and the action plan.</div>';
-WHOLE.forEach(function(r,k){var dk=wholeStepKey(k,r),flow=ifFlow(WHOLE,k);wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3],dk?{cb:1,dk:dk,flow:flow}:{flow:flow});});
-wh+=promptPanel('Whole shortcut',WHOLE,'whole','DoorDash_Offer_Analyzer (v2)',function(r,j){return !!st.done[wholeStepKey(j,r)];});
-addTab('Whole',wh);
-var ph='<div class="ph">Action plan</div><div class="pm">Do these in order, top to bottom. Tap a box when a step is done. Adding an If also adds its Otherwise and End If for you, so those are not listed.</div><div class="note" id="prog"></div>',n=0,ids=[];
-S.forEach(function(p,i){
- ph+='<div class="ph">'+esc(p.t)+'</div><div class="note">'+esc(p.w)+'</div>';
- p.rows.forEach(function(r,j){
-  if(r[2]==='End If'||r[2]==='Otherwise')return;
-  n++;var id='p'+i+'-'+j;ids.push(id);
-  ph+=row(id,S.length+1,0,r[1],r[2],r[3],{cb:1,num:n});
- });
-});
-var planRows=[];
-S.forEach(function(p,i){p.rows.forEach(function(r,j){if(['a','c','r'].indexOf(r[1])>-1&&r[2]!=='End If'&&r[2]!=='Otherwise')planRows.push([r[0],r[1],r[2],(r[3]?'['+p.t+'] '+r[3]:'['+p.t+']'),'','p'+i+'-'+j]);});});
-ph+=promptPanel('Action plan',planRows,'plan','DoorDash_Offer_Analyzer (v2)',function(r){return !!st.done[r[5]];});
-addTab('Plan',ph);
-function prog(){
- var c=0,sc=0;ids.forEach(function(k){if(st.done[k])c++;});sids.forEach(function(k){if(st.done[k])sc++;});
- var an=mode!=='s',tc=an?c:sc,tt=an?ids.length:sids.length,p=tt?Math.round(tc/tt*100):0;
- var pe=document.getElementById('prog');if(pe)pe.textContent=c+' of '+ids.length+' steps done';
- document.getElementById('pf').style.width=p+'%';
- var bs=nav.querySelectorAll('button');
- S.forEach(function(sp,si){var t=0,d=0;ids.forEach(function(k){if(k.indexOf('p'+si+'-')===0){t++;if(st.done[k])d++;}});if(bs[si])bs[si].textContent=sp.t.charAt(0)+(t&&d===t?' ✓':(d?' '+d+'/'+t:''));});
- document.getElementById('pt').textContent=(an?'Analyzer: ':'Shift Log: ')+tc+' of '+tt+' steps done · '+p+'%';}
-prog();
-function bmCount(){document.getElementById('bmb').textContent='★ Bookmarks ('+st.bm.length+')';}
-function show(n){
- tabEls.forEach(function(d,i){d.style.display=(i===n)?'block':'none';});
- var bs=nav.querySelectorAll('button');
- for(var k=0;k<bs.length;k++){bs[k].className=(k===n)?'on':'';}
- window.scrollTo(0,0);
-}
-function go(id){
- var el=document.getElementById(id);if(!el)return;
- show(+el.getAttribute('data-tab'));
- el.scrollIntoView({block:'center'});el.classList.add('fl');
- setTimeout(function(){el.classList.remove('fl');},1800);
-}
-function panel(){
- var p=document.getElementById('bmp');
- if(!st.bm.length){p.innerHTML='No bookmarks yet. Tap the star on any row to add one.';return;}
- var h='';
- st.bm.forEach(function(id){
-  var el=document.getElementById(id);if(!el)return;
-  var t=+el.getAttribute('data-tab');
-  h+='<div class="it"><span>'+esc(el.querySelector('.nt').textContent)+'<small>'+esc(t<S.length?S[t].t:(t===S.length?'Whole':'Plan'))+'</small></span><button data-go="'+id+'">Go</button></div>';
- });
- h+='<div class="it" style="border:none"><button id="clr">Clear bookmarks and checks</button></div>';
- p.innerHTML=h;
-}
-document.getElementById('bmb').onclick=function(){var p=document.getElementById('bmp');var open=p.style.display==='none';p.style.display=open?'block':'none';if(open)panel();};
-document.getElementById('bmp').onclick=function(e){
- var g=e.target.getAttribute&&e.target.getAttribute('data-go');
- if(g){go(g);return;}
- if(e.target.id==='clr'){
-  st={bm:[],done:{},t:0,seed:SEEDV,ai:st.ai||''};save();applyAll();
- }
-};
-out.addEventListener('click',function(e){
- var b=e.target.closest?e.target.closest('.bk'):null;if(!b)return;
- var id=b.getAttribute('data-id'),i=st.bm.indexOf(id);
- if(i>-1){st.bm.splice(i,1);b.textContent='☆';}else{st.bm.push(id);b.textContent='★';}
- save();bmCount();
- if(document.getElementById('bmp').style.display!=='none')panel();
-});
-out.addEventListener('change',function(e){
- var c=e.target;if(!c.classList||!c.classList.contains('cb'))return;
- var id=c.getAttribute('data-id');
- if(c.checked)st.done[id]=1;else delete st.done[id];
- save();applyAll();
-});
-function applyAll(){
- document.querySelectorAll('.bk').forEach(function(b){b.textContent=st.bm.indexOf(b.getAttribute('data-id'))>-1?'★':'☆';});
- document.querySelectorAll('.cb').forEach(function(c){var on=!!st.done[c.getAttribute('data-id')];c.checked=on;c.parentNode.classList.toggle('dn',on);});
- bmCount();prog();refreshPrompts();if(document.getElementById('bmp').style.display!=='none')panel();
-}
-function handoff(){
- var L=[],done=0,total=0,open=[],fin=[];
- S.forEach(function(p,i){p.rows.forEach(function(r,j){
-  if(r[2]==='End If'||r[2]==='Otherwise')return;
-  total++;var id='p'+i+'-'+j,line='['+(TG[r[1]]||'Keep')+'] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):'')+'  (section: '+p.t+')';
-  if(st.done[id]){done++;fin.push('- [x] '+line);}else open.push('- [ ] '+line);
- });});
- var bms=st.bm.map(function(id){var el=document.getElementById(id);return el?'- '+el.querySelector('.nt').textContent+'  ('+id+')':null;}).filter(Boolean);
- L.push('# Shortcut Builder: handoff file (DoorDash Offer Analyzer v2 and Shift Logging)','Guide version '+VER+' · exported '+new Date().toISOString().slice(0,16).replace('T',' ')+' UTC · '+done+' of '+total+' steps done','');
- L.push('## For the AI reading this','The user is editing two iOS Shortcuts on their phone, one action at a time: DoorDash_Offer_Analyzer (v2) and Shift_Logging. This file has the remaining edits, which are done, their bookmarks, and the guide data. Help with the open steps. Pill names in {braces} are real variable names. Tags: Add, Change, Remove. Do not invent actions, and say what you could not verify on the phone. Still unverified on a phone: the (?m) flag in Match Text, and the name Count gives its output.','When you change anything, reply with (1) the corrected rows in plain text and (2) the updated State JSON below in the same format. If you change the guide data, keep the row order so step ids (p<section>-<row>) still match, or say which ids moved.','');
- L.push('## User-maintained AI instructions / update notes',(st.ai||'').trim()||'(No extra instructions saved yet.)','','');
- L.push('## Open steps ('+open.length+')',open.join('\n')||'None','','## Done ('+done+')',fin.join('\n')||'None','','## Bookmarks',bms.join('\n')||'None','');
- var so=[],sd=[];SS.forEach(function(p,i){p.rows.forEach(function(r,j){var id='q'+i+'-'+j,ln='['+(TG[r[1]]||'Keep')+'] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):'')+'  (section: '+p.t+')';if(st.done[id])sd.push('- [x] '+ln);else so.push('- [ ] '+ln);});});
- L.push('## Shift Logging shortcut: open steps ('+so.length+')',so.join('\n')||'None','','## Shift Logging shortcut: done ('+sd.length+')',sd.join('\n')||'None','');
- var wholeDone=[];WHOLE.forEach(function(r,k){if(['a','c','r'].indexOf(r[1])>-1&&st.done[wholeStepKey(k,r)])wholeDone.push('- [x] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));});
- L.push('## Whole shortcut page checks ('+wholeDone.length+' done)',wholeDone.join('\n')||'None','','## State (import this)','```json',JSON.stringify({v:VER,state:st}),'```','');
- L.push('## Guide data: S = sections [indent, tag a/c/r, action, detail], WHOLE = every action in order','```json',JSON.stringify({S:S,WHOLE:WHOLE,SHIFT:SS}),'```');
- return L.join('\n');
-}
-var hp=document.getElementById('hp');
-function openHandoff(){
- hp.innerHTML='<div>Take this file to any AI. Tap Save file or Copy, or long-press the box. To bring back progress an AI sends you, paste its handoff into the box and tap Apply.</div><textarea id="hta"></textarea><div class="bt"><button id="hsv">Save file</button><button id="hcp">Copy</button><button id="hap">Apply pasted</button></div><div class="note" id="hms" style="margin:6px 0 0"></div>';
- document.getElementById('hta').value=handoff();
- hp.style.display='block';
-}
-function msg(t){document.getElementById('hms').textContent=t;}
-document.getElementById('hob').onclick=function(){if(hp.style.display==='none')openHandoff();else hp.style.display='none';};
-hp.onclick=async function(e){
- var id=e.target.id,ta=document.getElementById('hta');
- if(id==='hcp'){ta.select();try{await navigator.clipboard.writeText(ta.value);msg('Copied.');}catch(x){try{document.execCommand('copy');msg('Copied.');}catch(y){msg('Copy blocked. Long-press the box, Select All, Copy.');}}}
- if(id==='hsv'){
-  var ok=false;
-  try{var d=await claude.use('downloads');if(d){var names=['doordash-handoff.md','doordash-handoff.txt'];
-   for(var k=0;k<names.length&&!ok;k++){try{await d.save({filename:names[k],data:ta.value});ok=true;}catch(x){if(x&&x.code==='declined')return;}}}}catch(x){}
-  msg(ok?'Saved.':'Saving files is not available here. Use Copy instead.');
- }
- if(id==='hap'){
-  var t=ta.value,m,found=null,re=/```json\s*([\s\S]*?)```/g;
-  while((m=re.exec(t))){try{var o=JSON.parse(m[1]);if(o&&o.state){found=o.state;}}catch(x){}}
-  if(!found){try{var o2=JSON.parse(t);found=o2.state||o2;}catch(x){}}
-  if(!found||(!found.done&&!found.bm)){msg('No State JSON found in that text.');return;}
-  st=norm(found);save();applyAll();
-  var im=t.match(/## User-maintained AI instructions \/ update notes\s*([\s\S]*?)(?=\n## |$)/);
-  if(im&&im[1].trim()&&im[1].trim()!=='(No extra instructions saved yet.)'){st.ai=im[1].trim();save();}msg('Applied: '+Object.keys(st.done).length+' steps done, '+st.bm.length+' bookmarks.');
- }
-};
-function lsOK(){try{localStorage.setItem('ddv2-t','1');return localStorage.getItem('ddv2-t')==='1';}catch(e){return false;}}
-setSync(lsOK()?'Account save not active. Saving on this device only.':'NOT saving here. Sign in to Claude, or use the Handoff file.');
-(async function(){
- try{
-  if(!window.claude||!claude.use)return;
-  var user=await claude.use('user'),db=await claude.use('db');
-  if(!user||!db)return;
-  var id=await user.id();if(!id)return;
-  dbDoc=db.collection('data/users/'+id).doc('guide');
-  var snap=await dbDoc.get();
-  if(snap.exists){
-   var r=norm(JSON.parse(snap.data().state));
-   if(r.t>st.t){st=r;try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}applyAll();}
-   else if(st.t>r.t){dbDoc.set({state:JSON.stringify(st)});}
-  }else if(st.t){dbDoc.set({state:JSON.stringify(st)});}
-  seedOnce();setSync('Saved to your Claude account and this device');
- }catch(e){setSync(lsOK()?'Account save failed. Saving on this device only.':'NOT saving here. Use the Handoff file.');}
+function parseVersions(arr){return arr.map((x,i)=>{const v=makeVersion(x.label||x.version||("v"+(i+1)+".0"),x.actions||x.steps||[]);v.createdAt=x.createdAt||x.date||v.createdAt;v.progress={};v.bookmarks=[];return v})}
+function importText(text,filename){let trimmed=text.trim();if(!trimmed)throw Error("That file is empty.");if(/\.json$/i.test(filename)||trimmed[0]==="{"||trimmed[0]==="["){return importObject(JSON.parse(trimmed),filename)}const delim=/\.tsv$/i.test(filename)||trimmed.split("\n")[0].includes("\t")?"\t":",";const actions=parseCsv(trimmed,delim);if(actions.length)return createBlueprint(filename.replace(/\.[^.]+$/,"")||"Imported blueprint",actions);const lines=trimmed.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);return createBlueprint(filename.replace(/\.[^.]+$/,"")||"Imported blueprint",lines.map((line,i)=>({order:i+1,section:"Imported steps",action:line,pill:line,description:"Imported as a plain-text step. Edit this action to specify the exact Shortcuts action and pill configuration."})))}
+function download(filename,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"application/json"}));a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportBlueprint(){const b=bp();if(!b)return;const out={format:"shortcut-blueprint-builder",schemaVersion:1,name:b.name,notes:b.notes,versions:b.versions.map(v=>({version:v.label,createdAt:v.createdAt,actions:v.actions.map(a=>({...a})),progress:v.progress,bookmarks:v.bookmarks}))};download(slug(b.name)+".blueprint.json",JSON.stringify(out,null,2))}
+function exportCurrent(){const b=bp(),v=ver();if(!b||!v)return;download(slug(b.name)+"-"+slug(v.label)+".json",JSON.stringify({format:"shortcut-blueprint-builder",name:b.name,notes:b.notes,version:v.label,actions:v.actions},null,2))}
+function slug(s){return String(s||"blueprint").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"blueprint"}
+function diffVersions(from,to){const oldMap=new Map(from.actions.map(a=>[a.id,a])),newMap=new Map(to.actions.map(a=>[a.id,a]));const rows=[];to.actions.forEach(a=>{const old=oldMap.get(a.id);if(!old)rows.push({kind:"added",a});else{const fields=["section","action","pill","description","inputs","expected"];const changed=fields.filter(k=>(old[k]||"")!==(a[k]||""));if(changed.length)rows.push({kind:"changed",a,old,fields:changed});else rows.push({kind:"same",a,old})}});from.actions.forEach(a=>{if(!newMap.has(a.id))rows.push({kind:"removed",a,old:a})});return rows}
+function currentDiff(){const b=bp();if(!b||b.versions.length<2)return null;let base=findVersion(document.getElementById("baseVersion").value,b),to=findVersion(document.getElementById("compareVersion").value,b);return base&&to?{base,to,rows:diffVersions(base,to)}:null}
+function renderAll(rebuildSelects=true){if(!bp()){document.getElementById("workspaceTitle").textContent="Your blueprint workspace";document.getElementById("actionList").innerHTML=emptyState();return}if(rebuildSelects)renderSelects();renderSidebar();renderHeader();renderActions();renderDiff();renderBookmarks();renderKPIs();renderTab()}
+function renderSelects(){const b=bp();const bs=document.getElementById("blueprintSelect");bs.innerHTML=db.blueprints.map(x=>'<option value="'+esc(x.id)+'" '+(x.id===b.id?'selected':'')+'>'+esc(x.name)+'</option>').join("");const vs=document.getElementById("versionSelect");vs.innerHTML=b.versions.map(x=>'<option value="'+esc(x.id)+'" '+(x.id===b.activeVersion?'selected':'')+'>'+esc(x.label)+'</option>').join("");const base=document.getElementById("baseVersion"),to=document.getElementById("compareVersion");const prevBase=base.value,prevTo=to.value;base.innerHTML=b.versions.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.label)+'</option>').join("");to.innerHTML=base.innerHTML;if(b.versions.length>1){base.value=b.versions.some(x=>x.id===prevBase)?prevBase:b.versions[0].id;to.value=b.versions.some(x=>x.id===prevTo)?prevTo:b.versions[b.versions.length-1].id}else if(b.versions.length){base.value=to.value=b.versions[0].id}document.getElementById("blueprintNotes").value=b.notes||""}
+function renderSidebar(){const b=bp(),v=ver();document.getElementById("progressText").textContent=v.actions.length?pct(v)+"% complete · "+v.actions.filter(a=>isDone(a,v)).length+" of "+v.actions.length+" actions":"No actions yet";document.getElementById("progressFill").style.width=pct(v)+"%";const bm=v.actions.filter(a=>isBookmarked(a,v));document.getElementById("bookmarkList").innerHTML=bm.length?bm.slice(0,3).map(a=>'<div class="bookmark-card"><b>'+esc(a.order+'. '+a.action)+'</b><div class="tiny muted">'+esc(a.section)+'</div><button class="btn small" data-jump="'+esc(a.id)+'">Resume here ↗</button></div>').join(""):'<p class="tiny muted">Bookmark an action to save your place.</p>'}
+function renderHeader(){const b=bp(),v=ver();document.getElementById("workspaceTitle").textContent=b.name;document.getElementById("workspaceSub").textContent=(v?v.label+" · "+new Date(v.createdAt).toLocaleDateString():"No version")+" · Edit the blueprint actions below; use Compare to see version-to-version changes.";document.getElementById("blueprintNotes").value=b.notes||""}
+function emptyState(){return '<div class="empty"><div class="big">⌘</div><h3>Start with a blueprint</h3><p>Import a JSON, CSV, TSV or text blueprint—or add the first action manually.</p><button class="btn primary" onclick="document.getElementById(\'addAction\').click()">＋ Add first action</button></div>'}
+function actionCard(a,i,status=""){const v=ver(),done=isDone(a,v),book=isBookmarked(a,v);return '<article class="action '+(done?'done':'')+'" id="action-'+esc(a.id)+'"><div class="action-head"><div class="order">'+esc(a.order||i+1)+'</div><div class="action-main"><div class="action-title"><strong>'+esc(a.action)+'</strong><span class="section-tag">'+esc(a.section)+'</span>'+(status?'<span class="status '+status+'">'+status+'</span>':'')+'</div><div class="action-sub">'+(a.description?esc(a.description):'No description added yet.')+'</div><label class="pilllabel">Exact Shortcuts setup <span class="help" tabindex="0" title="This field should match what you configure in Apple Shortcuts: action name, selected input/result pill, text, variable destination, and relevant options.">?</span></label><div class="pilltext">'+esc(a.pill||"Add the exact pill/action configuration")+'</div><div class="action-tools" style="margin-top:9px"><label class="donecheck"><input type="checkbox" data-done="'+esc(a.id)+'" '+(done?'checked':'')+'> Completed</label><button data-bookmark="'+esc(a.id)+'" class="'+(book?'on':'')+'">'+(book?'★ Bookmarked':'☆ Bookmark')+'</button><button data-edit="'+esc(a.id)+'">Edit action</button><button data-delete="'+esc(a.id)+'" class="danger">Delete</button></div><details><summary>Action details & expected result</summary><div style="padding-top:8px"><b>Inputs / previous pill</b><p>'+esc(a.inputs||"Not specified")+'</p><b>Expected result</b><p>'+esc(a.expected||"Not specified")+'</p><b>Help note</b><p>'+esc(a.description||"No description yet")+'</p></div></details></div></div></article>'}
+function renderActions(){const v=ver(),el=document.getElementById("actionList");if(!v){el.innerHTML=emptyState();return}const q=searchText.toLowerCase(),filter=document.getElementById("filter").value;let list=v.actions.filter(a=>{const text=[a.action,a.section,a.pill,a.description,a.inputs,a.expected].join(" ").toLowerCase();return(!q||text.includes(q))&&(filter==="all"||filter==="todo"&&!isDone(a,v)||filter==="done"&&isDone(a,v)||filter==="bookmarked"&&isBookmarked(a,v))});list.sort((a,b)=>(a.order||0)-(b.order||0));el.innerHTML=list.length?list.map((a,i)=>actionCard(a,i)).join(""):v.actions.length?'<div class="empty"><h3>No matching actions</h3><p>Change your search or filter.</p></div>':emptyState()}
+function renderKPIs(){const v=ver();document.getElementById("totalCount").textContent=v.actions.length;document.getElementById("doneCount").textContent=v.actions.filter(a=>isDone(a,v)).length;document.getElementById("bookmarkCount").textContent=v.actions.filter(a=>isBookmarked(a,v)).length;const d=currentDiff();document.getElementById("changeCount").textContent=d?d.rows.filter(x=>x.kind!=="same").length:"—"}
+function renderDiff(){const b=bp(),el=document.getElementById("diffView");if(!b||b.versions.length<2){el.innerHTML='<div class="empty"><h3>Need at least two versions</h3><p>Create a new version after your first blueprint, then compare the full action list.</p></div>';return}const d=currentDiff();if(!d){el.innerHTML='<div class="empty">Choose two versions to compare.</div>';return}const changed=d.rows.filter(x=>x.kind==="changed"),added=d.rows.filter(x=>x.kind==="added"),removed=d.rows.filter(x=>x.kind==="removed"),same=d.rows.filter(x=>x.kind==="same");const summary='<div class="panel"><b>'+esc(d.base.label)+' → '+esc(d.to.label)+'</b><p class="muted tiny" style="margin:5px 0 0">'+added.length+' added · '+changed.length+' changed · '+removed.length+' removed · '+same.length+' unchanged</p></div>';function group(title,rows,kind){return '<div class="diff-group"><h3>'+title+' ('+rows.length+')</h3>'+(rows.length?rows.map(x=>'<div class="diff-row"><span class="status '+kind+'">'+kind+'</span><div><h4>'+esc(x.a.order+'. '+x.a.action)+'</h4><p>'+esc(x.a.section)+' · '+esc(x.a.pill||'No pill text')+'</p>'+(x.kind==="changed"?'<p><b>Before:</b> '+esc(x.old.pill||"No pill text")+'</p><p><b>After:</b> '+esc(x.a.pill||"No pill text")+'</p><p>Changed fields: '+esc(x.fields.join(", "))+'</p>':x.kind==="removed"?'<p>Last version setup: '+esc(x.old.pill||"No pill text")+'</p>':'<p>'+esc(x.a.description||"No description")+'</p>')+'</div></div>').join(""):'<p class="muted tiny">None</p>')+'</div>'}el.innerHTML=summary+group("Added",added,"added")+group("Changed / upgraded",changed,"changed")+group("Removed",removed,"removed")+group("Unchanged actions",same,"same")}
+function renderBookmarks(){const v=ver(),el=document.getElementById("bookmarksView"),bm=v.actions.filter(a=>isBookmarked(a,v));el.innerHTML=bm.length?'<div class="panel"><b>Saved places in '+esc(v.label)+'</b><p class="muted tiny">Bookmarks are saved per version on this device.</p></div>'+bm.map((a,i)=>actionCard(a,i)).join(""):'<div class="empty"><div class="big">☆</div><h3>No bookmarks yet</h3><p>Bookmark any action to remember where you left off.</p></div>'}
+function renderTab(){document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===tab));document.getElementById("actionsView").classList.toggle("hidden",tab!=="actions");document.getElementById("diffView").classList.toggle("hidden",tab!=="diff");document.getElementById("bookmarksView").classList.toggle("hidden",tab!=="bookmarks")}
+function modal(title,body,saveLabel,saveFn,removeFn){const root=document.getElementById("modalRoot");root.innerHTML='<div class="modal-back" id="modalBack"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle">'+esc(title)+'</h2><p class="muted tiny">Write the configuration as it should appear in Apple Shortcuts—not just a general instruction.</p>'+body+'<div class="modal-foot"><div>'+(removeFn?'<button class="btn danger" id="modalDelete">Delete action</button>':'')+'</div><div class="btnrow"><button class="btn" id="modalCancel">Cancel</button><button class="btn primary" id="modalSave">'+esc(saveLabel||"Save")+'</button></div></div></div></div>';document.getElementById("modalCancel").onclick=()=>root.innerHTML="";document.getElementById("modalBack").onclick=e=>{if(e.target.id==="modalBack")root.innerHTML=""};document.getElementById("modalSave").onclick=()=>{const data={};root.querySelectorAll("[data-field]").forEach(x=>data[x.dataset.field]=x.value.trim());saveFn(data);root.innerHTML=""};if(removeFn)document.getElementById("modalDelete").onclick=()=>{if(confirm("Delete this action from the current version?")){removeFn();root.innerHTML=""}}}
+function editAction(id){const v=ver(),old=v.actions.find(a=>a.id===id),a=old?clone(old):normalizeAction({id:uid(),order:v.actions.length+1,section:"General",action:"",pill:"",description:"",inputs:"",expected:""});const fields=[["action","Action name in Shortcuts",a.action],["section","Section / group",a.section],["pill","Exact pill and configuration",a.pill],["description","Small description / why this step exists",a.description],["inputs","Input pill / previous action result",a.inputs],["expected","Expected output / result",a.expected]];const body=fields.map(([k,label,val])=>'<div class="field"><label for="f-'+k+'">'+esc(label)+'</label>'+(k==="description"||k==="inputs"||k==="expected"?'<textarea id="f-'+k+'" data-field="'+k+'" placeholder="'+esc(label)+'">'+esc(val)+'</textarea>':'<input id="f-'+k+'" type="text" data-field="'+k+'" value="'+esc(val)+'" placeholder="'+esc(label)+'">')+'</div>').join("")+'<p class="tiny muted">Tip: record the visible action name, each selected variable/result pill, destination variable name, menu value, and any numeric/text setting. Keep explanatory prose in the description field.</p>';modal(old?"Edit action":"Add an action",body,old?"Save action":"Add action",data=>{a.action=data.action||"Shortcut action";a.section=data.section||"General";a.pill=data.pill;a.description=data.description;a.inputs=data.inputs;a.expected=data.expected;if(old){Object.assign(old,a)}else{a.order=v.actions.length+1;v.actions.push(a)}persist();renderAll() },old?()=>{v.actions=v.actions.filter(x=>x.id!==id);delete v.progress[id];v.bookmarks=v.bookmarks.filter(x=>x!==id);persist();renderAll()}:null)}
+function createNextVersion(){const b=bp(),old=ver();if(!b||!old)return;const nextNo=b.versions.length+1;const label=prompt("Name this version","v"+nextNo+".0");if(!label)return;const nv=makeVersion(label,old.actions);nv.progress={};nv.bookmarks=[];b.versions.push(nv);b.activeVersion=nv.id;persist();renderAll();say("Created "+label+" from "+old.label+". Compare versions to see future edits.");}
+function compareNow(){tab="diff";renderDiff();renderTab();document.getElementById("diffView").scrollIntoView({behavior:"smooth",block:"start"})}
+function resume(id){tab="actions";renderTab();setTimeout(()=>{const el=document.getElementById("action-"+CSS.escape(id));if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.style.boxShadow="0 0 0 3px #78a5ff";setTimeout(()=>el.style.boxShadow="",1500)}} ,50)}
+function importFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const b=importText(String(reader.result),file.name);say("Imported "+(b?.name||file.name)+". Review action pills and descriptions before building.");}catch(e){say("Import failed: "+e.message)}};reader.readAsText(file)}
+document.getElementById("file").addEventListener("change",e=>importFile(e.target.files[0]));
+document.getElementById("drop").addEventListener("click",e=>{if(e.target.tagName!=="INPUT")document.getElementById("file").click()});
+["dragenter","dragover"].forEach(n=>document.getElementById("drop").addEventListener(n,e=>{e.preventDefault();document.getElementById("drop").classList.add("drag")}));
+["dragleave","drop"].forEach(n=>document.getElementById("drop").addEventListener(n,e=>{e.preventDefault();document.getElementById("drop").classList.remove("drag")}));
+document.getElementById("drop").addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(f)importFile(f)});
+document.getElementById("importTop").onclick=()=>document.getElementById("file").click();
+document.getElementById("importActions").onclick=()=>document.getElementById("file").click();
+document.getElementById("exportTop").onclick=exportBlueprint;document.getElementById("exportActions").onclick=exportCurrent;
+document.getElementById("blueprintSelect").onchange=e=>{db.activeBlueprint=e.target.value;persist();renderAll()};
+document.getElementById("versionSelect").onchange=e=>{bp().activeVersion=e.target.value;persist();renderAll()};
+document.getElementById("baseVersion").onchange=()=>{renderKPIs();renderDiff()};
+document.getElementById("compareVersion").onchange=()=>{renderKPIs();renderDiff()};
+document.getElementById("compareBtn").onclick=compareNow;
+document.getElementById("newBlueprint").onclick=()=>{const name=prompt("Blueprint name","New Shortcut Blueprint");if(name?.trim())createBlueprint(name.trim())};
+document.getElementById("renameBlueprint").onclick=()=>{const b=bp(),name=prompt("Rename blueprint",b.name);if(name?.trim()){b.name=name.trim();persist();renderAll()}};
+document.getElementById("saveNotes").onclick=()=>{bp().notes=document.getElementById("blueprintNotes").value;persist();say("Blueprint notes saved.")};
+document.getElementById("newVersion").onclick=createNextVersion;
+document.getElementById("saveVersion").onclick=()=>{persist();say("Saved "+(ver()?.label||"version")+" locally. Export a backup to keep it safe.")};
+document.getElementById("addAction").onclick=()=>editAction(null);
+document.getElementById("search").oninput=e=>{searchText=e.target.value;renderActions()};
+document.getElementById("filter").onchange=renderActions;
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{tab=t.dataset.tab;renderTab()});
+document.getElementById("showBookmarks").onclick=()=>{tab="bookmarks";renderTab();document.getElementById("bookmarksView").scrollIntoView({behavior:"smooth",block:"start"})};
+document.getElementById("clearDone").onclick=()=>{if(confirm("Clear completed checkmarks for this version?")){ver().progress={};persist();renderAll(false)}};
+document.getElementById("actionList").addEventListener("change",e=>{const id=e.target.dataset.done;if(id)setDone(id,e.target.checked)});
+document.getElementById("actionList").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.bookmark)toggleBookmark(b.dataset.bookmark);else if(b.dataset.edit)editAction(b.dataset.edit);else if(b.dataset.delete){const v=ver();if(confirm("Delete this action from the current version?")){v.actions=v.actions.filter(a=>a.id!==b.dataset.delete);delete v.progress[b.dataset.delete];v.bookmarks=v.bookmarks.filter(x=>x!==b.dataset.delete);persist();renderAll()}}else if(b.dataset.jump)resume(b.dataset.jump)});
+document.getElementById("bookmarksView").addEventListener("change",e=>{const id=e.target.dataset.done;if(id)setDone(id,e.target.checked)});
+document.getElementById("bookmarksView").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.bookmark)toggleBookmark(b.dataset.bookmark);else if(b.dataset.edit)editAction(b.dataset.edit);else if(b.dataset.delete){const v=ver();if(confirm("Delete this action?")){v.actions=v.actions.filter(a=>a.id!==b.dataset.delete);v.bookmarks=v.bookmarks.filter(x=>x!==b.dataset.delete);delete v.progress[b.dataset.delete];persist();renderAll()}}});
+document.getElementById("bookmarkList").addEventListener("click",e=>{const b=e.target.closest("[data-jump]");if(b)resume(b.dataset.jump)});
+window.addEventListener("beforeunload",persist);
+if(!db.blueprints.length){createBlueprint("Example — Basic Shortcut",[
+{ id:"demo-1",order:1,section:"Setup",action:"Ask for Input",pill:"Ask for Text · Prompt: “What should this shortcut process?” · Default Answer: (blank)",description:"Collect the user's input before processing it.",inputs:"Shortcut start",expected:"Provided Text result"},
+{ id:"demo-2",order:2,section:"Store value",action:"Set Variable",pill:"Set Variable · Input: [Provided Input] pill · Variable Name: UserText",description:"Store the result so later actions can refer to it by name.",inputs:"Provided Input result pill",expected:"Variable UserText is available"},
+{ id:"demo-3",order:3,section:"Process",action:"If",pill:"If · Input: [UserText] · Condition: has any value",description:"Only continue when the user supplied something.",inputs:"UserText variable pill",expected:"Run the actions in the If branch when not empty"},
+{ id:"demo-4",order:4,section:"Process",action:"Text",pill:"Text · Body: “You entered: [UserText]” (insert UserText as a variable pill)",description:"Build a message from static text and the variable result.",inputs:"UserText variable pill",expected:"A Text result containing the entered value"},
+{ id:"demo-5",order:5,section:"Output",action:"Show Result",pill:"Show Result · Input: [Text] result pill",description:"Display the message to the user.",inputs:"Text action result pill",expected:"A result popup displays the text"}
+]);say("Example blueprint loaded. Import your own blueprint or edit the sample actions.");}
+renderAll();
 })();
-
-document.getElementById('gS').addEventListener('change',function(e){
- var c=e.target;if(!c.classList||!c.classList.contains('cb'))return;
- var id=c.getAttribute('data-id');
- if(c.checked)st.done[id]=1;else delete st.done[id];
- save();applyAll();
-});
-document.addEventListener('click',async function(e){
- var step=e.target.closest?e.target.closest('[data-copy-step]'):null;
- if(step){
-  var source=step.parentNode.querySelector('.copy-source');
-  if(!source)return;
-  var value=source.value;
-  try{await navigator.clipboard.writeText(value);step.textContent='Copied';}
-  catch(x){source.focus();source.select();try{var ok=document.execCommand('copy');step.textContent=ok?'Copied':'Select and copy';}catch(y){step.textContent='Select and copy';}}
-  setTimeout(function(){step.textContent=step.getAttribute('data-label')||'Copy text';},1800);
-  return;
- }
- var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;if(!cp)return;
- var id=cp.getAttribute('data-copy-prompt'),ta=document.getElementById(id),mg=document.getElementById('cpmsg-'+id.slice(3));
- if(!ta)return;ta.focus();ta.select();
- try{await navigator.clipboard.writeText(ta.value);if(mg)mg.textContent='Prompt copied. Paste it into Describe Change.';}
- catch(x){try{document.execCommand('copy');if(mg)mg.textContent='Prompt copied. Paste it into Describe Change.';}catch(y){if(mg)mg.textContent='Copy blocked. Long-press the text, Select All, Copy.';}}
-});
-function imsg(t){var e=document.getElementById('ims');if(e)e.textContent=t;}
-function openInstructions(){
- var q=document.getElementById('ip');
- q.innerHTML='<div style="font-weight:600;margin:0 0 4px">Instructions for the next AI update</div><div class="note">Keep corrections, priorities, or the next changes here. They save with your progress and go into the Handoff file.</div><textarea id="ita" aria-label="AI instructions and update notes" placeholder="Add instructions for the next update…"></textarea><div class="bt"><button id="isv">Save instructions</button><button id="icp">Copy instructions</button></div><div class="note" id="ims" style="margin:6px 0 0"></div>';
- document.getElementById('ita').value=st.ai||'';
- q.style.display='block';
-}
-document.getElementById('iob').onclick=function(){var q=document.getElementById('ip');if(q.style.display==='none')openInstructions();else q.style.display='none';};
-document.getElementById('ip').onclick=async function(e){
- var id=e.target.id,ta=document.getElementById('ita');if(!ta)return;
- if(id==='isv'){st.ai=ta.value;save();imsg('Saved. It will be included in the Handoff file.');}
- if(id==='icp'){ta.select();try{await navigator.clipboard.writeText(ta.value);imsg('Instructions copied.');}catch(x){try{document.execCommand('copy');imsg('Instructions copied.');}catch(y){imsg('Copy blocked. Long-press the text, Select All, Copy.');}}}
-};
-function setMode(m){
- mode=m;try{localStorage.setItem('ddv2-mode',m);}catch(e){}
- var an=m!=='s';
- document.getElementById('hA').style.display=an?'block':'none';
- document.getElementById('gA').style.display=an?'block':'none';
- document.getElementById('hS').style.display=an?'none':'block';
- document.getElementById('gS').style.display=an?'none':'block';
- document.getElementById('bmb').style.display=an?'':'none';
- if(!an)document.getElementById('bmp').style.display='none';
- document.getElementById('mA').className=an?'on':'';
- document.getElementById('mS').className=an?'':'on';
- prog();window.scrollTo(0,0);
-}
-document.getElementById('mA').onclick=function(){setMode('a');};
-document.getElementById('mS').onclick=function(){setMode('s');};
-function seedOnce(){if((st.seed||0)>=SEEDV)return;
- if((st.seed||0)<4){var mv={};Object.keys(st.done).forEach(function(k){var m=/^w(\d+)$/.exec(k);mv[m&&+m[1]>=76?'w'+(+m[1]+1):k]=st.done[k];});st.done=mv;}
- SEED_A.concat(SEED_S).forEach(function(k){st.done[k]=1;});st.seed=SEEDV;save();applyAll();}
-document.getElementById('hdb').onclick=function(){var on=document.body.classList.toggle('hd');this.textContent=on?'Show done':'Hide done';};
-bmCount();
-show(0);
-setMode(mode);
-seedOnce();
 </script>
-</body>
-</html>
+</body></html>
