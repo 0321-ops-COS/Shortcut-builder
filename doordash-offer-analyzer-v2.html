@@ -36,8 +36,8 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 .all .pm,.all .ph{display:none}
 .foot{font-size:12.5px;color:var(--tx2);margin:14px 4px 0}
 
-.rw.if-child:before,.rw.if-otherwise:before,.rw.if-end:before{content:'';position:absolute;left:4px;top:-7px;height:calc(100% + 13px);border-left:2px solid var(--pillx);opacity:.5;pointer-events:none}.rw.if-child:before{left:-10px}.rw.if-end:after{content:'';position:absolute;left:4px;top:10px;width:9px;border-top:2px solid var(--pillx);opacity:.5}.rw.if-start .nt:before{content:'IF ';font-size:10px;letter-spacing:.04em;color:var(--pillx);font-weight:700}.rw.if-otherwise .nt:before{content:'OTHERWISE ';font-size:10px;color:var(--pillx);font-weight:700}.rw.if-end .nt:before{content:'END IF ';font-size:10px;color:var(--pillx);font-weight:700}
-.rw{display:flex;align-items:flex-start;gap:8px}
+.rw.if-child:before,.rw.if-otherwise:before,.rw.if-end:before{content:'';position:absolute;left:4px;top:-7px;height:17px;border-left:2px solid var(--pillx);opacity:.5;pointer-events:none}.rw.if-child:before{left:-10px}.rw.if-end:after{content:'';position:absolute;left:4px;top:10px;width:9px;border-top:2px solid var(--pillx);opacity:.5}.rw.if-start .nt:before{content:'IF ';font-size:10px;letter-spacing:.04em;color:var(--pillx);font-weight:700}.rw.if-otherwise .nt:before{content:'OTHERWISE ';font-size:10px;color:var(--pillx);font-weight:700}.rw.if-end .nt:before{content:'END IF ';font-size:10px;color:var(--pillx);font-weight:700}
+.rw{position:relative;display:flex;align-items:flex-start;gap:8px}
 .rb{flex:1;min-width:0}
 .bk{font:inherit;font-size:19px;line-height:1;border:none;background:none;color:var(--tx2);padding:2px 4px;margin:-2px -4px 0 0}
 .cb{width:22px;height:22px;flex:none;margin:1px 0 0}
@@ -120,6 +120,7 @@ sec('4 · Part D: use the tunables, add the ramp','From Calculate Expression Car
 [1,'c','If {ItemsNum} is greater than 3','Change the 3 to {BigItems}.'],
 [2,'c','Number 2, Set Variable ReqMile','Rename to MileBase. Value becomes {BigMile}.'],
 [2,'c','Number 20, Set Variable ReqHour','Rename to HourBase. Value becomes {BigHour}.'],
+[1,'','End If',''],
 [1,'r','If {AcceptanceRate} is less than 90','The whole block, including ReqMile-0.25 and ReqHour-3. Replace it with the ramp below.'],
 [1,'a','Calculate Expression, then Set Variable','({RampTop}-{AcceptanceRate})/({RampTop}-{RampLow})  →  {T}'],
 [1,'a','If','{T} is less than 0'],
@@ -215,8 +216,7 @@ function ifFlow(rows,j){
    var found=-1;
    for(var z=stack.length-1;z>=0;z--){if(stack[z].depth===depth){found=z;break;}}
    if(found>=0){
-    if(k===j)classes.push(name==='Otherwise'?'if-otherwise':'if-end');
-    classes.push(stack[found].token);
+    if(k===j){classes.push(name==='Otherwise'?'if-otherwise':'if-end');classes.push(stack[found].token);}
     if(name==='End If')stack.splice(found);
    }
    continue;
@@ -224,8 +224,7 @@ function ifFlow(rows,j){
   while(stack.length&&stack[stack.length-1].depth>=depth)stack.pop();
   if(/^If(?:$|\s|\s*\()/.test(name)){
    var token='if-link-'+j;
-   if(k===j)classes.push('if-start');
-   classes.push(token);
+   if(k===j){classes.push('if-start');classes.push(token);}
    stack.push({depth:depth,token:token});
   }else if(k===j&&stack.length){
    classes.push('if-child');
