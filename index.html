@@ -276,9 +276,25 @@ SS.forEach(function(p,i){p.rows.forEach(function(r,j){shiftRows.push([r[0],r[1],
 sh+=promptPanel('Shift Logging fixes',shiftRows,'shift','Shift_Logging',function(r){return !!st.done[r[5]];});
 document.getElementById('gS').innerHTML=sh;
 var SEEDV=3,SEED_A=['p0-1','p0-2','p0-3','p1-0','p1-1','p1-3','p2-0','p2-1','p2-3','p2-4'],SEED_S=['q0-0','q0-1','q0-2','q0-3','q0-4','q0-5','q0-6','q0-7'];
-var wh='<div class="ph">Whole shortcut with every edit</div><div class="pm">Every action in order, 157 now plus the additions. Uncolored rows are unchanged.</div>';
-WHOLE.forEach(function(r,k){wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3],{cb:1,dk:'w'+k});});
-wh+=promptPanel('Whole shortcut',WHOLE,'whole','DoorDash_Offer_Analyzer (v2)');
+function wholeStepKey(k,r){
+ if(!r||['a','c','r'].indexOf(r[1])<0)return null;
+ var normText=function(s){return String(s||'').toLowerCase().replace(/\{([^}]+)\}/g,' $1 ').replace(/[^a-z0-9]+/g,' ').trim();};
+ var base=function(s){return normText(s).replace(/\s*\([^)]*\)/g,'').trim();};
+ var stop={the:1,and:1,then:1,from:1,with:1,into:1,after:1,before:1,was:1,now:1,that:1,this:1,for:1,its:1,output:1,rename:1,variable:1,action:1,number:1,item:1,items:1};
+ var tokens=function(s){return normText(s).split(/\s+/).filter(function(w){return w.length>2&&!stop[w];});};
+ var wa=base(r[2]),wd=tokens(r[2]+' '+r[3]),best=null,bestScore=-1;
+ S.forEach(function(sec,si){sec.rows.forEach(function(q,qi){
+  if(!q||['a','c','r'].indexOf(q[1])<0||q[2]==='End If'||q[2]==='Otherwise')return;
+  var qa=base(q[2]),qt=tokens(q[2]+' '+q[3]),overlap=0;
+  wd.forEach(function(w){if(qt.indexOf(w)>-1)overlap++;});
+  var score=(wa===qa?100:0)+(overlap*8)+(Math.min(wd.length,qt.length)?overlap/Math.min(wd.length,qt.length)*10:0);
+  if(score>bestScore){bestScore=score;best='p'+si+'-'+qi;}
+ });});
+ return bestScore>=100?best:'w'+k;
+}
+var wh='<div class="ph">Whole shortcut — items to address</div><div class="pm">Only actions marked Add, Change, or Remove need a checkbox. Their checks are shared with the matching individual steps and the action plan.</div>';
+WHOLE.forEach(function(r,k){var dk=wholeStepKey(k,r);wh+=row('w'+k,S.length,r[0],r[1],r[2],r[3],dk?{cb:1,dk:dk}:{});});
+wh+=promptPanel('Whole shortcut',WHOLE,'whole','DoorDash_Offer_Analyzer (v2)',function(r,j){return !!st.done[wholeStepKey(j,r)];});
 addTab('Whole',wh);
 var ph='<div class="ph">Action plan</div><div class="pm">Do these in order, top to bottom. Tap a box when a step is done. Adding an If also adds its Otherwise and End If for you, so those are not listed.</div><div class="note" id="prog"></div>',n=0,ids=[];
 S.forEach(function(p,i){
@@ -367,7 +383,7 @@ function handoff(){
  L.push('## Open steps ('+open.length+')',open.join('\n')||'None','','## Done ('+done+')',fin.join('\n')||'None','','## Bookmarks',bms.join('\n')||'None','');
  var so=[],sd=[];SS.forEach(function(p,i){p.rows.forEach(function(r,j){var id='q'+i+'-'+j,ln='['+(TG[r[1]]||'Keep')+'] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):'')+'  (section: '+p.t+')';if(st.done[id])sd.push('- [x] '+ln);else so.push('- [ ] '+ln);});});
  L.push('## Shift Logging shortcut: open steps ('+so.length+')',so.join('\n')||'None','','## Shift Logging shortcut: done ('+sd.length+')',sd.join('\n')||'None','');
- var wholeDone=[];WHOLE.forEach(function(r,k){if(st.done['w'+k])wholeDone.push('- [x] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));});
+ var wholeDone=[];WHOLE.forEach(function(r,k){if(['a','c','r'].indexOf(r[1])>-1&&st.done[wholeStepKey(k,r)])wholeDone.push('- [x] '+r[2]+(r[3]?' — '+r[3].replace(/\n/g,' / '):''));});
  L.push('## Whole shortcut page checks ('+wholeDone.length+' done)',wholeDone.join('\n')||'None','','## State (import this)','```json',JSON.stringify({v:VER,state:st}),'```','');
  L.push('## Guide data: S = sections [indent, tag a/c/r, action, detail], WHOLE = every action in order','```json',JSON.stringify({S:S,WHOLE:WHOLE,SHIFT:SS}),'```');
  return L.join('\n');
