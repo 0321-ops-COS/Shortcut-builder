@@ -146,8 +146,8 @@ sec('3 · Part C: rolling acceptance rate','Under Set Variable DeliverBy, above 
 [1,'r','Duplicate DataRows group','Right after the first Set Variable DataRows there is a second group: Get Text from Input of {OfferText}, a Match Text whose pattern starts with a space, and another Set Variable DataRows. Delete all three. They overwrite the good DataRows with nothing, so {RowCount} is 0 and the rate always shows 89.']]);
 sec('4 · Part D: use the tunables, add the ramp','From Calculate Expression CarCost down to the If (All) TAKE IT test.',[
 [1,'c','Calculate Expression (CarCost)','{Miles}*({GasPrice}/{MPG}+{Wear})\nReplace the typed 17.5 with {MPG} and 0.12 with {Wear}.'],
-[1,'c','Number 1.5, Set Variable ReqMile','Rename the variable to MileBase. Value becomes {BaseMile}.'],
-[1,'c','Number 18, Set Variable ReqHour','Rename the variable to HourBase. Value becomes {BaseHour}.'],
+[1,'c','Set Variable ReqMile → MileBase','Set Variable {BaseMile} → {MileBase} (was {ReqMile}). This creates {MileBase} before the ramp expression. Keep the expression using {MileBase}, not {BaseMile}.'],
+[1,'c','Set Variable ReqHour → HourBase','Set Variable {BaseHour} → {HourBase} (was {ReqHour}). This creates {HourBase} before the ramp expression. Keep the expression using {HourBase}, not {BaseHour}.'],
 [1,'c','If {ItemsNum} is greater than 3','Change the 3 to {BigItems}.'],
 [2,'c','Number 2, Set Variable ReqMile','Rename to MileBase. Value becomes {BigMile}.'],
 [2,'c','Number 20, Set Variable ReqHour','Rename to HourBase. Value becomes {BigHour}.'],
