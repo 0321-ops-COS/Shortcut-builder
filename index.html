@@ -227,7 +227,7 @@ function needsCopy(det){
 function copyPayload(det,name){
  var s=String(det||'');
  var nm=String(name||'');
- var nv=s.match(/^Enter ([-+]?\\d+(?:\\.\\d+)?)\\. Then Set Variable /i);
+ var nv=s.match(/^Enter ([-+]?\d+(?:\.\d+)?)\. Then Set Variable /i);
  if(nm==='Number'&&nv)return nv[1].trim();
  var m=s.match(/It should read ([\s\S]+?) and the output stays\b/i);
  if(m)return m[1].trim();
