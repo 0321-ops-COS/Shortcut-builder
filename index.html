@@ -209,7 +209,7 @@ function needsCopy(det){
 }
 function copyPayload(det){
  var s=String(det||'');
- var m=s.match(/It should read ([\\s\\S]+?) and the output stays\\b/i);
+ var m=s.match(/It should read ([\s\S]+?) and the output stays\b/i);
  if(m)return m[1].trim();
  return s;
 }
