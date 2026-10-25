@@ -47,6 +47,7 @@ h1{font-size:20px;font-weight:600;margin:8px 4px 2px}
 .bk{font:inherit;font-size:19px;line-height:1;border:none;background:none;color:var(--tx2);padding:2px 4px;margin:-2px -4px 0 0}
 .cb{width:22px;height:22px;flex:none;margin:1px 0 0}
 .rw.dn{opacity:.5}
+.stepcopy{font:inherit;font-size:12px;padding:4px 8px;border:1px solid var(--ln);border-radius:7px;background:var(--card);color:var(--tx2);margin-top:6px}
 .fl{outline:2px solid var(--pillx);outline-offset:2px}
 .bmbar{margin:0 0 10px}
 .bmbar button,#bmp button{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
@@ -202,11 +203,16 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function pills(s){return esc(s).replace(/\{([A-Za-z][A-Za-z’ ]*)\}/g,'<span class="pl">$1</span>');}
 var TG={a:'Add',c:'Change',r:'Remove'};
 var out=document.getElementById('out'),nav=document.getElementById('nav'),TL=[],tabEls=[];
+function needsCopy(det){
+ if(!det)return false;
+ return /\\n|\\\\|\{[^}]+\}|(?:pattern|replace|type|enter|write|paste|seed|one line|text \(|log row|summary|regular expression|custom separator|custom hh|custom mm|describe change|prompt:|becomes the|change the typed|value becomes|should read|find |reply with exactly)/i.test(String(det));
+}
 function row(id,tab,ind,s,name,det,x){
  x=x||{};
  if(s==='m')return '<div class="jn" id="'+id+'">'+esc(name)+': '+esc(det)+'</div>';
  var dk=x.dk||id,cb=x.cb?'<input type="checkbox" class="cb" data-id="'+dk+'" aria-label="Done"'+(st.done[dk]?' checked':'')+'>':'';
- return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
+ var copy=needsCopy(det)?'<button type="button" class="stepcopy" data-copy-step="'+id+'">Copy text</button><textarea class="copy-source" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px">'+esc(String(det))+'</textarea>':'';
+ return '<div class="rw '+s+(x.cb&&st.done[dk]?' dn':'')+'" id="'+id+'" data-tab="'+tab+'" style="margin-left:'+(ind*14)+'px">'+cb+'<div class="rb"><div class="nm">'+(x.num?x.num+'. ':'')+'<span class="nt">'+esc(name)+'</span>'+(TG[s]?'<span class="tg">'+TG[s]+'</span>':'')+'</div>'+(det?'<div class="dt">'+pills(det)+'</div>':'')+copy+'</div>'+(x.nobk?'':'<button class="bk" data-id="'+id+'" aria-label="Bookmark this row">'+(st.bm.indexOf(id)>-1?'★':'☆')+'</button>')+'</div>';
 }
 var PP=[];
 function buildPrompt(pp){
@@ -441,6 +447,16 @@ document.getElementById('gS').addEventListener('change',function(e){
  save();applyAll();
 });
 document.addEventListener('click',async function(e){
+ var step=e.target.closest?e.target.closest('[data-copy-step]'):null;
+ if(step){
+  var source=step.parentNode.querySelector('.copy-source');
+  if(!source)return;
+  var value=source.value;
+  try{await navigator.clipboard.writeText(value);step.textContent='Copied';}
+  catch(x){source.focus();source.select();try{var ok=document.execCommand('copy');step.textContent=ok?'Copied':'Select and copy';}catch(y){step.textContent='Select and copy';}}
+  setTimeout(function(){step.textContent='Copy text';},1800);
+  return;
+ }
  var cp=e.target.closest?e.target.closest('[data-copy-prompt]'):null;if(!cp)return;
  var id=cp.getAttribute('data-copy-prompt'),ta=document.getElementById(id),mg=document.getElementById('cpmsg-'+id.slice(3));
  if(!ta)return;ta.focus();ta.select();
