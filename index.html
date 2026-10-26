@@ -42,7 +42,7 @@ body.rail-on{padding-right:24px}
   <div id="fileline" class="fileline"></div>
   <button class="btn primary" id="createBlueprint" style="width:100%;margin-top:8px">Create blueprint</button>
   <hr class="sep">
-  <h3 class="subh">Your blueprints</h3>
+  <div class="btnrow" style="align-items:center;justify-content:space-between;margin:8px 0"><h3 class="subh" style="margin:0">Your workspaces</h3><button class="btn small primary" id="addWorkspace" type="button">＋ Add workspace</button></div>
   <div class="field"><label for="blueprintSelect">SHORTCUT WORKSPACE</label><select id="blueprintSelect"></select></div>
   <div class="btnrow"><button class="btn" id="renameBlueprint">Rename</button><button class="btn danger" id="deleteBlueprint">Delete</button></div>
   <div class="field"><label for="blueprintNotes">BLUEPRINT NOTES</label><textarea id="blueprintNotes" placeholder="What this shortcut does, prerequisites, caveats…"></textarea></div>
@@ -187,6 +187,7 @@ document.getElementById("drop").addEventListener("drop",e=>{const f=e.dataTransf
 const toNew=()=>{switchStage("library");document.getElementById("newName").scrollIntoView({block:"center"})};
 document.getElementById("importTop").onclick=toNew;
 document.getElementById("importActions").onclick=toNew;
+document.getElementById("addWorkspace").onclick=()=>{const name=prompt("Name your new workspace","New Workspace");if(name===null)return;const clean=name.trim();if(!clean){say("Enter a workspace name.");return}createBlueprint(clean,[]);resetNew();switchStage("done");say("Created workspace: "+clean)};
 document.getElementById("createBlueprint").onclick=()=>{const name=document.getElementById("newName").value.trim();if(!name&&!pendingFile){say("Add a name, a file, or both.");return}if(pendingFile)importFile(pendingFile,name);else{createBlueprint(name);resetNew();switchStage("done");say("Created "+name)}};
 document.getElementById("exportTop").onclick=exportBlueprint;document.getElementById("exportActions").onclick=exportCurrent;
 document.getElementById("blueprintSelect").onchange=e=>{db.activeBlueprint=e.target.value;persist();renderAll()};
