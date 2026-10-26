@@ -29,7 +29,7 @@ body.rail-on{padding-right:24px}
 <div id="app">
 <header class="top">
  <div class="brand"><div class="mark">⌘</div><div><h1>Shortcut Blueprint Builder</h1><p>Blueprints · version diffs · build tracking</p></div></div>
- <div class="top-actions"><button class="btn" id="importTop">＋ New blueprint</button><button class="btn" id="exportTop">Export JSON</button></div>
+ <div class="top-actions"><a class="btn" href="./blueprint-print-library-mock.html" target="_blank" rel="noopener">Print library mock</a><button class="btn" id="importTop">＋ New blueprint</button><button class="btn" id="exportTop">Export JSON</button></div>
 </header>
 <div class="nav-wrap"><button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="workflowMenu"><span class="hamburger">☰</span><span id="menuCurrent">Build progress</span><span class="chevron">▾</span></button><nav class="workflow page-hidden" id="workflowMenu" aria-label="Workspace pages"><button class="workflow-step" data-stage="done"><span>01</span><b>Build progress</b><small>Resume your build</small></button><button class="workflow-step" data-stage="library"><span>02</span><b>Blueprint library</b><small>Create or choose</small></button><button class="workflow-step" data-stage="versions"><span>03</span><b>Versions</b><small>Review changes</small></button><button class="workflow-step" data-stage="testing"><span>04</span><b>Testing</b><small>Verify results</small></button></nav></div>
 <div class="layout">
