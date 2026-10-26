@@ -12,6 +12,18 @@
 .nav-wrap{position:sticky;top:0;z-index:20;background:#090f19;border-bottom:1px solid #202f43;padding:10px clamp(12px,2vw,28px)}.menu-toggle{display:flex;align-items:center;gap:11px;width:100%;max-width:1120px;margin:auto;text-align:left;border:1px solid #26374f;border-radius:10px;background:#111b2a;color:#e8eef9;padding:11px 13px;font-weight:750}.hamburger{font-size:17px;color:#b9d1ff}.chevron{margin-left:auto;color:#8798b2}.workflow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:min(1120px,calc(100% - 24px));margin:8px auto 0;padding:8px;background:#0d1522;border:1px solid #202f43;border-radius:12px;overflow:visible;position:absolute;left:12px;right:12px;top:100%;box-shadow:0 18px 42px #0009}.workflow-step{display:grid;grid-template-columns:28px minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:9px;min-width:0;width:100%;padding:11px;text-align:left;border:1px solid transparent;border-radius:9px;background:transparent;color:#8798b2;white-space:normal}.workflow-step span{grid-row:1/3;display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#18263a;color:#b9d1ff;font-size:11px;font-weight:800}.workflow-step b{font-size:13px;color:#e8eef9}.workflow-step small{font-size:11px;color:#8798b2}.workflow-step.active,.workflow-step:hover{background:#17243a;border-color:#344d70}.workflow-step.active span{background:#304a70;color:#fff}@media(max-width:520px){.workflow{grid-template-columns:1fr}.workflow-step{padding:9px}.nav-wrap{padding:8px 12px}}
 .action.s-added{border-left:4px solid #2e9e55;background:#0e2619}.action.s-changed{border-left:4px solid #e08a00;background:#2a2010}.action.s-removed{border-left:4px solid #d23b3b;background:#2b1418}.action.s-removed .action-title strong{text-decoration:line-through}.action.done{opacity:.55}.pilltxt{font-size:12.5px;color:var(--muted);line-height:1.55;white-space:pre-line;overflow-wrap:anywhere;margin-top:3px}.pl{display:inline-block;background:#16305a;color:#bcd3ff;border-radius:6px;padding:0 6px;margin:1px;white-space:normal}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:0 0 10px}.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 11px;font-size:12px;font-weight:650;white-space:nowrap}.chip.on{background:#304a75;border-color:#3a5275;color:#fff}.chip small{opacity:.7;margin-left:5px}.viewtabs{display:flex;gap:5px;padding:4px;background:#101a2a;border:1px solid var(--line);border-radius:11px;margin-bottom:12px;width:max-content;max-width:100%}.vt{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:8px;font-weight:700;white-space:nowrap}.vt.active{background:#304a75;color:#fff}.aboutbox{padding:10px 14px;margin-bottom:12px}.aboutbox summary{margin:0}
 .subh{margin:14px 0 4px;font-size:13px;letter-spacing:.02em;color:#b9d1ff}.sep{border:0;border-top:1px solid var(--line);margin:18px 0 4px}.field input[type=text]{width:100%;background:#0b1422;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.drop{min-height:110px}.drop.has{border-style:solid;color:#fff}</style>
+<style id="edit-rail-css">
+#editRail{position:fixed;top:0;right:0;bottom:0;width:24px;z-index:15;background:#0b111dcc;border-left:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+#editRail.off{display:none}
+body.rail-on{padding-right:24px}
+#editRail .thumb{position:absolute;left:2px;right:2px;min-height:18px;border-radius:6px;background:#7ca9ff33;border:1px solid #7ca9ff88;pointer-events:none}
+#editRail .tick{position:absolute;left:3px;right:3px;height:6px;margin-top:-3px;border:0;padding:0;border-radius:3px;cursor:pointer;box-shadow:0 0 0 1px #0b111d}
+#editRail .tick::after{content:"";position:absolute;left:-3px;right:-3px;top:-6px;bottom:-6px}
+#editRail .tick.added{background:#2e9e55}#editRail .tick.changed{background:#e08a00}#editRail .tick.removed{background:#d23b3b}
+#editRail .tick.done{opacity:.3}
+#editRail .tick.cur{outline:2px solid #fff;z-index:2}
+#editRail .tip{position:absolute;right:30px;max-width:60vw;background:#e8eefc;color:#0b111d;font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;transform:translateY(-50%);display:none}
+</style>
 </head>
 <body>
 <div id="app">
@@ -207,6 +219,60 @@ if(db.blueprints.length===1&&/^Example/.test(db.blueprints[0].name)&&db.blueprin
 if(!db.blueprints.length){const b=createBlueprint("DoorDash Offer Analyzer v2",SEED);b.notes=NOTES;persist();say("Loaded DoorDash Offer Analyzer v2. Drop in a .shortcut file to get its full action list.")}
 renderAll();
 switchStage("done");
+})();
+
+/* ---- Edit scroll rail: bookmark ticks for every edit on the shortcut view ---- */
+(function(){
+ const rail=document.createElement("div");rail.id="editRail";rail.className="off";rail.setAttribute("aria-label","Edit bookmarks scroll bar");
+ const thumb=document.createElement("div");thumb.className="thumb";
+ const tip=document.createElement("div");tip.className="tip";
+ rail.append(thumb,tip);document.body.appendChild(rail);
+ const doc=()=>document.documentElement,H=()=>Math.max(doc().scrollHeight,1),RH=()=>rail.clientHeight||1;
+ let ticks=[],scheduled=false;
+ function build(){
+  scheduled=false;
+  const view=document.getElementById("actionsView"),list=document.getElementById("actionList");
+  const whole=document.querySelector(".vt.active");const cards=view&&!view.classList.contains("hidden")&&whole&&whole.dataset.view==="whole"?[...list.querySelectorAll(".action.s-added,.action.s-changed,.action.s-removed")]:[];
+  const on=cards.length>0;rail.classList.toggle("off",!on);document.body.classList.toggle("rail-on",on);
+  ticks.forEach(t=>t.el.remove());ticks=[];
+  if(!on)return;
+  const top=window.scrollY,h=H(),rh=RH();
+  cards.forEach(c=>{
+   const st=c.classList.contains("s-added")?"added":c.classList.contains("s-changed")?"changed":"removed";
+   const y=(c.getBoundingClientRect().top+top)/h*rh;
+   const b=document.createElement("button");b.type="button";b.className="tick "+st+(c.classList.contains("done")?" done":"");
+   b.style.top=y+"px";
+   const name=(c.querySelector(".action-title strong")||{}).textContent||"Edit";
+   const label=({added:"Add",changed:"Change",removed:"Remove"}[st])+": "+name;
+   b.setAttribute("aria-label","Jump to "+label);
+   b.addEventListener("pointerdown",e=>e.stopPropagation());
+   b.addEventListener("click",e=>{e.stopPropagation();c.scrollIntoView({behavior:"smooth",block:"center"});c.style.boxShadow="0 0 0 3px #78a5ff";setTimeout(()=>c.style.boxShadow="",1500)});
+   b.addEventListener("pointerenter",()=>{tip.textContent=label;tip.style.top=y+"px";tip.style.display="block"});
+   b.addEventListener("pointerleave",()=>{tip.style.display="none"});
+   rail.appendChild(b);ticks.push({el:b,card:c,y});
+  });
+  pos();
+ }
+ function pos(){
+  const h=H(),rh=RH(),vh=window.innerHeight;
+  thumb.style.top=(window.scrollY/h*rh)+"px";thumb.style.height=Math.max(18,vh/h*rh)+"px";
+  const mid=window.scrollY+vh/2;let best=null,bd=1e9;
+  ticks.forEach(t=>{t.el.classList.remove("cur");const r=t.card.getBoundingClientRect(),d=Math.abs(r.top+window.scrollY+r.height/2-mid);if(d<bd){bd=d;best=t}});
+  if(best&&bd<vh/2)best.el.classList.add("cur");
+ }
+ function sched(){if(!scheduled){scheduled=true;requestAnimationFrame(build)}}
+ // drag the rail like a scrollbar
+ let drag=false;
+ const seek=e=>{const r=rail.getBoundingClientRect();window.scrollTo(0,(e.clientY-r.top)/r.height*H()-window.innerHeight/2)};
+ rail.addEventListener("pointerdown",e=>{drag=true;rail.setPointerCapture(e.pointerId);seek(e)});
+ rail.addEventListener("pointermove",e=>{if(drag)seek(e)});
+ rail.addEventListener("pointerup",()=>{drag=false});rail.addEventListener("pointercancel",()=>{drag=false});
+ window.addEventListener("scroll",pos,{passive:true});
+ window.addEventListener("resize",sched);
+ const mo=new MutationObserver(sched);
+ ["actionsView","actionList"].forEach(id=>{const n=document.getElementById(id);if(n)mo.observe(n,{childList:true,subtree:true,attributes:true,attributeFilter:["class"]})});
+ if(window.ResizeObserver)new ResizeObserver(sched).observe(document.body);
+ sched();
 })();
 </script>
 </body></html>
